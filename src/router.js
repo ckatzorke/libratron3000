@@ -1,25 +1,47 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+import Home from './components/Home.vue'
+import Collection from './components/Collection.vue'
+import Import from './components/Import.vue'
+import Profile from './components/Profile.vue'
+import { store } from './store/store'
 
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+Vue.use(VueRouter)
+
+export const routes = [{
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/collection',
+    component: Collection,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next(false)
+      }
+      next(true)
     }
-  ]
+  },
+  {
+    path: '/import',
+    component: Import,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next(false)
+      }
+      next(true)
+    }
+  },
+  {
+    path: '/profile',
+    component: Profile
+  }
+]
+
+export const router = new VueRouter({
+  mode: 'history',
+  routes
 })
