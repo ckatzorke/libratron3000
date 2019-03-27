@@ -10,23 +10,7 @@
         stateless
         app
       >
-        <v-toolbar flat class="transparent">
-          <v-list class="pa-0">
-            <v-list-tile avatar>
-              <v-btn
-                icon
-                @click.stop="mini = !mini"
-              >
-                <v-icon>{{ menuFlyoutDirection }}</v-icon>
-              </v-btn>
-
-              <v-list-tile-content>
-                <v-list-tile-title>Choose your fate</v-list-tile-title>
-              </v-list-tile-content>
-
-            </v-list-tile>
-          </v-list>
-        </v-toolbar>
+        <lib-toolbar></lib-toolbar>
 
         <v-list class="pt-0">
           <v-divider></v-divider>
@@ -79,20 +63,14 @@
 </template>
 
 <script>
-import Home from './components/Home.vue'
-import Collection from './components/Collection.vue'
-import Import from './components/Import.vue'
-
-import firebase from 'firebase'
+import Toolbar from './components/Toolbar.vue'
 
 export default {
   name: 'libratron3000',
   components: {
-    'lib-home': Home,
-    'lib-collection': Collection,
-    'lib-import': Import
+    'lib-toolbar': Toolbar
   },
-  data () {
+  data() {
     return {
       drawer: true,
       mini: true
