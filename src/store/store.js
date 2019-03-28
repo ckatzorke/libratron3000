@@ -11,7 +11,13 @@ export const store = new Vuex.Store({
     user: null
   },
   getters: {
-    getUser: state => state.user
+    getUser: state => state.user,
+    loggedIn: state => {
+      if (state.user === null) {
+        return false
+      }
+      return true
+    }
   },
   mutations: {
     updateUser: (state, user) => {

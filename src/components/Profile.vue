@@ -6,27 +6,29 @@
 
         <v-card-title primary-title>
           <div>
-            <h3 class="headline mb-0">{{ displayName }}</h3>
+            <h3 class="display-1">{{ displayName }}</h3>
             <div>{{ email }}</div>
           </div>
         </v-card-title>
 
         <v-card-actions>
-          <v-btn flat color="orange" @click="logout">
-            <v-icon>meeting_room</v-icon> Logout
+          <v-btn flat @click="logout">
+            <v-icon left>exit_to_app</v-icon> Logout
           </v-btn>
         </v-card-actions>
       </v-card>
       <v-card v-else>
         <v-card-title primary-title>
           <div>
-            <h3 class="headline mb-0">Please sign in to use Libratron 3000&trade;</h3>
-            <div>bla</div>
+            <h3 class="display-1">Please sign in to use Libratron 3000&trade;</h3>
+            <div>In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</div>
           </div>
         </v-card-title>
 
         <v-card-actions>
-          <v-btn flat color="orange" @click="login">Login</v-btn>
+          <v-btn  @click="login">
+            <v-icon left>perm_identity</v-icon> Login
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -39,24 +41,20 @@ export default {
       profilePicture: this.$store.getters.getUser.photoURL,
       displayName: this.$store.getters.getUser.displayName,
       email: this.$store.getters.getUser.email
-    };
+    }
   },
   computed: {
     loggedIn() {
-      if (this.$store.getters.getUser === null) {
-        return false;
-      }
-      return true;
+      return this.$store.getters.loggedIn
     }
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch('logout')
     },
     login() {
-      this.$store.dispatch("login");
+      this.$store.dispatch('login')
     }
   }
-};
+}
 </script>
-
