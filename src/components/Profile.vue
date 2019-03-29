@@ -12,8 +12,9 @@
         </v-card-title>
 
         <v-card-actions>
-          <v-btn flat @click="logout">
-            <v-icon left>exit_to_app</v-icon> Logout
+          <v-spacer></v-spacer>
+          <v-btn @click="logout">
+            Logout<v-icon right>exit_to_app</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -26,8 +27,9 @@
         </v-card-title>
 
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn  @click="login">
-            <v-icon left>perm_identity</v-icon> Login
+            Login<v-icon right>perm_identity</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
