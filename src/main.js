@@ -3,7 +3,6 @@ import 'vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
-import Vuetify from 'vuetify'
 import { router } from './router'
 import { store } from './store/store'
 import firebase from 'firebase'
@@ -20,8 +19,6 @@ var config = {
 firebase.initializeApp(config)
 
 // initialize Vue
-Vue.use(Vuetify)
-
 Vue.config.productionTip = false
 
 new Vue({

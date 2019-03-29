@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire" light>
-      <lib-toolbar></lib-toolbar>
+      <lib-navbar></lib-navbar>
 
       <v-content>
         <v-container fluid fill-height>
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import Toolbar from './components/Toolbar.vue'
+import Navbar from './components/Navbar.vue'
 
 export default {
   name: 'libratron3000',
   components: {
-    'lib-toolbar': Toolbar
+    'lib-navbar': Navbar
   },
   data() {
     return {

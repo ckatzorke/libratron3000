@@ -43,7 +43,7 @@ export const store = new Vuex.Store({
     login: context => {
       const auth = firebase.auth()
       auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider()
         return firebase.auth().signInWithPopup(provider)
       }).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
