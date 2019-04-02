@@ -1,41 +1,40 @@
 <template>
   <v-container>
-  <v-layout>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card v-if="loggedIn" >
-        <v-img :src="profilePicture" contain height="100" position="center center"></v-img>
+    <v-layout row wrap>
+      <v-flex xs12 sm12 md12 lg12 justify-space-around>
+        <v-card v-if="loggedIn" class="text-xs-center ma-3">
+          <v-avatar size="150" class="text-xs-center ma-2 grey lighten-2">
+            <img :src="profilePicture"/>
+          </v-avatar>
+          <v-card-text>
+            <div class="headline">{{ displayName }}</div>
+            <div class="title grey--text"><v-icon flat>email</v-icon>{{ email }}</div>
+          </v-card-text>
 
-        <v-card-title primary-title>
-          <div>
-            <h3 class="display-1">{{ displayName }}</h3>
-            <div>{{ email }}</div>
-          </div>
-        </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="logout">
+              Logout<v-icon right>exit_to_app</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card v-else>
+          <v-card-title primary-title>
+            <div>
+              <div class="headline">Please sign in to use Libratron 3000&trade;</div>
+              <div class="title grey--text">In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</div>
+            </div>
+          </v-card-title>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="logout">
-            Logout<v-icon right>exit_to_app</v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card v-else>
-        <v-card-title primary-title>
-          <div>
-            <h3 class="display-1">Please sign in to use Libratron 3000&trade;</h3>
-            <div>In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</div>
-          </div>
-        </v-card-title>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn  @click="login">
-            Login<v-icon right>perm_identity</v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn  @click="login">
+              Login<v-icon right>perm_identity</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 <script>
