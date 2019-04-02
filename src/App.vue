@@ -4,12 +4,10 @@
       <lib-navbar></lib-navbar>
 
       <v-content>
-        <v-container fluid fill-height>
           <router-view></router-view>
-        </v-container>
       </v-content>
       <v-footer app fixed>
-        <span>&copy; 2019</span>
+        <span class="mx-3">&copy; 2019</span>
       </v-footer>
     </v-app>
   </div>

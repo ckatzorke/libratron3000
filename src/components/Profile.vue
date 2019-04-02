@@ -1,8 +1,9 @@
 <template>
+  <v-container>
   <v-layout>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card v-if="loggedIn">
-        <v-img :src="profilePicture" contain="true" height="100"></v-img>
+      <v-card v-if="loggedIn" >
+        <v-img :src="profilePicture" contain height="100" position="center center"></v-img>
 
         <v-card-title primary-title>
           <div>
@@ -35,20 +36,20 @@
       </v-card>
     </v-flex>
   </v-layout>
+  </v-container>
 </template>
 <script>
 export default {
   data() {
     return {
-      profilePicture: this.$store.getters.getUser.photoURL,
-      displayName: this.$store.getters.getUser.displayName,
-      email: this.$store.getters.getUser.email
+
     }
   },
   computed: {
-    loggedIn() {
-      return this.$store.getters.loggedIn
-    }
+    loggedIn() { return this.$store.getters.loggedIn },
+    profilePicture() { return this.$store.getters.getUser.photoURL },
+    displayName() { return this.$store.getters.getUser.displayName },
+    email() { return this.$store.getters.getUser.email }
   },
   methods: {
     logout() {

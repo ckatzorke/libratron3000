@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 
 import Home from './components/Home.vue'
 import Collection from './components/Collection.vue'
-import Import from './components/Import.vue'
 import Profile from './components/Profile.vue'
-import { store } from './store/store'
+import {
+  store
+} from './store/store'
 
 Vue.use(VueRouter)
 
-export const routes = [{
+export const routes = [
+  {
     path: '/',
     component: Home
   },
@@ -19,18 +21,7 @@ export const routes = [{
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
-        next(false)
-      }
-      next(true)
-    }
-  },
-  {
-    path: '/import',
-    component: Import,
-    beforeEnter: (to, from, next) => {
-      if (store.state.user === null) {
-        console.log('Not authenticated yet...')
-        next(false)
+        next('/profile')
       }
       next(true)
     }

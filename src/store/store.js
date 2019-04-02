@@ -8,23 +8,44 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    collection: null
   },
   getters: {
+    /**
+     * Get the user from state
+     */
     getUser: state => state.user,
+    /**
+     * Get the actual login state (true|false)
+     */
     loggedIn: state => {
       if (state.user === null) {
         return false
       }
       return true
+    },
+    /**
+     * Get the collection from state
+     */
+    getCollection: state => {
+      return state.collection
     }
+
   },
   mutations: {
     updateUser: (state, user) => {
       state.user = user
+    },
+    updateCollection: (state, collection) => {
+      state.collection = collection
     }
   },
   actions: {
+    // login stuff
+    /**
+     * Try to autologin during app creation, when user was already logged in to Google.
+     */
     bootstrapLogin: context => {
       const auth = firebase.auth()
       auth.onAuthStateChanged((user) => {
@@ -32,7 +53,6 @@ export const store = new Vuex.Store({
         if (user) {
           console.log('User is already logged in, updateing state', user)
           context.commit('updateUser', user)
-          router.push('/collection')
         } else {
           console.log('User is not logged in. Redirecting to Profile/Login')
           context.commit('updateUser', null)
@@ -40,6 +60,9 @@ export const store = new Vuex.Store({
         }
       })
     },
+    /**
+     * Logs in using firebase and Google.
+     */
     login: context => {
       const auth = firebase.auth()
       auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
@@ -66,6 +89,9 @@ export const store = new Vuex.Store({
         context.commit('updateUser', null)
       })
     },
+    /**
+     * Logs out.
+     */
     logout: context => {
       const auth = firebase.auth()
       auth.signOut()
@@ -76,6 +102,23 @@ export const store = new Vuex.Store({
         .catch(error => {
           console.error('Error occured during signout', error)
         })
+    },
+    // firestore stuff
+    /**
+     * Loads all collectionEntries and updates the global store.
+     */
+    loadCollection: (context, opt) => {
+      let options = opt || {
+        orderBy: 'title'
+      }
+      let db = firebase.firestore()
+      let collection = []
+      db.collection(`users/${context.state.user.uid}/collection`).orderBy(options.orderBy).limit(25).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          collection.push(doc.data())
+        })
+        context.commit('updateCollection', collection)
+      })
     }
   }
 })
