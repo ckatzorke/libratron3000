@@ -7,8 +7,8 @@
         </v-flex>
       </v-layout>
     </v-card>
-    <v-card v-else v-for="item in collection" :key="item.number">
-      <v-layout row wrap pa-1>
+    <v-card v-else >
+      <v-layout row wrap pa-1 ma-1 v-for="item in collection" :key="item.number">
         <v-flex xs1>
           <div class="caption grey--text">#</div>
           <div>{{ item.number }}</div>

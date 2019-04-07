@@ -52,7 +52,8 @@ export default {
       drawer: false,
       navitems: [
         { icon: 'dashboard', label: 'Dashboard', to: '/' },
-        { icon: 'list', label: 'Collection', to: '/collection' }
+        { icon: 'list', label: 'Collection', to: '/collection' },
+        { icon: 'add', label: 'Add', to: '/add' }
       ]
     }
   },

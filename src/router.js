@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from './components/Home.vue'
-import Collection from './components/Collection.vue'
-import Profile from './components/Profile.vue'
+import Home from './components/Home'
+import Collection from './components/Collection'
+import AddGame from './components/AddGame'
+import Profile from './components/Profile'
 import {
   store
 } from './store/store'
@@ -23,7 +24,18 @@ export const routes = [
         console.log('Not authenticated yet...')
         next('/profile')
       }
-      next(true)
+      next()
+    }
+  },
+  {
+    path: '/add',
+    component: AddGame,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next('/profile')
+      }
+      next()
     }
   },
   {
