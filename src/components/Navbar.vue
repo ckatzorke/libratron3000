@@ -3,7 +3,7 @@
   <v-toolbar app flat>
     <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
     <v-toolbar-title>
-      <div @click.stop="go('/')">
+      <div>
         <span class="font-weight-light">Libratron</span><span class="font-weight-medium">3000</span><span>&trade;</span>
       </div>
     </v-toolbar-title>

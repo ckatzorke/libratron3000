@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+
+import platforms from '@/store/platforms'
+
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
@@ -11,7 +14,12 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     user: null,
-    collection: null
+    queryOptions: {
+      'sort': 'number',
+      'direction': 'desc'
+    },
+    collection: null,
+    platforms
   },
   getters: {
     /**
@@ -32,6 +40,12 @@ export const store = new Vuex.Store({
      */
     getCollection: state => {
       return state.collection
+    },
+    /**
+     * Get the list of actually defined platforms
+     */
+    getPlatforms: state => {
+      return state.platforms
     }
 
   },
@@ -110,12 +124,10 @@ export const store = new Vuex.Store({
      * Loads all collectionEntries and updates the global store.
      */
     loadCollection: (context, opt) => {
-      let options = opt || {
-        orderBy: 'title'
-      }
+      let options = opt || context.state.queryOptions
       let db = firebase.firestore()
       let collection = []
-      db.collection(`users/${context.state.user.uid}/collection`).orderBy(options.orderBy).limit(25).get().then((querySnapshot) => {
+      db.collection(`users/${context.state.user.uid}/collection`).orderBy(options.sort, options.direction).limit(25).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           collection.push(doc.data())
         })
