@@ -1,12 +1,12 @@
 <template>
   <v-dialog>
-    <v-btn slot="activator" flat class="success" right>
-      <v-icon left flat>search</v-icon>Search
+    <v-btn slot="activator" flat right>
+      <v-icon left flat>search</v-icon>Search&nbsp;<img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>I
     </v-btn>
     <v-card>
         <v-layout row wrap class="pa-3">
           <v-flex xs12>
-            <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>IGDB Search</h1>
+            <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>&nbsp;IGDB Search</h1>
           </v-flex>
           <v-flex>
             <v-form class="px-3" v-on:submit.prevent>

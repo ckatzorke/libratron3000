@@ -15,8 +15,8 @@ export const store = new Vuex.Store({
   state: {
     user: null,
     queryOptions: {
-      'sort': 'number',
-      'direction': 'desc'
+      sort: 'number',
+      direction: 'desc'
     },
     collection: null,
     platforms
@@ -47,7 +47,6 @@ export const store = new Vuex.Store({
     getPlatforms: state => {
       return state.platforms
     }
-
   },
   mutations: {
     updateUser: (state, user) => {
@@ -64,14 +63,17 @@ export const store = new Vuex.Store({
      */
     bootstrapLogin: context => {
       const auth = firebase.auth()
-      auth.onAuthStateChanged((user) => {
-        console.log('Bootstrap User:', user)
+      auth.onAuthStateChanged(user => {
+        console.log('AuthState changed. User:', user)
         if (user) {
-          console.log('User is already logged in, updateing state', user)
+          console.log('User is logged in, updateing state', user)
           context.commit('updateUser', user)
+          console.log('Updating user collection')
+          context.dispatch('loadCollection')
         } else {
           console.log('User is not logged in. Redirecting to Profile/Login')
           context.commit('updateUser', null)
+          context.commit('updateCollection', [])
           router.push('/profile')
         }
       })
@@ -81,36 +83,44 @@ export const store = new Vuex.Store({
      */
     login: context => {
       const auth = firebase.auth()
-      auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
-        const provider = new firebase.auth.GoogleAuthProvider()
-        return firebase.auth().signInWithPopup(provider)
-      }).then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        // const token = result.credential.accessToken;
-        // The signed-in user info.
-        const user = result.user
-        console.log('Login done, updating user', user)
-        context.commit('updateUser', user)
-        // ...
-      }).catch(error => {
-        console.error('Error occured during login', error)
-        // Handle Errors here.
-        const errorCode = error.code
-        const errorMessage = error.message
-        // The email of the user's account used.
-        const email = error.email
-        // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential
-        console.error('Error logging in', errorCode, errorMessage, email, credential)
-        context.commit('updateUser', null)
-      })
+      auth
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(() => {
+          const provider = new firebase.auth.GoogleAuthProvider()
+          return firebase.auth().signInWithPopup(provider)
+        })
+        .then(result => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          // const token = result.credential.accessToken;
+          // The signed-in user info.
+          // the state update is done in the onAuthStateChangedHandler
+        })
+        .catch(error => {
+          console.error('Error occured during login', error)
+          // Handle Errors here.
+          const errorCode = error.code
+          const errorMessage = error.message
+          // The email of the user's account used.
+          const email = error.email
+          // The firebase.auth.AuthCredential type that was used.
+          const credential = error.credential
+          console.error(
+            'Error logging in',
+            errorCode,
+            errorMessage,
+            email,
+            credential
+          )
+          context.commit('updateUser', null)
+        })
     },
     /**
      * Logs out.
      */
     logout: context => {
       const auth = firebase.auth()
-      auth.signOut()
+      auth
+        .signOut()
         .then(() => {
           console.log('Successfully signed out')
           context.commit('updateUser', null)
@@ -127,12 +137,22 @@ export const store = new Vuex.Store({
       let options = opt || context.state.queryOptions
       let db = firebase.firestore()
       let collection = []
-      db.collection(`users/${context.state.user.uid}/collection`).orderBy(options.sort, options.direction).limit(25).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          collection.push(doc.data())
+      db.collection(`users/${context.state.user.uid}/collection`)
+        .orderBy(options.sort, options.direction)
+        .limit(25)
+        .onSnapshot(res => {
+          const changes = res.docChanges()
+          changes.forEach(change => {
+            if (change.type === 'added') {
+              console.log('adding ' + change.doc.data().title)
+              collection.push({
+                ...change.doc.data(),
+                id: change.doc.id
+              })
+            } // TODO delete & modify
+          })
+          context.commit('updateCollection', collection)
         })
-        context.commit('updateCollection', collection)
-      })
     }
   }
 })

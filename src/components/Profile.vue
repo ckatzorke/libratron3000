@@ -16,6 +16,9 @@
             <v-btn @click="logout">
               Logout<v-icon right>exit_to_app</v-icon>
             </v-btn>
+            Quicknav:
+            <router-link to="/collection">Collection</router-link>
+            <router-link to="/add">Add</router-link>
           </v-card-actions>
         </v-card>
         <v-card v-else>
