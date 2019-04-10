@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import platforms from '@/store/platforms'
+import platforms from '@/service/platforms'
 
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 
-import { router } from '../router'
+import { router } from '@/router'
 
 Vue.use(Vuex)
 
