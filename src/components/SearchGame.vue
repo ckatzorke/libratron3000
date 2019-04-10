@@ -6,7 +6,7 @@
     <v-card>
         <v-layout row wrap class="pa-3">
           <v-flex xs12>
-            <h1 class="subheading grey--text">IGDB Search</h1>
+            <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>IGDB Search</h1>
           </v-flex>
           <v-flex>
             <v-form class="px-3" v-on:submit.prevent>
@@ -21,51 +21,58 @@
             </v-form>
           </v-flex>
         </v-layout>
-          <v-card flat  v-for="result in results" :key="result.id">
-            <v-layout row wrap class="pa-3">
-              <v-flex xs1>
-                <v-tooltip top>
-                  <v-btn
-                    slot="activator"
-                    flat
-                    @click="selectEntry(result)"
-                    >
-                    <v-icon>check_box</v-icon>
-                  </v-btn>
-                  <span>Use this entry</span>
-                </v-tooltip>
-              </v-flex>
-              <v-flex xs5 md5>
-                <div class="caption grey--text">Title</div>
-                <div>
-                  {{ result.name }}&nbsp;<a
-                  :href="result.url"
-                  target="_blank"
-                  ><v-icon small>link</v-icon></a></div>
-              </v-flex>
-              <v-flex xs6 sm4 md2>
-                <div class="caption grey--text">Release Date</div>
-                <div>{{ displayDate(result.first_release_date) }}</div>
-              </v-flex>
-              <v-flex xs6 sm4 md2>
-                <div class="caption grey--text">Genres</div>
-                <div>{{ displayGenres(result.genres) }}</div>
-              </v-flex>
-              <v-flex xs6 sm4 md2>
-                <div class="caption grey--text">Platforms</div>
-                <div>{{ displayPlatforms(result.platforms) }}</div>
-              </v-flex>
-            </v-layout>
+        <v-expansion-panel>
+          <v-expansion-panel-content v-for="result in results" :key="result.id">
+            <v-card flat slot="header" >
+              <v-layout row wrap class="pa-3">
+                <v-flex xs1>
+                  <v-tooltip top>
+                    <v-btn
+                      slot="activator"
+                      flat
+                      @click="selectEntry(result)"
+                      >
+                      <v-icon>check_box</v-icon>
+                    </v-btn>
+                    <span>Use this entry</span>
+                  </v-tooltip>
+                </v-flex>
+                <v-flex xs5 md5>
+                  <div class="caption grey--text">Title</div>
+                  <div>
+                    {{ result.name }}&nbsp;<a
+                    :href="result.url"
+                    target="_blank"
+                    ><v-icon small>link</v-icon></a></div>
+                </v-flex>
+                <v-flex xs6 sm4 md2>
+                  <div class="caption grey--text">Release Date</div>
+                  <div>{{ displayDate(result.first_release_date) }}</div>
+                </v-flex>
+                <v-flex xs6 sm4 md2>
+                  <div class="caption grey--text">Genres</div>
+                  <div>{{ displayGenres(result.genres) }}</div>
+                </v-flex>
+                <v-flex xs6 sm4 md2>
+                  <div class="caption grey--text">Platforms</div>
+                  <div>{{ displayPlatforms(result.platforms) }}</div>
+                </v-flex>
+              </v-layout>
+            </v-card>
+            <v-card>
+              <v-layout row wrap class="pa-3">
+                <v-flex hidden-sm-and-down md2 text-md-center>
+                  <img :src="coverImage(result.cover)" height="125">
+                </v-flex>
+                <v-flex xs12 sm12 md10>
+                  <span>{{ result.summary }}</span>
+                </v-flex>
+              </v-layout>
+            </v-card>
             <v-divider></v-divider>
-          </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-card>
-
-                      <!--v-flex xs4 md1 mx-3 class="text-xs-center">
-                        <img :src="coverImage(result.cover)" height="125">
-                      </v-flex>
-                      <v-flex xs8 md11>
-                        <span v-html="result.summary"></span>
-                      </v-flex-->
   </v-dialog>
 </template>
 <script>
