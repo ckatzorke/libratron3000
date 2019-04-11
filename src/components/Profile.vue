@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs12 sm12 md12 lg12 justify-space-around>
-        <v-card v-if="loggedIn" class="text-xs-center ma-3">
+    <v-layout row wrap v-if="loggedIn">
+      <v-flex xs12 justify-space-around>
+        <v-card class="text-xs-center ma-3">
           <v-avatar size="150" class="text-xs-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
           </v-avatar>
@@ -16,12 +16,30 @@
             <v-btn @click="logout">
               Logout<v-icon right>exit_to_app</v-icon>
             </v-btn>
-            Quicknav:
-            <router-link to="/collection">Collection</router-link>
-            <router-link to="/add">Add</router-link>
           </v-card-actions>
         </v-card>
-        <v-card v-else>
+      </v-flex>
+      <v-flex xs6 justify-space-around>
+        <v-card>
+          <v-btn
+          flat
+          to="/add"
+          >
+            <v-icon>add</v-icon>Add Game</v-btn>
+        </v-card>
+      </v-flex>
+      <v-flex xs6 justify-space-around>
+        <v-card>
+          <v-btn
+            flat
+            to="/collection"
+          ><v-icon>list</v-icon> Collection</v-btn>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else>
+      <v-flex xs12 justify-space-around>
+        <v-card>
           <v-card-title primary-title>
             <div>
               <div class="headline">Please sign in to use Libratron 3000&trade;</div>

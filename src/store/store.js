@@ -139,7 +139,6 @@ export const store = new Vuex.Store({
       let collection = []
       db.collection(`users/${context.state.user.uid}/collection`)
         .orderBy(options.sort, options.direction)
-        .limit(25)
         .onSnapshot(res => {
           const changes = res.docChanges()
           changes.forEach(change => {

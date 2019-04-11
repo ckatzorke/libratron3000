@@ -23,6 +23,22 @@
                 prepend-icon="description"
               ></v-textarea>
             </v-flex>
+            <v-flex xs12 md6 lg6 px-1>
+              <v-combobox
+                v-model="game.genres"
+                :items="getAvailableGenres"
+                label="Genre(s)"
+                multiple
+                prepend-icon="assignment"
+              ></v-combobox>
+            </v-flex>
+            <v-flex xs12 md6 lg6 px-1>
+              <v-text-field
+                v-model="game.notes"
+                label="Notes"
+                prepend-icon="notes"
+              ></v-text-field>
+            </v-flex>
             <v-flex xs12 md4 lg3 px-1>
               <v-combobox
                 v-model="game.platform"
@@ -59,6 +75,27 @@
                 prepend-icon="cloud_download"
               ></v-checkbox>
             </v-flex>
+            <v-flex xs2>
+              <v-checkbox
+                v-model="game.completed"
+                label="Completed"
+                prepend-icon="circle_checkbox"
+              ></v-checkbox>
+            </v-flex>
+            <v-flex xs10>
+              <v-tooltip top>
+                <v-slider
+                  v-model="game.rating"
+                  label="Rating"
+                  prepend-icon="rating"
+                  max="10"
+                  min="0"
+                  step="1"
+                  slot="activator"
+                ></v-slider>
+                <span>{{ game.rating }}</span>
+              </v-tooltip>
+            </v-flex>
             <v-flex xs12>
               <v-btn @click="add">Add</v-btn>
               {{ game }}
@@ -84,12 +121,14 @@ export default {
         title: '',
         description: '',
         platforms: [],
+        genres: [],
         notes: '',
         tags: [],
         release: null,
         buydate: null,
         digital: false,
-        genres: []
+        completed: false,
+        rating: 0
       }
     }
   },
@@ -108,8 +147,13 @@ export default {
     formatBuyDate() {
       return this.game.buydate ? format(this.game.buydate, 'DD.MM.YYYY') : ''
     },
+    getAvailableGenres() {
+      let genres = this.$store.state.collection.flatMap(c => c.genre)
+      return [...new Set(genres)].sort()
+    },
     ...mapGetters([
-      'getPlatforms'
+      'getPlatforms',
+      'getCollection'
     ])
 
   }
