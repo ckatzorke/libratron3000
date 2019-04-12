@@ -1,7 +1,7 @@
 <template>
   <v-dialog>
     <v-btn slot="activator" flat right>
-      <v-icon left flat>search</v-icon>Search&nbsp;<img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>I
+      <img src="/assets/logo/igdb-icon.jpeg" height="28px" style="vertical-align: middle"/>&nbsp;Search
     </v-btn>
     <v-card>
         <v-layout row wrap class="pa-3">

@@ -13,6 +13,9 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn @click="testNotify">
+              note<v-icon right>note</v-icon>
+            </v-btn>
             <v-btn @click="logout">
               Logout<v-icon right>exit_to_app</v-icon>
             </v-btn>
@@ -72,6 +75,9 @@ export default {
     email() { return this.$store.getters.getUser.email }
   },
   methods: {
+    testNotify() {
+      this.$store.dispatch('notify', 'Hellooooo')
+    },
     logout() {
       this.$store.dispatch('logout')
     },

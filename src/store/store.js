@@ -13,6 +13,11 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    notification: {
+      timeout: 60000,
+      show: false,
+      text: ''
+    },
     user: null,
     queryOptions: {
       sort: 'number',
@@ -49,6 +54,10 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    updateNotification: (state, newNotification) => {
+      // merge the objects
+      state.notification = newNotification
+    },
     updateUser: (state, user) => {
       state.user = user
     },
@@ -57,6 +66,24 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    // notify stuff
+    /**
+     * Displays a notification/snackbar
+     */
+    notify: (context, text) => {
+      let notification = context.state.notification
+      notification.text = text
+      notification.show = true
+      context.commit('updateNotification', notification)
+    },
+    /**
+     * Hdes the notification in any case
+     */
+    hideNotification: context => {
+      let notification = context.state.notification
+      notification.show = false
+      context.commit('updateNotification', notification)
+    },
     // login stuff
     /**
      * Try to autologin during app creation, when user was already logged in to Google.

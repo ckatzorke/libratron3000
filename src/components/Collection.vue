@@ -143,7 +143,6 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('loadCollection')
   }
 }
 </script>

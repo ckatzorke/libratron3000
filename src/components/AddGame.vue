@@ -152,8 +152,7 @@ export default {
       return [...new Set(genres)].sort()
     },
     ...mapGetters([
-      'getPlatforms',
-      'getCollection'
+      'getPlatforms'
     ])
 
   }

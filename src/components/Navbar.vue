@@ -1,6 +1,7 @@
 <template>
 <nav>
   <v-toolbar app flat>
+    <lib-notification></lib-notification>
     <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
     <v-toolbar-title>
       <div>
@@ -46,7 +47,11 @@
 </nav>
 </template>
 <script>
+import Notification from './Notification'
 export default {
+  components: {
+    'lib-notification': Notification
+  },
   data() {
     return {
       drawer: false,
