@@ -1,13 +1,11 @@
 <template>
   <v-container grid-list-xs>
-    <v-card class="card--flex--toolbar" v-if="showSpinner">
-      <v-layout row wrap px-2>
-        <v-flex xs12 ma-5 text-xs-center>
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <v-layout row wrap px-2 justify-start>
+        <v-flex xs1 >
+          <v-btn small flat><v-icon small>add</v-icon>Add</v-btn>
         </v-flex>
       </v-layout>
-    </v-card>
-    <v-card v-else >
+    <v-card>
       <v-layout row wrap pa-1 ma-1 v-for="item in collection" :key="item.number">
         <v-flex xs1>
           <div class="caption grey--text">#</div>
@@ -137,9 +135,6 @@ export default {
   computed: {
     collection() {
       return this.$store.getters.getCollection
-    },
-    showSpinner() {
-      return this.$store.getters.getCollection === null
     }
   },
   created() {

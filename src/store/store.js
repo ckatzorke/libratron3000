@@ -14,7 +14,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     notification: {
-      timeout: 60000,
+      timeout: 5000,
       show: false,
       text: ''
     },
@@ -23,6 +23,7 @@ export const store = new Vuex.Store({
       sort: 'number',
       direction: 'desc'
     },
+    loading: false,
     collection: null,
     platforms
   },
@@ -47,6 +48,12 @@ export const store = new Vuex.Store({
       return state.collection
     },
     /**
+     * indicates if the collection is currently loading
+     */
+    loading: state => {
+      return state.loading
+    },
+    /**
      * Get the list of actually defined platforms
      */
     getPlatforms: state => {
@@ -63,6 +70,9 @@ export const store = new Vuex.Store({
     },
     updateCollection: (state, collection) => {
       state.collection = collection
+    },
+    updateLoading: (state, loading) => {
+      state.loading = loading
     }
   },
   actions: {
@@ -161,6 +171,7 @@ export const store = new Vuex.Store({
      * Loads all collectionEntries and updates the global store.
      */
     loadCollection: (context, opt) => {
+      context.commit('updateLoading', true)
       let options = opt || context.state.queryOptions
       let db = firebase.firestore()
       let collection = []
@@ -178,6 +189,8 @@ export const store = new Vuex.Store({
             } // TODO delete & modify
           })
           context.commit('updateCollection', collection)
+          context.commit('updateLoading', false)
+          context.dispatch('notify', `Collection successfully loaded <br>${collection.length} entries added.`)
         })
     }
   }

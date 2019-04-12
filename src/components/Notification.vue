@@ -1,6 +1,6 @@
 <template>
   <v-snackbar v-model="notification.show" :timeout="notification.timeout" top>
-    {{ notification.text }}
+    <span v-html="notification.text" class="ma-3"></span>
     <v-btn color="pink" flat @click="hideNotification">Close</v-btn>
   </v-snackbar>
 </template>

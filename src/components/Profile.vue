@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-layout row wrap v-if="loggedIn">
-      <v-flex xs12 justify-space-around>
+    <v-layout row wrap v-if="loggedIn" justify-space-around >
+      <v-flex xs12  >
         <v-card class="text-xs-center ma-3">
           <v-avatar size="150" class="text-xs-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
@@ -13,29 +13,44 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="testNotify">
-              note<v-icon right>note</v-icon>
-            </v-btn>
             <v-btn @click="logout">
               Logout<v-icon right>exit_to_app</v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs6 justify-space-around>
-        <v-card>
+      <v-flex xs3 ma-2 pa-2>
+        <v-card class="text-xs-center">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-5"
+          ></v-progress-circular>
           <v-btn
+          v-else
           flat
           to="/add"
+          class="my-5"
           >
             <v-icon>add</v-icon>Add Game</v-btn>
         </v-card>
       </v-flex>
-      <v-flex xs6 justify-space-around>
-        <v-card>
+      <v-flex xs3 ma-2 pa-2>
+        <v-card class="text-xs-center">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-5"
+          ></v-progress-circular>
           <v-btn
+          v-else
             flat
             to="/collection"
+            class="my-5"
           ><v-icon>list</v-icon> Collection</v-btn>
         </v-card>
       </v-flex>
@@ -72,7 +87,8 @@ export default {
     loggedIn() { return this.$store.getters.loggedIn },
     profilePicture() { return this.$store.getters.getUser.photoURL },
     displayName() { return this.$store.getters.getUser.displayName },
-    email() { return this.$store.getters.getUser.email }
+    email() { return this.$store.getters.getUser.email },
+    loading() { return this.$store.getters.loading }
   },
   methods: {
     testNotify() {
