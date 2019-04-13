@@ -16,12 +16,12 @@
           <div>{{ item.title }}</div>
         </v-flex>
         <v-flex xs1>
-          <div class="caption grey--text">release</div>
-          <div>{{ item.release }}</div>
+          <div class="caption grey--text">Release</div>
+          <div>{{ prettyDate(item.releaseDate) }}</div>
         </v-flex>
         <v-flex xs1>
           <div class="caption grey--text">Bought on</div>
-          <div>{{ buyDate(item.buydate) }}</div>
+          <div>{{ prettyDate(item.buydate) }}</div>
         </v-flex>
         <v-flex xs2>
           <div
@@ -33,14 +33,16 @@
   </v-container>
 </template>
 <script>
+import { format } from 'date-fns'
 export default {
   data() {
     return {}
   },
   methods: {
-    buyDate(timestamp) {
-      let date = new Date(timestamp.seconds)
-      return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+    prettyDate(timestamp) {
+      let date = new Date(timestamp.seconds * 1000)
+      const formatted = format(date, 'DD.MM.YYYY')
+      return formatted === '01.01.2000' ? 'n/a' : formatted
     },
     getIcon(platform) {
       const path = '/assets/platforms/'
