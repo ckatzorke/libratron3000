@@ -173,8 +173,8 @@ export const store = new Vuex.Store({
     loadCollection: (context, opt) => {
       context.commit('updateLoading', true)
       let options = opt || context.state.queryOptions
-      let db = firebase.firestore()
       let collection = []
+      const db = firebase.firestore()
       db.collection(`users/${context.state.user.uid}/collection`)
         .orderBy(options.sort, options.direction)
         .onSnapshot(res => {
@@ -191,6 +191,19 @@ export const store = new Vuex.Store({
           context.commit('updateCollection', collection)
           context.commit('updateLoading', false)
           context.dispatch('notify', `Collection successfully loaded <br>${collection.length} entries added.`)
+        })
+    },
+    /**
+     * Adds the given game to collection
+     */
+    addGame: (context, game) => {
+      const db = firebase.firestore()
+      db.collection(`users/${context.state.user.uid}/collection`).add(game)
+        .then(function(docRef) {
+          console.log('Document written with ID: ', docRef.id)
+        })
+        .catch(function(error) {
+          console.error('Error adding document: ', error)
         })
     }
   }

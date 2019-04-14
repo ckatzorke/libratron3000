@@ -1,5 +1,5 @@
 <template>
-  <v-dialog>
+  <v-dialog v-model="dialog">
     <v-btn slot="activator" flat right>
       <img src="/assets/logo/igdb-icon.jpeg" height="28px" style="vertical-align: middle"/>&nbsp;Search
     </v-btn>
@@ -25,19 +25,7 @@
           <v-expansion-panel-content v-for="result in results" :key="result.id">
             <v-card flat slot="header" >
               <v-layout row wrap class="pa-3">
-                <v-flex xs1>
-                  <v-tooltip top>
-                    <v-btn
-                      slot="activator"
-                      flat
-                      @click="selectEntry(result)"
-                      >
-                      <v-icon>check_box</v-icon>
-                    </v-btn>
-                    <span>Use this entry</span>
-                  </v-tooltip>
-                </v-flex>
-                <v-flex xs5 md5>
+                <v-flex xs6>
                   <div class="caption grey--text">Title</div>
                   <div>
                     {{ result.name }}&nbsp;<a
@@ -45,15 +33,15 @@
                     target="_blank"
                     ><v-icon small>link</v-icon></a></div>
                 </v-flex>
-                <v-flex xs6 sm4 md2>
+                <v-flex xs6 sm6 md2>
                   <div class="caption grey--text">Release Date</div>
                   <div>{{ displayDate(result.first_release_date) }}</div>
                 </v-flex>
-                <v-flex xs6 sm4 md2>
+                <v-flex xs6 sm6 md2>
                   <div class="caption grey--text">Genres</div>
                   <div>{{ displayGenres(result.genres) }}</div>
                 </v-flex>
-                <v-flex xs6 sm4 md2>
+                <v-flex xs6 sm6 md2>
                   <div class="caption grey--text">Platforms</div>
                   <div>{{ displayPlatforms(result.platforms) }}</div>
                 </v-flex>
@@ -65,7 +53,15 @@
                   <img :src="coverImage(result.cover)" height="125">
                 </v-flex>
                 <v-flex xs12 sm12 md10>
-                  <span>{{ result.summary }}</span>
+                  <div v-html="result.summary"></div>
+                  <div>
+                    <v-btn
+                      flat
+                      @click="selectEntry(result)"
+                      >
+                      <v-icon small>check_box</v-icon> Use this entry
+                    </v-btn>
+                  </div>
                 </v-flex>
               </v-layout>
             </v-card>
@@ -81,6 +77,7 @@ import { format } from 'date-fns'
 export default {
   data() {
     return {
+      dialog: false,
       searchTerm: '',
       searching: false,
       results: []
@@ -94,9 +91,9 @@ export default {
     },
     search() {
       this.searching = true
-      // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`).then(res => {
-      this.$http
-        .get('/assets/results.json')
+      this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+      // this.$http
+      //  .get('/assets/results.json')
         .then(res => {
           if (res.status !== 200) {
             console.error('Error from res ', res)
@@ -136,6 +133,10 @@ export default {
         return platforms.map(p => p.name).join(', ')
       }
       return 'n/a'
+    },
+    selectEntry(entry) {
+      this.$emit('entrySelected', entry)
+      this.dialog = false
     }
   }
 }

@@ -2,9 +2,9 @@
   <v-container>
     <v-card>
       <v-card-title>
-        <h2>Add a new game (#{{ collectionNumberAdd }})</h2>
+        <h2>Add a new game (#{{ game.number }})</h2>
         <v-spacer/>
-        <lib-search></lib-search>
+        <lib-search @entrySelected="selectSearchEntry"></lib-search>
       </v-card-title>
       <v-card-text>
         <v-form class="px-3">
@@ -32,22 +32,36 @@
                 prepend-icon="assignment"
               ></v-combobox>
             </v-flex>
-            <v-flex xs12 md3 lg3 px-1>
-              <v-text-field
-                label="Developer"
+             <v-flex xs12 md2 lg2 px-1>
+              <v-menu>
+                <v-text-field
+                  slot="activator"
+                  :value="formatReleaseDate"
+                  label="Release Date"
+                  prepend-icon="event"
+                  readonly
+                ></v-text-field>
+                <v-date-picker v-model="game.releaseDate"></v-date-picker>
+              </v-menu>
+            </v-flex>
+            <v-flex xs12 md2 lg2 px-1>
+              <v-autocomplete
                 v-model="game.developer"
+                :items="getAvailableDevelopers"
+                label="Developer"
                 prepend-icon="gavel"
-              ></v-text-field>
+              >
+              </v-autocomplete>
             </v-flex>
-            <!-- TODO autocomplete with value from backend -->
-            <v-flex xs12 md3 lg3 px-1>
-              <v-text-field
-                label="Publisher"
+            <v-flex xs12 md2 lg2 px-1>
+              <v-autocomplete
                 v-model="game.publisher"
+                :items="getAvailablePublishers"
+                label="Publisher"
                 prepend-icon="publish"
-              ></v-text-field>
+              >
+              </v-autocomplete>
             </v-flex>
-            <!-- TODO autocomplete with value from backend -->
             <v-flex xs12 md4 lg4 px-1>
               <v-combobox
                 v-model="game.platform"
@@ -139,7 +153,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import SearchGame from './SearchGame'
-
+import firebase from 'firebase/app'
 import format from 'date-fns/format'
 export default {
   components: {
@@ -148,15 +162,16 @@ export default {
   data() {
     return {
       game: {
+        number: 0,
         title: '',
         description: '',
-        platforms: [],
+        platform: '',
         genres: [],
         developer: '',
         publisher: '',
         notes: '',
         tags: [],
-        release: null,
+        releaseDate: null,
         buydate: null,
         digital: false,
         completed: false,
@@ -168,24 +183,56 @@ export default {
   methods: {
     add() {
       console.log('ADD')
+      // convert dates
+      let game2Add = this.game
+      if (game2Add.buydate) {
+        game2Add.buydate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.buydate))
+      }
+      if (game2Add.releaseDate) {
+        game2Add.releaseDate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.releaseDate))
+      }
+      if (game2Add.completiondate) {
+        game2Add.completiondate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.completiondate))
+      }
+      this.$store.dispatch('addGame', game2Add)
+    },
+    selectSearchEntry(searchEntry) {
+      console.log('Searchentry', searchEntry)
+      let newGame = {
+        ...this.game,
+        title: searchEntry.name,
+        description: searchEntry.summary,
+        platform: searchEntry.platforms.map(p => p.name)[0], // todo check for platforms
+        genres: searchEntry.genres.map(g => g.name), // todo check for genres
+        releaseDate: new Date(searchEntry.first_release_date * 1000), // todo check
+        igdbId: searchEntry.id,
+        cover: searchEntry.cover.image_id,
+        poweredBy: 'IGDB'
+      }
+      this.game = newGame
     }
   },
   computed: {
-    collectionNumberAdd() {
-      let largest = this.$store.state.collection
-        .map(v => v.number)
-        .reduce((prev, current) => (prev > current ? prev : current))
-      return largest + 1
-    },
     formatBuyDate() {
       return this.game.buydate ? format(this.game.buydate, 'DD.MM.YYYY') : ''
     },
     formatCompletionDate() {
       return this.game.completiondate ? format(this.game.completiondate, 'DD.MM.YYYY') : ''
     },
+    formatReleaseDate() {
+      return this.game.releaseDate ? format(this.game.releaseDate, 'DD.MM.YYYY') : ''
+    },
     getAvailableGenres() {
       let genres = this.$store.state.collection.flatMap(c => c.genre)
       return [...new Set(genres)].sort()
+    },
+    getAvailableDevelopers() {
+      let developers = this.$store.state.collection.flatMap(c => c.developer).filter(d => d)
+      return [...new Set(developers)].sort()
+    },
+    getAvailablePublishers() {
+      let publishers = this.$store.state.collection.flatMap(c => c.publisher).filter(p => p)
+      return [...new Set(publishers)].sort()
     },
     rating() {
       let rating = 'radio_button_unchecked'
@@ -218,6 +265,13 @@ export default {
       'getPlatforms'
     ])
 
+  },
+  created() {
+    let largest = this.$store.state.collection
+      .map(v => v.number)
+      .reduce((prev, current) => (prev > current ? prev : current))
+    const newNumber = largest + 1
+    this.game.number = newNumber
   }
 }
 </script>
