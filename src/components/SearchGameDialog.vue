@@ -14,7 +14,7 @@
                 append-icon="search"
                 label="Title"
                 v-model="searchTerm"
-                :autofocus="true"
+                autofocus
                 @keyup.stop="autoSearch"
               ></v-text-field>
               <v-btn @click="search" :loading="searching" :disabled="searching">search</v-btn>
@@ -78,11 +78,11 @@ export default {
   data() {
     return {
       dialog: false,
-      searchTerm: '',
       searching: false,
       results: []
     }
   },
+  props: ['searchTerm'],
   methods: {
     autoSearch(e) {
       if (e.keyCode === 13) {

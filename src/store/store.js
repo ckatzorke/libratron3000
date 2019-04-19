@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import platforms from '@/service/platforms'
+import { platforms } from '@/service/platforms'
 
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -190,7 +190,7 @@ export const store = new Vuex.Store({
           })
           context.commit('updateCollection', collection)
           context.commit('updateLoading', false)
-          context.dispatch('notify', `Collection successfully loaded <br>${collection.length} entries added.`)
+          context.dispatch('notify', `Added ${changes.length} entries.`)
         })
     },
     /**

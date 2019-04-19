@@ -4,7 +4,7 @@
       <v-card-title>
         <h2>Add a new game (#{{ game.number }})</h2>
         <v-spacer/>
-        <lib-search @entrySelected="selectSearchEntry"></lib-search>
+        <lib-search-dialog v-bind:searchTerm="game.title" @entrySelected="selectSearchEntry"></lib-search-dialog>
       </v-card-title>
       <v-card-text>
         <v-form class="px-3">
@@ -107,11 +107,16 @@
               ></v-combobox>
             </v-flex>
 
-            <v-flex xs12 md6 lg3 px-1>
+            <v-flex xs12 md3 lg2 px-1>
               <v-checkbox
                 v-model="game.completed"
                 label="Completed"
-                prepend-icon="check"
+              ></v-checkbox>
+            </v-flex>
+            <v-flex xs12 md3 lg1 px-1>
+              <v-checkbox
+                v-model="game.hundredpercent"
+                label="100%"
               ></v-checkbox>
             </v-flex>
             <v-flex xs12 md6 lg3 px-1>
@@ -141,7 +146,12 @@
               </v-tooltip>
             </v-flex>
             <v-flex xs12>
-              <v-btn @click="add">Add</v-btn>
+              <v-btn
+                round
+                color="primary"
+                dark
+                block
+                @click="add">Add</v-btn>
               {{ game }}
             </v-flex>
           </v-layout>
@@ -152,32 +162,36 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import SearchGame from './SearchGame'
+import SearchGameDialog from './SearchGameDialog'
 import firebase from 'firebase/app'
 import format from 'date-fns/format'
+
+const blankGame = {
+  number: 0,
+  title: '',
+  description: '',
+  platform: '',
+  genres: [],
+  developer: '',
+  publisher: '',
+  notes: '',
+  tags: [],
+  releaseDate: null,
+  buydate: null,
+  digital: false,
+  completed: false,
+  hundredpercent: false,
+  completiondate: null,
+  rating: 0
+}
+
 export default {
   components: {
-    'lib-search': SearchGame
+    'lib-search-dialog': SearchGameDialog
   },
   data() {
     return {
-      game: {
-        number: 0,
-        title: '',
-        description: '',
-        platform: '',
-        genres: [],
-        developer: '',
-        publisher: '',
-        notes: '',
-        tags: [],
-        releaseDate: null,
-        buydate: null,
-        digital: false,
-        completed: false,
-        completiondate: null,
-        rating: 0
-      }
+      game: blankGame
     }
   },
   methods: {
@@ -195,6 +209,7 @@ export default {
         game2Add.completiondate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.completiondate))
       }
       this.$store.dispatch('addGame', game2Add)
+      this.game = blankGame
     },
     selectSearchEntry(searchEntry) {
       console.log('Searchentry', searchEntry)
@@ -202,11 +217,11 @@ export default {
         ...this.game,
         title: searchEntry.name,
         description: searchEntry.summary,
-        platform: searchEntry.platforms.map(p => p.name)[0], // todo check for platforms
-        genres: searchEntry.genres.map(g => g.name), // todo check for genres
-        releaseDate: new Date(searchEntry.first_release_date * 1000), // todo check
+        platform: searchEntry.platforms ? searchEntry.platforms.map(p => p.name)[0] : '',
+        genres: searchEntry.genres ? searchEntry.genres.map(g => g.name) : [],
+        releaseDate: searchEntry.first_release_date ? new Date(searchEntry.first_release_date * 1000) : new Date('2000-0-01'),
         igdbId: searchEntry.id,
-        cover: searchEntry.cover.image_id,
+        cover: searchEntry.cover ? searchEntry.cover.image_id : '',
         poweredBy: 'IGDB'
       }
       this.game = newGame
