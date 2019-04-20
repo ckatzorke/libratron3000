@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from './components/Home'
-import Collection from './components/Collection'
-import AddGame from './components/AddGame'
-import Profile from './components/Profile'
+import Collection from '@/views/Collection'
+import AddGame from '@/views/AddGame'
+import Dashboard from '@/views/Dashboard'
 import {
   store
 } from './store/store'
@@ -14,7 +13,7 @@ Vue.use(VueRouter)
 export const routes = [
   {
     path: '/',
-    component: Home
+    component: Dashboard
   },
   {
     path: '/collection',
@@ -22,7 +21,7 @@ export const routes = [
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
-        next('/profile')
+        next('/')
       }
       next()
     }
@@ -33,14 +32,10 @@ export const routes = [
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
-        next('/profile')
+        next('/')
       }
       next()
     }
-  },
-  {
-    path: '/profile',
-    component: Profile
   }
 ]
 

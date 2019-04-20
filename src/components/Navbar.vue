@@ -10,7 +10,7 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat to="/profile">
+      <v-btn flat to="/">
         <span v-if="loggedIn">
           <img :src="profilePicture" height="40" style="border-radius: 50%"/>
         </span>
