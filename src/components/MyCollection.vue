@@ -1,12 +1,18 @@
 <template>
   <v-container grid-list-xs>
-    <v-layout row wrap px-2 justify-start>
-      <v-flex xs1 >
+    <v-layout row wrap px-2 align-center justify-space-between>
+      <v-flex xs2 >
         <v-btn small flat><v-icon small>add</v-icon>Add</v-btn>
+      </v-flex>
+      <v-flex xs6 >
+        <v-text-field
+          v-model="search"
+          append-icon="search"
+          @input="searchTitle"></v-text-field>
       </v-flex>
     </v-layout>
     <v-layout row wrap pa-1 ma-1
-      v-for="item in collection"
+      v-for="item in mycollection"
       :key="item.id"
       @click="showDetails(item.id)">
       <v-flex xs2 md1>
@@ -41,6 +47,10 @@
 // import GameDetails from './GameDetails'
 import { format } from 'date-fns'
 import { shortPlatform } from '@/service/platforms.js'
+import { setInterval, clearInterval } from 'timers';
+
+let searchIntervalId = null
+
 export default {
   /*
   components: {
@@ -48,7 +58,10 @@ export default {
   },
   */
   data() {
-    return {}
+    return {
+      search: '',
+      mycollection: []
+    }
   },
   methods: {
     prettyDate(timestamp) {
@@ -64,14 +77,21 @@ export default {
     },
     showDetails(id) {
       this.$router.push(`/details/${id}`)
+    },
+    searchTitle() {
+      clearInterval(searchIntervalId)
+      searchIntervalId = setInterval(() => {
+        clearInterval(searchIntervalId)
+        console.log(this.search)
+        const filtered = this.$store.getters.getCollection.filter(g => g.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
+        this.mycollection = filtered
+      }, 500)
     }
   },
   computed: {
-    collection() {
-      return this.$store.getters.getCollection
-    }
   },
   created() {
+    this.mycollection = this.$store.getters.getCollection
   }
 }
 </script>
