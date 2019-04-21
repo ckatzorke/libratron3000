@@ -111,7 +111,7 @@ export const store = new Vuex.Store({
           console.log('User is not logged in. Redirecting to Profile/Login')
           context.commit('updateUser', null)
           context.commit('updateCollection', [])
-          router.push('/profile')
+          router.push('/')
         }
       })
     },

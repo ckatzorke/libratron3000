@@ -41,7 +41,9 @@
                   prepend-icon="event"
                   readonly
                 ></v-text-field>
-                <v-date-picker v-model="game.releaseDate"></v-date-picker>
+                <v-date-picker
+                  v-model="game.releaseDate"
+                  ></v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs12 md2 lg2 px-1>

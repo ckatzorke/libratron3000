@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 import Collection from '@/views/Collection'
 import AddGame from '@/views/AddGame'
 import Dashboard from '@/views/Dashboard'
+import Details from '@/views/Details'
+
 import {
   store
 } from './store/store'
@@ -18,6 +20,17 @@ export const routes = [
   {
     path: '/collection',
     component: Collection,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next('/')
+      }
+      next()
+    }
+  },
+  {
+    path: '/details/:id',
+    component: Details,
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')

@@ -63,7 +63,7 @@ export default {
       return completed && hundredpercent ? 'done_all' : completed ? 'done' : ''
     },
     showDetails(id) {
-      console.log('Load deatils: ', id)
+      this.$router.push(`/details/${id}`)
     }
   },
   computed: {
