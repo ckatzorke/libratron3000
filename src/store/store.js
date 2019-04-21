@@ -180,17 +180,21 @@ export const store = new Vuex.Store({
         .onSnapshot(res => {
           const changes = res.docChanges()
           changes.forEach(change => {
+            // console.log('Change type =', change.type)
             if (change.type === 'added') {
               console.log('adding ' + change.doc.data().title)
               collection.push({
                 ...change.doc.data(),
                 id: change.doc.id
               })
-            } // TODO delete & modify
+            }
+            if (change.type === 'modified') {
+            }
+            // TODO delete
           })
           context.commit('updateCollection', collection)
           context.commit('updateLoading', false)
-          context.dispatch('notify', `Added ${changes.length} entries.`)
+          // context.dispatch('notify', `Added ${changes.length} entries.`)
         })
     },
     /**
@@ -201,9 +205,30 @@ export const store = new Vuex.Store({
       db.collection(`users/${context.state.user.uid}/collection`).add(game)
         .then(function(docRef) {
           console.log('Document written with ID: ', docRef.id)
+          context.dispatch('notify', `Added '${game.title}' to collection.`)
         })
         .catch(function(error) {
           console.error('Error adding document: ', error)
+          context.dispatch('notify', 'Document could not be added!')
+        })
+    },
+    /**
+     * Updates an existing game entry. paylouad must contain a field 'id' and an object 'values' with the fields that should be merged with the original doc.
+     */
+    updateGame: (context, payload) => {
+      const db = firebase.firestore()
+      const gameRef = db.collection(`users/${context.state.user.uid}/collection`).doc(payload.id)
+      console.log(`Updating doc '${payload.id}' with:`, payload.values)
+      gameRef.set({
+        ...payload.values
+      }, { merge: true })
+        .then(() => {
+          console.log('Updated.')
+          context.dispatch('notify', `Updated successfully.`)
+        })
+        .catch(function(error) {
+          console.error('Error updating document: ', error)
+          context.dispatch('notify', 'Document could not be updated!')
         })
     }
   }

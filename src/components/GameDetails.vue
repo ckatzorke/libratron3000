@@ -4,10 +4,16 @@
     <v-card pa-3 ma-2>
       <v-layout row wrap ma-2>
         <v-flex xs12 md3 lg2 px-1>
-          <v-checkbox v-model="game.completed" label="Completed"></v-checkbox>
+          <v-checkbox
+            v-model="game.completed"
+            label="Completed"
+          ></v-checkbox>
         </v-flex>
         <v-flex xs12 md3 lg1 px-1>
-          <v-checkbox v-model="game.hundredpercent" label="100%"></v-checkbox>
+          <v-checkbox
+            v-model="game.hundredpercent"
+            label="100%"
+          ></v-checkbox>
         </v-flex>
         <v-flex xs12 md6 lg3 px-1>
           <v-menu
@@ -49,7 +55,15 @@
             <span>{{ game.rating }}</span>
           </v-tooltip>
         </v-flex>
-        <v-flex xs12>{{game}}</v-flex>
+        <v-flex xs12>
+          <v-btn
+            round
+            color="primary"
+            dark
+            block
+            @click="update">Update</v-btn>
+          {{ game }}
+        </v-flex>
       </v-layout>
     </v-card>
   </v-container>
@@ -72,11 +86,27 @@ export default {
     back() {
       this.$router.push('/collection')
     },
+    update() {
+      this.$store.dispatch('updateGame',
+        {
+          id: this.game.id,
+          values: {
+            ...this.game
+          }
+        })
+    },
     setCompletionDate(date) {
       const newDate = new Date(this.game.completiondateAsISOString.split('-'))
       this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
       const [year, month, day] = this.game.completiondateAsISOString.split('-')
       this.formattedCompletiondate = `${day}.${month}.${year}`
+      this.$store.dispatch('updateGame',
+        {
+          id: this.game.id,
+          values: {
+            completiondate: this.game.completiondate
+          }
+        })
       this.completiondateMenu = false
     }
   },
