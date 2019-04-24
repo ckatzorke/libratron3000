@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
     },
     user: null,
     queryOptions: {
-      sort: 'number',
+      sort: 'buydate',
       direction: 'desc'
     },
     loading: false,

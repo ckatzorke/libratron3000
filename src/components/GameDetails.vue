@@ -100,13 +100,6 @@ export default {
       this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
       const [year, month, day] = this.game.completiondateAsISOString.split('-')
       this.formattedCompletiondate = `${day}.${month}.${year}`
-      this.$store.dispatch('updateGame',
-        {
-          id: this.game.id,
-          values: {
-            completiondate: this.game.completiondate
-          }
-        })
       this.completiondateMenu = false
     }
   },

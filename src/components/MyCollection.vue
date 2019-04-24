@@ -2,7 +2,7 @@
   <v-container grid-list-xs>
     <v-layout row wrap px-2 align-center justify-space-between>
       <v-flex xs2 >
-        <v-btn small flat><v-icon small>add</v-icon>Add</v-btn>
+        <v-btn small flat to="/add"><v-icon small>add</v-icon>Add</v-btn>
       </v-flex>
       <v-flex xs6 >
         <v-text-field
@@ -23,8 +23,12 @@
         <div class="caption grey--text">Title</div>
         <div>{{ item.title }}</div>
       </v-flex>
-      <v-flex xs4 md2>
-        <div class="caption grey--text"></div>
+      <v-flex xs2 md1>
+        <div class="caption grey--text">Rated</div>
+        <div v-if="item.rating">{{ item.rating }}/10</div>
+      </v-flex>
+      <v-flex xs2 md1>
+        <div class="caption grey--text">Finished</div>
         <div><v-icon>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
       </v-flex>
       <v-flex xs4 md2>
@@ -47,7 +51,7 @@
 // import GameDetails from './GameDetails'
 import { format } from 'date-fns'
 import { shortPlatform } from '@/service/platforms.js'
-import { setInterval, clearInterval } from 'timers';
+import { setInterval, clearInterval } from 'timers'
 
 let searchIntervalId = null
 
@@ -83,7 +87,7 @@ export default {
       searchIntervalId = setInterval(() => {
         clearInterval(searchIntervalId)
         console.log(this.search)
-        const filtered = this.$store.getters.getCollection.filter(g => g.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
+        const filtered = this.$store.getters.getCollection.filter(g => g.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1).slice(0, 25)
         this.mycollection = filtered
       }, 500)
     }
@@ -91,7 +95,7 @@ export default {
   computed: {
   },
   created() {
-    this.mycollection = this.$store.getters.getCollection
+    this.mycollection = this.$store.getters.getCollection.slice(0, 25)
   }
 }
 </script>
