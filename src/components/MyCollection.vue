@@ -45,6 +45,10 @@
         <v-divider />
       </v-flex>
     </v-layout>
+    <v-layout>
+      <v-flex xs12> Showing first 25 only</v-flex>
+    </v-layout>
+
   </v-container>
 </template>
 <script>
