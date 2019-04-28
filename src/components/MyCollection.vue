@@ -15,31 +15,27 @@
       v-for="item in mycollection"
       :key="item.id"
       @click="showDetails(item.id)">
-      <v-flex xs2 md1>
+      <v-flex xs2 sm1>
         <div class="caption grey--text">#</div>
         <div>{{ item.number }}</div>
       </v-flex>
-      <v-flex xs10 md6>
+      <v-flex xs8 sm6>
         <div class="caption grey--text">Title</div>
-        <div>{{ item.title }}</div>
+        <div>{{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
       </v-flex>
-      <v-flex xs2 md1>
-        <div class="caption grey--text">Rated</div>
-        <div v-if="item.rating">{{ item.rating }}/10</div>
-      </v-flex>
-      <v-flex xs2 md1>
-        <div class="caption grey--text">Finished</div>
-        <div><v-icon>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
-      </v-flex>
-      <v-flex xs4 md2>
+      <v-flex hidden-xs-only sm2>
         <div class="caption grey--text">Purchased</div>
         <div>{{ prettyDate(item.buydate) }}</div>
       </v-flex>
-      <v-flex xs4 md1>
+      <v-flex xs2 md1>
         <div class="text-xs-right caption grey--text">Platform</div>
         <div
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
         >{{ shortPlatform(item.platform) }}</div>
+      </v-flex>
+      <v-flex xs12>
+        <div class="caption grey--text">Rated</div>
+        <div v-if="item.rating">{{ item.rating }}/10</div>
       </v-flex>
       <v-flex xs12>
         <v-divider />

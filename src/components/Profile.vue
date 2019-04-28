@@ -3,12 +3,12 @@
     <v-layout row wrap v-if="loggedIn" justify-space-around >
       <v-flex xs12  >
         <v-card class="text-xs-center ma-3">
-          <v-avatar size="150" class="text-xs-center ma-2 grey lighten-2">
+          <v-avatar size="125" class="text-xs-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
           </v-avatar>
           <v-card-text>
-            <div class="headline">{{ displayName }}</div>
-            <div class="title grey--text"><v-icon flat>email</v-icon>{{ email }}</div>
+            <div class="title">{{ displayName }}</div>
+            <div class="subtitle grey--text"><v-icon flat small>email</v-icon>{{ email }}</div>
           </v-card-text>
 
           <v-card-actions>
@@ -19,39 +19,39 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs3 ma-2 pa-2>
+      <v-flex xs5 sm4 ma-1 pa-1>
         <v-card class="text-xs-center">
           <v-progress-circular
             v-if="loading"
             :size="70"
             :width="7"
             indeterminate
-            class="my-5"
-          ></v-progress-circular>
-          <v-btn
-          v-else
-          flat
-          to="/add"
-          class="my-5"
-          >
-            <v-icon>add</v-icon>Add Game</v-btn>
-        </v-card>
-      </v-flex>
-      <v-flex xs3 ma-2 pa-2>
-        <v-card class="text-xs-center">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-5"
+            class="my-2"
           ></v-progress-circular>
           <v-btn
           v-else
             flat
             to="/collection"
-            class="my-5"
-          ><v-icon>list</v-icon> Collection</v-btn>
+            class="my-2"
+          ><v-icon>list</v-icon><span class="hidden-sm-and-down"> Collection</span></v-btn>
+        </v-card>
+      </v-flex>
+      <v-flex xs5 sm4 ma-1 pa-1>
+        <v-card class="text-xs-center">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-2"
+          ></v-progress-circular>
+          <v-btn
+          v-else
+          flat
+          to="/add"
+          class="my-2"
+          >
+            <v-icon>add</v-icon><span class="hidden-sm-and-down"> Add Game</span></v-btn>
         </v-card>
       </v-flex>
     </v-layout>
