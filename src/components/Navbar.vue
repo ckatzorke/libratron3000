@@ -58,7 +58,8 @@ export default {
       navitems: [
         { icon: 'dashboard', label: 'Dashboard', to: '/' },
         { icon: 'list', label: 'Collection', to: '/collection' },
-        { icon: 'add', label: 'Add', to: '/add' }
+        { icon: 'add', label: 'Add', to: '/add' },
+        { icon: 'help_outline', label: 'About', to: '/about' }
       ]
     }
   },

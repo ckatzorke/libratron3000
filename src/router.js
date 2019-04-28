@@ -5,6 +5,7 @@ import Collection from '@/views/Collection'
 import AddGame from '@/views/AddGame'
 import Dashboard from '@/views/Dashboard'
 import Details from '@/views/Details'
+import About from '@/views/About'
 
 import {
   store
@@ -42,6 +43,17 @@ export const routes = [
   {
     path: '/add',
     component: AddGame,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next('/')
+      }
+      next()
+    }
+  },
+  {
+    path: '/about',
+    component: About,
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
