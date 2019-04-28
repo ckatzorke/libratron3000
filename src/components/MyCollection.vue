@@ -15,7 +15,7 @@
       v-for="item in mycollection"
       :key="item.id"
       @click="showDetails(item.id)">
-      <v-flex xs2 sm1>
+      <v-flex xs2 sm2>
         <div class="caption grey--text">#</div>
         <div>{{ item.number }}</div>
       </v-flex>
@@ -27,14 +27,14 @@
         <div class="caption grey--text">Purchased</div>
         <div>{{ prettyDate(item.buydate) }}</div>
       </v-flex>
-      <v-flex xs2 md1>
+      <v-flex xs2 sm2>
         <div class="text-xs-right caption grey--text">Platform</div>
         <div
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
         >{{ shortPlatform(item.platform) }}</div>
       </v-flex>
-      <v-layout justify-end="">
-        <v-flex xs4>
+      <v-layout justify-end>
+        <v-flex xs4 sm2>
           <span v-if="item.rating">
             <star-rating
             class="text-xs-right"
@@ -43,6 +43,7 @@
               read-only
               :show-rating="false"
               :star-size="10"
+              :glow="2"
             ></star-rating>
           </span>
         </v-flex>
