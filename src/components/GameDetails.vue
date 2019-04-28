@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-btn @click="back" left><v-icon>keyboard_backspace</v-icon>Back</v-btn>
-    <v-card pa-3 ma-2>
-      <v-layout row wrap ma-2>
+    <v-card px-1 mx-1>
+      <v-layout row wrap ma-1>
         <v-flex xs12 md3 lg2 px-1>
           <v-checkbox
             v-model="game.completed"

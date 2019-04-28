@@ -33,10 +33,20 @@
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
         >{{ shortPlatform(item.platform) }}</div>
       </v-flex>
-      <v-flex xs12>
-        <div class="caption grey--text">Rated</div>
-        <div v-if="item.rating">{{ item.rating }}/10</div>
-      </v-flex>
+      <v-layout justify-end="">
+        <v-flex xs4>
+          <span v-if="item.rating">
+            <star-rating
+            class="text-xs-right"
+              v-model="item.rating"
+              :max-rating="10"
+              read-only
+              :show-rating="false"
+              :star-size="10"
+            ></star-rating>
+          </span>
+        </v-flex>
+      </v-layout>
       <v-flex xs12>
         <v-divider />
       </v-flex>
@@ -53,14 +63,14 @@ import { format } from 'date-fns'
 import { shortPlatform } from '@/service/platforms.js'
 import { setInterval, clearInterval } from 'timers'
 
+import StarRating from 'vue-star-rating'
+
 let searchIntervalId = null
 
 export default {
-  /*
   components: {
-    'lib-gamedetails': GameDetails
+    'star-rating': StarRating
   },
-  */
   data() {
     return {
       search: '',
