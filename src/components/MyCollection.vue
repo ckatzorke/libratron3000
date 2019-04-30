@@ -12,7 +12,7 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap pa-1 ma-1
-      v-for="item in mycollection"
+      v-for="item in displayCollection"
       :key="item.id"
       @click="showDetails(item.id)">
       <v-flex xs2 sm2>
@@ -97,16 +97,17 @@ export default {
       clearInterval(searchIntervalId)
       searchIntervalId = setInterval(() => {
         clearInterval(searchIntervalId)
-        console.log(this.search)
-        const filtered = this.$store.getters.getCollection.filter(g => g.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1).slice(0, 25)
-        this.mycollection = filtered
+        this.$store.commit('updateSearchFilter', this.search)
       }, 500)
     }
   },
   computed: {
+    displayCollection() {
+      return this.$store.getters.getDisplayCollection
+    }
   },
   created() {
-    this.mycollection = this.$store.getters.getCollection.slice(0, 25)
+    this.search = this.$store.getters.getDisplaySettings.filter
   }
 }
 </script>

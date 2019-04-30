@@ -30,6 +30,7 @@
                 label="Genre(s)"
                 multiple
                 prepend-icon="assignment"
+                clearable
               ></v-combobox>
             </v-flex>
              <v-flex xs12 md2 lg2 px-1>
@@ -47,22 +48,22 @@
               </v-menu>
             </v-flex>
             <v-flex xs12 md2 lg2 px-1>
-              <v-autocomplete
+              <v-combobox
                 v-model="game.developer"
                 :items="getAvailableDevelopers"
                 label="Developer"
                 prepend-icon="gavel"
               >
-              </v-autocomplete>
+              </v-combobox>
             </v-flex>
             <v-flex xs12 md2 lg2 px-1>
-              <v-autocomplete
+              <v-combobox
                 v-model="game.publisher"
                 :items="getAvailablePublishers"
                 label="Publisher"
                 prepend-icon="publish"
               >
-              </v-autocomplete>
+              </v-combobox>
             </v-flex>
             <v-flex xs12 md4 lg4 px-1>
               <v-combobox
@@ -70,6 +71,7 @@
                 :items="getPlatforms"
                 label="Platform"
                 prepend-icon="airplay"
+                clearable
               ></v-combobox>
             </v-flex>
             <v-flex xs12 md3 lg3 px-1>
@@ -106,6 +108,7 @@
                 label="Tags"
                 multiple
                 prepend-icon="label"
+                clearable
               ></v-combobox>
             </v-flex>
 
@@ -240,7 +243,7 @@ export default {
       return this.game.releaseDate ? format(this.game.releaseDate, 'DD.MM.YYYY') : ''
     },
     getAvailableGenres() {
-      let genres = this.$store.state.collection.flatMap(c => c.genre)
+      let genres = this.$store.state.collection.flatMap(c => c.genre).filter(g => g)
       return [...new Set(genres)].sort()
     },
     getAvailableDevelopers() {

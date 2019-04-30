@@ -25,6 +25,10 @@ export const store = new Vuex.Store({
     },
     loading: false,
     collection: null,
+    displaySettings: {
+      filter: '',
+      page: 0
+    },
     platforms
   },
   getters: {
@@ -46,6 +50,21 @@ export const store = new Vuex.Store({
      */
     getCollection: state => {
       return state.collection
+    },
+    /**
+     * returns the part of the collection that is currently displayed (regarding sorting, filtering, paging)
+     */
+    getDisplayCollection: state => {
+      let dc = []
+      if (state.displaySettings.filter) {
+        dc = state.collection.filter(c => c.title.toLowerCase().indexOf(state.displaySettings.filter.toLowerCase()) > -1)
+      } else {
+        dc = state.collection
+      }
+      return dc.slice(state.displaySettings.page * 25, (state.displaySettings.page + 1) * 25)
+    },
+    getDisplaySettings: state => {
+      return state.displaySettings
     },
     /**
      * indicates if the collection is currently loading
@@ -73,6 +92,9 @@ export const store = new Vuex.Store({
     },
     updateLoading: (state, loading) => {
       state.loading = loading
+    },
+    updateSearchFilter: (state, filtertext) => {
+      state.displaySettings.filter = filtertext
     }
   },
   actions: {
