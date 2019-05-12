@@ -20,14 +20,14 @@ export const store = new Vuex.Store({
     },
     user: null,
     queryOptions: {
-      sort: 'buydate',
+      sort: 'number',
       direction: 'desc'
     },
     loading: false,
     collection: null,
     displaySettings: {
       filter: '',
-      page: 0
+      page: 1
     },
     platforms
   },
@@ -61,7 +61,7 @@ export const store = new Vuex.Store({
       } else {
         dc = state.collection
       }
-      return dc.slice(state.displaySettings.page * 25, (state.displaySettings.page + 1) * 25)
+      return dc.slice((state.displaySettings.page - 1) * 10, (state.displaySettings.page) * 10)
     },
     getDisplaySettings: state => {
       return state.displaySettings
@@ -95,6 +95,9 @@ export const store = new Vuex.Store({
     },
     updateSearchFilter: (state, filtertext) => {
       state.displaySettings.filter = filtertext
+    },
+    updateDisplayPage: (state, page) => {
+      state.displaySettings.page = page
     }
   },
   actions: {

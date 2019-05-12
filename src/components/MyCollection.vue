@@ -1,9 +1,6 @@
 <template>
   <v-container grid-list-xs>
-    <v-layout row wrap px-2 align-center justify-space-between>
-      <v-flex xs2 >
-        <v-btn small flat to="/add"><v-icon small>add</v-icon>Add</v-btn>
-      </v-flex>
+    <v-layout row wrap px-2 justify-end>
       <v-flex xs6 >
         <v-text-field
           v-model="search"
@@ -53,7 +50,13 @@
       </v-flex>
     </v-layout>
     <v-layout>
-      <v-flex xs12> Showing first 25 only</v-flex>
+      <v-flex xs12 class="text-xs-center">
+        <v-pagination
+          v-model="page"
+          :length="numberOfPages"
+          @input="paginate"
+        ></v-pagination>
+      </v-flex>
     </v-layout>
 
   </v-container>
@@ -75,7 +78,8 @@ export default {
   data() {
     return {
       search: '',
-      mycollection: []
+      mycollection: [],
+      page: 1
     }
   },
   methods: {
@@ -99,15 +103,27 @@ export default {
         clearInterval(searchIntervalId)
         this.$store.commit('updateSearchFilter', this.search)
       }, 500)
+    },
+    paginate(page) {
+      this.$store.commit('updateDisplayPage', page)
     }
   },
   computed: {
     displayCollection() {
       return this.$store.getters.getDisplayCollection
+    },
+    numberOfPages() {
+      if (this.search) {
+        console.log('Displaycoll', Math.ceil(this.$store.getters.getDisplayCollection.length))
+        return Math.ceil(this.$store.getters.getDisplayCollection.length / 10)
+      }
+      return Math.ceil(this.$store.getters.getCollection.length / 10)
     }
+
   },
   created() {
     this.search = this.$store.getters.getDisplaySettings.filter
+    this.page = this.$store.getters.getDisplaySettings.page
   }
 }
 </script>

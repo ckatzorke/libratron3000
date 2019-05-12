@@ -9,6 +9,18 @@
       </div>
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <v-btn
+      v-if="loggedIn"
+      fab
+      bottom
+      small
+      dark
+      left
+      absolute=""
+      to="/add"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
     <v-toolbar-items>
       <v-btn flat to="/">
         <span v-if="loggedIn">
@@ -59,6 +71,7 @@ export default {
         { icon: 'dashboard', label: 'Dashboard', to: '/' },
         { icon: 'list', label: 'Collection', to: '/collection' },
         { icon: 'add', label: 'Add', to: '/add' },
+        { icon: 'compare_arrows', label: 'Loan Status', to: '/loan' },
         { icon: 'help_outline', label: 'About', to: '/about' }
       ]
     }

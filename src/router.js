@@ -5,6 +5,7 @@ import Collection from '@/views/Collection'
 import AddGame from '@/views/AddGame'
 import Dashboard from '@/views/Dashboard'
 import Details from '@/views/Details'
+import LoanStatus from '@/views/LoanStatus'
 import About from '@/views/About'
 
 import {
@@ -52,8 +53,8 @@ export const routes = [
     }
   },
   {
-    path: '/about',
-    component: About,
+    path: '/loan',
+    component: LoanStatus,
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
@@ -61,6 +62,10 @@ export const routes = [
       }
       next()
     }
+  },
+  {
+    path: '/about',
+    component: About
   }
 ]
 

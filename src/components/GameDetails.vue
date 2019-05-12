@@ -3,6 +3,9 @@
     <v-btn @click="back" left><v-icon>keyboard_backspace</v-icon>Back</v-btn>
     <v-card px-1 mx-1>
       <v-layout row wrap ma-1>
+        <v-flex xs12 px-1>
+          <div class="headline">{{ game.title }}</div>
+        </v-flex>
         <v-flex xs12 md3 lg2 px-1>
           <v-checkbox
             v-model="game.completed"
@@ -54,6 +57,14 @@
             ></v-slider>
             <span>{{ game.rating }}</span>
           </v-tooltip>
+        </v-flex>
+        <v-flex xs12 px-1>
+          <v-combobox
+            v-model="game.loaned"
+            label="Loan to"
+            prepend-icon="compare_arrows"
+            clearable
+          ></v-combobox>
         </v-flex>
         <v-flex xs12>
           <v-btn
