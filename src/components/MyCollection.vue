@@ -171,6 +171,13 @@ export default {
   color: pink;
 }
 
+.GameBoy {
+  color: chartreuse;
+}
+
+.GBA {
+  color: blueviolet;
+}
 .Wii {
   color: silver;
 }

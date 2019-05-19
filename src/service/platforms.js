@@ -92,6 +92,12 @@ export const shortPlatform = (platform) => {
   if (platform === 'Nintendo Switch') {
     return 'Switch'
   }
+  if (platform === 'Game Boy') {
+    return 'GameBoy'
+  }
+  if (platform === 'Game Boy Advance') {
+    return 'GBA'
+  }
   if (platform === 'Wii') {
     return 'Wii'
   }
