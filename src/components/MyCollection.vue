@@ -84,9 +84,13 @@ export default {
   },
   methods: {
     prettyDate(timestamp) {
-      let date = new Date(timestamp.seconds * 1000)
-      const formatted = format(date, 'DD.MM.YYYY')
-      return formatted === '01.01.2000' ? 'n/a' : formatted
+      if (timestamp) {
+        let date = new Date(timestamp.seconds * 1000)
+        const formatted = format(date, 'DD.MM.YYYY')
+        return formatted === '01.01.2000' ? 'n/a' : formatted
+      } else {
+        return 'n/a'
+      }
     },
     shortPlatform(platform) {
       return shortPlatform(platform)
