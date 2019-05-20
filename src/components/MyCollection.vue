@@ -13,8 +13,7 @@
       :key="item.id"
       @click="showDetails(item.id)">
       <v-flex xs2 sm2>
-        <div class="caption grey--text">#</div>
-        <div>{{ item.number }}</div>
+        <div><img :src="thumbnail(item.cover)"></div>
       </v-flex>
       <v-flex xs8 sm6>
         <div class="caption grey--text">Title</div>
@@ -110,6 +109,12 @@ export default {
     },
     paginate(page) {
       this.$store.commit('updateDisplayPage', page)
+    },
+    thumbnail(cover) {
+      if (cover) {
+        return `https://images.igdb.com/igdb/image/upload/t_thumb/${cover}.png`
+      }
+      return 'assets/dummy.png'
     }
   },
   computed: {
