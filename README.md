@@ -1,6 +1,6 @@
 # libratron3000
 
-[![Build Status](https://travis-ci.org/ckatzorke/libratron3000.svg?branch=master)](https://travis-ci.org/ckatzorke/libratron3000) | [![Netlify Status](https://api.netlify.com/api/v1/badges/066e3990-6ef5-4b70-a9f0-3775c1c3ea01/deploy-status)](https://app.netlify.com/sites/competent-rosalind-e4d586/deploys)
+[![Build Status](https://travis-ci.org/ckatzorke/libratron3000.svg?branch=master)](https://travis-ci.org/ckatzorke/libratron3000) [![Netlify Status](https://api.netlify.com/api/v1/badges/066e3990-6ef5-4b70-a9f0-3775c1c3ea01/deploy-status)](https://app.netlify.com/sites/competent-rosalind-e4d586/deploys)
 
 ## Project setup
 
