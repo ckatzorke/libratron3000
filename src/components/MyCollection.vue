@@ -65,6 +65,7 @@
 import { format } from 'date-fns'
 import { shortPlatform } from '@/service/platforms.js'
 import { setInterval, clearInterval } from 'timers'
+import firebase from 'firebase/app'
 
 import StarRating from 'vue-star-rating'
 
@@ -115,6 +116,11 @@ export default {
         return `https://images.igdb.com/igdb/image/upload/t_thumb/${cover}.png`
       }
       return 'assets/dummy.png'
+    },
+    sellGame(game) {
+      // do not remove, set state to sold
+      game.sellDate = firebase.firestore.Timestamp.fromDate(new Date())
+      this.$store.dispatch('updateGame', game)
     }
   },
   computed: {

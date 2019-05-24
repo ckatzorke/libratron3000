@@ -56,15 +56,21 @@ export const store = new Vuex.Store({
      */
     getDisplayCollection: state => {
       let dc = []
+      // filter all sold games
+      dc = state.collection.filter(g => !g.sellDate)
       if (state.displaySettings.filter) {
-        dc = state.collection.filter(c => c.title.toLowerCase().indexOf(state.displaySettings.filter.toLowerCase()) > -1)
-      } else {
-        dc = state.collection
+        dc = dc.filter(c => c.title.toLowerCase().indexOf(state.displaySettings.filter.toLowerCase()) > -1)
       }
       return dc.slice((state.displaySettings.page - 1) * 10, (state.displaySettings.page) * 10)
     },
     getDisplaySettings: state => {
       return state.displaySettings
+    },
+    /**
+     * Filters the actual collection by sold games. A sold game contains a timestamp when it was sold.
+     */
+    getSoldGames: state => {
+      return state.collection.filter(g => g.sellDate)
     },
     /**
      * indicates if the collection is currently loading
