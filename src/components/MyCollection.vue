@@ -12,10 +12,13 @@
       v-for="item in displayCollection"
       :key="item.id"
       @click="showDetails(item.id)">
-      <v-flex xs2 sm2>
+      <v-flex hidden-xs-only sm1>
         <div><img :src="thumbnail(item.cover)"></div>
       </v-flex>
-      <v-flex xs8 sm6>
+      <v-flex xs2 hidden-sm-and-up>
+        <div><img :src="micro(item.cover)"></div>
+      </v-flex>
+      <v-flex xs8 sm7>
         <div class="caption grey--text">Title</div>
         <div>{{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
       </v-flex>
@@ -114,6 +117,12 @@ export default {
     thumbnail(cover) {
       if (cover) {
         return `https://images.igdb.com/igdb/image/upload/t_thumb/${cover}.png`
+      }
+      return 'assets/dummy.png'
+    },
+    micro(cover) {
+      if (cover) {
+        return `https://images.igdb.com/igdb/image/upload/t_micro/${cover}.png`
       }
       return 'assets/dummy.png'
     },
