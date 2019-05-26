@@ -6,9 +6,9 @@
       <v-content>
           <router-view></router-view>
       </v-content>
-      <v-footer app fixed>
+      <!-- v-footer app fixed>
         <span class="mx-3">&copy; 2019</span>
-      </v-footer>
+      </v-footer  -->
     </v-app>
   </div>
 </template>
