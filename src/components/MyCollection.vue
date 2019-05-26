@@ -8,35 +8,22 @@
           @input="searchTitle"></v-text-field>
       </v-flex>
     </v-layout>
-    <v-layout row wrap pa-1 ma-1
+    <v-layout row wrap  ma-1
       v-for="item in displayCollection"
-      :key="item.id"
-      @click="showDetails(item.id)">
-      <v-flex hidden-xs-only sm1>
-        <div><img :src="thumbnail(item.cover)"></div>
+      :key="item.id">
+      <!--thumbnail, micro on sm, thumb on sm and up -->
+      <v-flex hidden-xs-only sm2 md1>
+        <div><img :src="thumbnail(item.cover)" height="90" width="90"></div>
       </v-flex>
-      <v-flex xs2 hidden-sm-and-up>
-        <div><img :src="micro(item.cover)"></div>
+      <v-flex hidden-sm-and-up xs2>
+        <div><img :src="micro(item.cover)" height="35" width="35"></div>
       </v-flex>
-      <v-flex xs8 sm7>
-        <div class="caption grey--text">Title</div>
+      <!-- Title, completed and rating -->
+      <v-flex xs9 sm6 md7>
+        <div class="hidden-xs-only caption grey--text">Title</div>
         <div>{{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
-      </v-flex>
-      <v-flex hidden-xs-only sm2>
-        <div class="caption grey--text">Purchased</div>
-        <div>{{ prettyDate(item.buydate) }}</div>
-      </v-flex>
-      <v-flex xs2 sm2>
-        <div class="text-xs-right caption grey--text">Platform</div>
-        <div
-          :class="`text-xs-right ${shortPlatform(item.platform)}`"
-        >{{ shortPlatform(item.platform) }}</div>
-      </v-flex>
-      <v-layout justify-end>
-        <v-flex xs4 sm2>
-          <span v-if="item.rating">
+        <div v-if="item.rating">
             <star-rating
-            class="text-xs-right"
               v-model="item.rating"
               :max-rating="10"
               read-only
@@ -44,9 +31,53 @@
               :star-size="10"
               :glow="2"
             ></star-rating>
-          </span>
-        </v-flex>
-      </v-layout>
+        </div>
+      </v-flex>
+      <!-- purchase date, hidden on xs -->
+      <v-flex hidden-xs-only sm1>
+        <div class="hidden-xs-only caption grey--text">Purchased</div>
+        <div>{{ prettyDate(item.buydate) }}</div>
+      </v-flex>
+      <!-- Platform, hidden on xs -->
+      <v-flex hidden-xs-only sm2>
+        <div class="hidden-xs-only text-xs-right caption grey--text">Platform</div>
+        <div
+          :class="`text-xs-right ${shortPlatform(item.platform)}`"
+        >{{ shortPlatform(item.platform) }}</div>
+      </v-flex>
+      <!-- context menu -->
+      <v-flex xs1>
+        <div class="hidden-xs-only text-xs-right caption grey--text">
+          <v-menu bottom left>
+            <template v-slot:activator="{ on }">
+              <v-btn
+                icon
+                v-on="on"
+              >
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-tile
+                @click="showDetails(item.id)"
+              >
+                <v-list-tile-title>Details</v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile
+                @click=""
+              >
+                <v-list-tile-title>Rate</v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile
+                @click=""
+              >
+                <v-list-tile-title>Sell</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-flex>
       <v-flex xs12>
         <v-divider />
       </v-flex>
