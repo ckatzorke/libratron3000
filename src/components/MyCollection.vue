@@ -20,10 +20,10 @@
       :key="item.id">
       <!--thumbnail, micro on sm, thumb on sm and up -->
       <v-flex hidden-xs-only sm2 md1>
-        <div><img :src="thumbnail(item.cover)" height="90" width="90"></div>
+        <div><img :src="thumbnail(item.cover)" height="90px" width="90px"></div>
       </v-flex>
       <v-flex hidden-sm-and-up xs2>
-        <div><img :src="micro(item.cover)" height="35" width="35"></div>
+        <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
       </v-flex>
       <!-- Title, completed and rating -->
       <v-flex xs9 sm6 md7>
@@ -54,7 +54,7 @@
       </v-flex>
       <!-- context menu -->
       <v-flex xs1>
-        <div class="hidden-xs-only text-xs-right caption grey--text">
+        <div class="text-xs-right caption grey--text">
           <v-menu bottom left>
             <template v-slot:activator="{ on }">
               <v-btn
