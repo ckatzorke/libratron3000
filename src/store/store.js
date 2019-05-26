@@ -220,6 +220,19 @@ export const store = new Vuex.Store({
               })
             }
             if (change.type === 'modified') {
+              console.log('updating ' + change.doc.data().title)
+              collection.forEach((c, index) => {
+                if (c.id === change.doc.id) {
+                  console.log('updating existing entry....')
+                  c = {
+                    ...change.doc.data()
+                  }
+                  console.log('old', collection[index])
+                  console.log('new', c)
+                  collection[index] = c
+                }
+              })
+              context.commit('updateCollection', collection)
             }
             // TODO delete
           })
@@ -236,6 +249,7 @@ export const store = new Vuex.Store({
       db.collection(`users/${context.state.user.uid}/collection`).add(game)
         .then(function(docRef) {
           console.log('Document written with ID: ', docRef.id)
+          context.commit('updateCollection', context.state.collection)
           context.dispatch('notify', `Added '${game.title}' to collection.`)
         })
         .catch(function(error) {
@@ -255,6 +269,7 @@ export const store = new Vuex.Store({
       }, { merge: true })
         .then(() => {
           console.log('Updated.')
+          context.commit('updateCollection', context.state.collection)
           context.dispatch('notify', `Updated successfully.`)
         })
         .catch(function(error) {

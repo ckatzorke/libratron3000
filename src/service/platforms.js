@@ -1,5 +1,9 @@
 export const platforms = [
   'PC',
+  'Itch.io',
+  'Steam',
+  'Gog',
+  'Epic',
   'PlayStation',
   'PlayStation 2',
   'PlayStation 3',
@@ -70,6 +74,18 @@ export const shortPlatform = (platform) => {
   }
   if (platform === 'PC') {
     return 'PC'
+  }
+  if (platform === 'Itch.io') {
+    return 'Itch.io'
+  }
+  if (platform === 'Steam') {
+    return 'Steam'
+  }
+  if (platform === 'Gog') {
+    return 'Gog'
+  }
+  if (platform === 'Epic') {
+    return 'Epic'
   }
   if (platform === 'PlayStation') {
     return 'PSX'

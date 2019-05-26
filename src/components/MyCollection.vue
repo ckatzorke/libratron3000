@@ -8,6 +8,13 @@
           @input="searchTitle"></v-text-field>
       </v-flex>
     </v-layout>
+    <lib-search-dialog
+      v-bind:searchTerm="selectedGameForLink.title"
+      @entrySelected="selectSearchIgdbEntry"
+      :hideBtn="true"
+      :show="showIgdbDialog"
+      >
+    </lib-search-dialog>
     <v-layout row wrap  ma-1
       v-for="item in displayCollection"
       :key="item.id">
@@ -65,12 +72,12 @@
                 <v-list-tile-title>Details</v-list-tile-title>
               </v-list-tile>
               <v-list-tile
-                @click=""
+                @click="connectWithIgdb(item)"
               >
-                <v-list-tile-title>Rate</v-list-tile-title>
+                <v-list-tile-title>Link with IGDB</v-list-tile-title>
               </v-list-tile>
               <v-list-tile
-                @click=""
+                @click="sellGame(item)"
               >
                 <v-list-tile-title>Sell</v-list-tile-title>
               </v-list-tile>
@@ -101,17 +108,22 @@ import { shortPlatform } from '@/service/platforms.js'
 import { setInterval, clearInterval } from 'timers'
 import firebase from 'firebase/app'
 
+import SearchGameDialog from './SearchGameDialog'
+
 import StarRating from 'vue-star-rating'
 
 let searchIntervalId = null
 
 export default {
   components: {
+    'lib-search-dialog': SearchGameDialog,
     'star-rating': StarRating
   },
   data() {
     return {
       search: '',
+      selectedGameForLink: {},
+      showIgdbDialog: false,
       mycollection: [],
       page: 1
     }
@@ -158,9 +170,34 @@ export default {
       return 'assets/dummy.png'
     },
     sellGame(game) {
-      // do not remove, set state to sold
-      game.sellDate = firebase.firestore.Timestamp.fromDate(new Date())
-      this.$store.dispatch('updateGame', game)
+      if (confirm(`Sell '${game.title}'?`)) {
+        // do not remove, set state to sold
+        game.sellDate = firebase.firestore.Timestamp.fromDate(new Date())
+        this.$store.dispatch('updateGame', { id: game.id, values: game })
+      }
+    },
+    connectWithIgdb(game) {
+      if (!game.igdbId || (game.igdbId && confirm(`'${game.title}' is already linked, update?`))) {
+        console.log('link to igdb')
+        this.selectedGameForLink = game
+        this.showIgdbDialog = true
+      }
+    },
+    selectSearchIgdbEntry(igdbEntry) {
+      console.log('Result from IGDB link dialog', igdbEntry)
+      let update = {
+        ...this.selectedGameForLink,
+        title: igdbEntry.name,
+        description: igdbEntry.summary,
+        // platform: igdbEntry.platforms ? igdbEntry.platforms.map(p => p.name)[0] : '',
+        genres: igdbEntry.genres ? igdbEntry.genres.map(g => g.name) : [],
+        releaseDate: igdbEntry.first_release_date ? new Date(igdbEntry.first_release_date * 1000) : new Date('2000-0-01'),
+        igdbId: igdbEntry.id,
+        cover: igdbEntry.cover ? igdbEntry.cover.image_id : '',
+        poweredBy: 'IGDB'
+      }
+      this.$store.dispatch('updateGame', { id: update.id, values: update })
+      this.showIgdbDialog = false
     }
   },
   computed: {

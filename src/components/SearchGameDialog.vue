@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="dialog">
-    <v-btn slot="activator" flat right>
+  <v-dialog v-model="show">
+    <v-btn slot="activator" flat right v-if="!hideBtn">
       <img src="/assets/logo/igdb-icon.jpeg" height="28px" style="vertical-align: middle"/>&nbsp;Search
     </v-btn>
     <v-card>
@@ -77,12 +77,11 @@ import { format } from 'date-fns'
 export default {
   data() {
     return {
-      dialog: false,
       searching: false,
       results: []
     }
   },
-  props: ['searchTerm'],
+  props: ['searchTerm', 'hideBtn', 'show'],
   methods: {
     autoSearch(e) {
       if (e.keyCode === 13) {
@@ -136,7 +135,7 @@ export default {
     },
     selectEntry(entry) {
       this.$emit('entrySelected', entry)
-      this.dialog = false
+      this.show = false
     }
   }
 }
