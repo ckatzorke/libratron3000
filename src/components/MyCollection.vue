@@ -69,17 +69,17 @@
               <v-list-tile
                 @click="showDetails(item.id)"
               >
-                <v-list-tile-title>Details</v-list-tile-title>
+                <v-list-tile-title><v-icon small>details</v-icon>&nbsp;Details</v-list-tile-title>
               </v-list-tile>
               <v-list-tile
                 @click="connectWithIgdb(item)"
               >
-                <v-list-tile-title>Link with IGDB</v-list-tile-title>
+                <v-list-tile-title><v-icon small>link</v-icon>&nbsp;Link with IGDB</v-list-tile-title>
               </v-list-tile>
               <v-list-tile
                 @click="sellGame(item)"
               >
-                <v-list-tile-title>Sell</v-list-tile-title>
+                <v-list-tile-title><v-icon small>attach_money</v-icon>&nbsp;Sell</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
