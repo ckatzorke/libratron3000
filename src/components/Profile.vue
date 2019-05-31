@@ -2,7 +2,7 @@
   <v-container>
     <v-layout row wrap v-if="loggedIn" justify-space-around >
       <v-flex xs12  >
-        <v-card class="text-xs-center ma-3">
+        <v-card class="text-xs-center pa-1 ma-3">
           <v-avatar size="125" class="text-xs-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
           </v-avatar>
@@ -19,8 +19,8 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs5 sm4 ma-1 pa-1>
-        <v-card class="text-xs-center">
+      <v-flex xs12 sm12 md6>
+        <v-card class="text-xs-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -28,16 +28,22 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <v-btn
-          v-else
-            flat
-            to="/collection"
-            class="my-2"
-          ><v-icon>list</v-icon><span class="hidden-sm-and-down"> Collection</span></v-btn>
+          <div v-else>
+            <div>
+              <v-btn
+                flat
+                to="/collection"
+                class="my-2"
+              ><v-icon>list</v-icon> Collection</v-btn>
+            </div>
+            <div>
+              {{ collectionCount }} Games
+            </div>
+          </div>
         </v-card>
       </v-flex>
-      <v-flex xs5 sm4 ma-1 pa-1>
-        <v-card class="text-xs-center">
+      <v-flex xs12 sm12 md6>
+        <v-card class="text-xs-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -51,7 +57,7 @@
           to="/add"
           class="my-2"
           >
-            <v-icon>add</v-icon><span class="hidden-sm-and-down"> Add Game</span></v-btn>
+            <v-icon>add</v-icon> Add Game</v-btn>
         </v-card>
       </v-flex>
     </v-layout>
@@ -88,7 +94,8 @@ export default {
     profilePicture() { return this.$store.getters.getUser.photoURL },
     displayName() { return this.$store.getters.getUser.displayName },
     email() { return this.$store.getters.getUser.email },
-    loading() { return this.$store.getters.loading }
+    loading() { return this.$store.getters.loading },
+    collectionCount() { return this.$store.getters.getCollection.length }
   },
   methods: {
     testNotify() {
