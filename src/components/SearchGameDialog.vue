@@ -90,7 +90,8 @@ export default {
     },
     search() {
       this.searching = true
-      this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+      // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+      this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.searchTerm}`)
       // this.$http
       //  .get('/assets/results.json')
         .then(res => {

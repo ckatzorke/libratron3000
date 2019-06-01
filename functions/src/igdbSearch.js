@@ -1,5 +1,9 @@
 const axios = require('axios')
 
+const headers = {
+  'Access-Control-Allow-Origin': '*'
+}
+
 /**
 * Searches for a game on IGDB
 * @param {string} search the search string to search for (from queryStringParameters)
@@ -14,6 +18,7 @@ exports.handler = (event, context, callback) => {
     client.searchGame(search, limit).then((response) => {
       callback(null, {
         statusCode: 200,
+        headers,
         body: JSON.stringify(
           { result: response }
         )
@@ -21,6 +26,7 @@ exports.handler = (event, context, callback) => {
     }).catch((e) => {
       callback(null, {
         statusCode: 503,
+        headers,
         body: JSON.stringify(
           { e }
         )
@@ -28,7 +34,8 @@ exports.handler = (event, context, callback) => {
     })
   } else {
     callback(null, {
-      statusCode: 400
+      statusCode: 400,
+      headers
     })
   }
 }
