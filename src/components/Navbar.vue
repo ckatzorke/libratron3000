@@ -70,6 +70,7 @@ export default {
       navitems: [
         { icon: 'dashboard', label: 'Dashboard', to: '/' },
         { icon: 'list', label: 'Collection', to: '/collection' },
+        { icon: 'pie_chart', label: 'Statistics', to: '/statistics' },
         { icon: 'add', label: 'Add', to: '/add' },
         { icon: 'compare_arrows', label: 'Loan Status', to: '/loan' },
         { icon: 'help_outline', label: 'About', to: '/about' }
