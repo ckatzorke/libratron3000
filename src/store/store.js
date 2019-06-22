@@ -57,7 +57,8 @@ export const store = new Vuex.Store({
     getDisplayCollection: state => {
       let dc = []
       // filter all sold games
-      dc = state.collection.filter(g => !g.sellDate)
+      // dc = state.collection.filter(g => !g.sellDate)
+      dc = state.collection
       if (state.displaySettings.filter) {
         dc = dc.filter(c => c.title.toLowerCase().indexOf(state.displaySettings.filter.toLowerCase()) > -1)
       }

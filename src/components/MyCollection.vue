@@ -20,7 +20,7 @@
       :key="item.id">
       <!--thumbnail, micro on sm, thumb on sm and up -->
       <v-flex hidden-xs-only sm2 md1>
-        <div><img :src="thumbnail(item.cover)" height="90px" width="90px"></div>
+        <div><img :src="thumbnail(item.cover)" height="90px" width="90px" :class="{ sold: isSold(item) }"></div>
       </v-flex>
       <v-flex hidden-sm-and-up xs2>
         <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
@@ -28,7 +28,10 @@
       <!-- Title, completed and rating -->
       <v-flex xs9 sm6 md7 @click="showDetails(item.id)" style="cursor: pointer">
         <div class="hidden-xs-only caption grey--text">Title</div>
-        <div>{{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
+        <div :class="{ 'grey--text': isSold(item) }">
+          {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>
+          <span v-if="isSold(item)"><strong>&nbsp;sold at {{ prettyDate(item.sellDate) }}</strong></span>
+        </div>
         <div v-if="item.rating">
             <star-rating
               v-model="item.rating"
@@ -43,7 +46,7 @@
       <!-- purchase date, hidden on xs -->
       <v-flex hidden-xs-only sm1>
         <div class="hidden-xs-only caption grey--text">Purchased</div>
-        <div>{{ prettyDate(item.buydate) }}</div>
+        <div :class="{ 'grey--text': isSold(item) }">{{ prettyDate(item.buydate) }}</div>
       </v-flex>
       <!-- Platform, hidden on xs -->
       <v-flex hidden-xs-only sm2>
@@ -76,7 +79,7 @@
               >
                 <v-list-tile-title><v-icon small>link</v-icon>&nbsp;Link with IGDB</v-list-tile-title>
               </v-list-tile>
-              <v-list-tile
+              <v-list-tile v-if="!isSold(item)"
                 @click="sellGame(item)"
               >
                 <v-list-tile-title><v-icon small>attach_money</v-icon>&nbsp;Sell</v-list-tile-title>
@@ -198,6 +201,12 @@ export default {
       }
       this.$store.dispatch('updateGame', { id: update.id, values: update })
       this.showIgdbDialog = false
+    },
+    isSold(item) {
+      if (item.sellDate) {
+        return true
+      }
+      return false
     }
   },
   computed: {
@@ -220,6 +229,11 @@ export default {
 }
 </script>
 <style>
+img.sold {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+
 .threeDS {
   color: orange;
 }
@@ -244,7 +258,7 @@ export default {
 }
 
 .PS4 {
-  color: darkblue;
+  color: #003791;
 }
 
 .PSP {
@@ -256,7 +270,7 @@ export default {
 }
 
 .Switch {
-  color: pink;
+  color: #e60012;
 }
 
 .GameBoy {
@@ -275,10 +289,10 @@ export default {
 }
 
 .Xbox360 {
-  color: green;
+  color: #5dc21e;
 }
 
 .XOne {
-  color: lightgreen;
+  color: #107c10;
 }
 </style>
