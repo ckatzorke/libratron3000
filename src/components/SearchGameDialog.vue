@@ -4,9 +4,12 @@
       <img src="/assets/logo/igdb-icon.jpeg" height="28px" style="vertical-align: middle"/>&nbsp;Search
     </v-btn>
     <v-card>
-        <v-layout row wrap class="pa-3">
-          <v-flex xs12>
+        <v-layout justify-space-between row wrap class="pa-3">
+          <v-flex xs6>
             <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>&nbsp;IGDB Search</h1>
+          </v-flex>
+          <v-flex xs6 text-xs-right>
+            <v-btn small flat><v-icon small>close</v-icon><span class="subheading grey--text">Close</span></v-btn>
           </v-flex>
           <v-flex>
             <v-form class="px-3" v-on:submit.prevent>
