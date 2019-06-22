@@ -26,7 +26,7 @@
         <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
       </v-flex>
       <!-- Title, completed and rating -->
-      <v-flex xs9 sm6 md7>
+      <v-flex xs9 sm6 md7 @click="showDetails(item.id)" style="cursor: pointer">
         <div class="hidden-xs-only caption grey--text">Title</div>
         <div>{{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon></div>
         <div v-if="item.rating">
