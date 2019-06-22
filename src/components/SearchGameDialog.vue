@@ -9,7 +9,9 @@
             <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>&nbsp;IGDB Search</h1>
           </v-flex>
           <v-flex xs6 text-xs-right>
-            <v-btn small flat><v-icon small>close</v-icon><span class="subheading grey--text">Close</span></v-btn>
+            <v-btn @click="show = false" small flat>
+              <v-icon small>close</v-icon><span class="subheading grey--text">Close</span>
+            </v-btn>
           </v-flex>
           <v-flex>
             <v-form class="px-3" v-on:submit.prevent>
