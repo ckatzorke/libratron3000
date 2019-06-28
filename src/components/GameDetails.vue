@@ -45,18 +45,17 @@
           </v-menu>
         </v-flex>
         <v-flex xs12 md12 lg6 px-1>
-          <v-tooltip top>
-            <v-slider
-              v-model="game.rating"
-              label="Rating"
-              :prepend-icon="rating"
-              max="10"
-              min="0"
-              step="1"
-              slot="activator"
-            ></v-slider>
-            <span>{{ game.rating }}</span>
-          </v-tooltip>
+          <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
+          <v-label>
+            <star-rating
+                v-model="game.rating"
+                :max-rating="10"
+                :show-rating="true"
+                :star-size="25"
+                :glow="2"
+                class="v-input"
+            ></star-rating>
+          </v-label>
         </v-flex>
         <v-flex xs12 px-1>
           <v-combobox
@@ -83,9 +82,13 @@
 <script>
 import firebase from 'firebase/app'
 import { toDate } from '@/service/utils'
+import StarRating from 'vue-star-rating'
 
 export default {
   props: ['id'],
+  components: {
+    'star-rating': StarRating
+  },
   data() {
     return {
       completiondateMenu: false,
@@ -160,3 +163,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>
