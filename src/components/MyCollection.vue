@@ -20,7 +20,12 @@
       :key="item.id">
       <!--thumbnail, micro on sm, thumb on sm and up -->
       <v-flex hidden-xs-only sm2 md1>
-        <div><img :src="thumbnail(item.cover)" height="90px" width="90px" :class="{ sold: isSold(item) }"></div>
+        <div class="thumbnail">
+          <img :src="thumbnail(item.cover)" height="90px" width="90px" :class="{ sold: isSold(item) }">
+          <div v-if="isSold(item)" class="arrow-right">
+            <span>SOLD</span>
+          </div>
+        </div>
       </v-flex>
       <v-flex hidden-sm-and-up xs2>
         <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
@@ -294,5 +299,33 @@ img.sold {
 
 .XOne {
   color: #107c10;
+}
+
+.thumbnail {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.arrow-right {
+  background-color: #444;
+  box-shadow: 0 0 3px 2px rgba(0,0,0,0.8);
+  height: 60px;
+  left: -30px;
+  position: absolute;
+  top: -30px;
+  width: 60px;
+  -webkit-transform: rotate(-45deg);
+}
+
+.arrow-right span {
+  color: #f5f5f5;
+  font-family: sans-serif;
+  font-size: 0.900em;
+  font-weight: bold;
+  left: 12px;
+  top: 44px;
+  position: absolute;
+  width: 80px;
 }
 </style>
