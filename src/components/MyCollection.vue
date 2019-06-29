@@ -21,7 +21,10 @@
       <!--thumbnail, micro on sm, thumb on sm and up -->
       <v-flex hidden-xs-only sm2 md1>
         <div class="thumbnail">
-          <img :src="thumbnail(item.cover)" height="90px" width="90px" :class="{ sold: isSold(item) }">
+          <img
+            :src="thumbnail(item.cover)" height="90px" width="90px"
+            :class="{ sold: isSold(item) }"
+            :title="'sold at ' + prettyDate(item.sellDate)">
           <div v-if="isSold(item)" class="arrow-right">
             <span>SOLD</span>
           </div>
