@@ -24,7 +24,7 @@
           <img
             :src="thumbnail(item.cover)" height="90px" width="90px"
             :class="{ sold: isSold(item) }"
-            :title="'sold at ' + prettyDate(item.sellDate)">
+            :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''">
           <div v-if="isSold(item)" class="arrow-right">
             <span>SOLD</span>
           </div>
@@ -115,8 +115,9 @@
 <script>
 // import GameDetails from './GameDetails'
 import { format } from 'date-fns'
-import { shortPlatform } from '@/service/platforms.js'
 import { setInterval, clearInterval } from 'timers'
+import { shortPlatform } from '@/service/platforms.js'
+import { micro, thumbnail } from '@/service/igdb.js'
 import firebase from 'firebase/app'
 
 import SearchGameDialog from './SearchGameDialog'
@@ -169,16 +170,10 @@ export default {
       this.$store.commit('updateDisplayPage', page)
     },
     thumbnail(cover) {
-      if (cover) {
-        return `https://images.igdb.com/igdb/image/upload/t_thumb/${cover}.png`
-      }
-      return 'assets/dummy.png'
+      return thumbnail(cover)
     },
     micro(cover) {
-      if (cover) {
-        return `https://images.igdb.com/igdb/image/upload/t_micro/${cover}.png`
-      }
-      return 'assets/dummy.png'
+      return micro(cover)
     },
     sellGame(game) {
       if (confirm(`Sell '${game.title}'?`)) {

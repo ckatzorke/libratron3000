@@ -2,17 +2,64 @@
   <v-container>
     <v-btn @click="back" left><v-icon>keyboard_backspace</v-icon>Back</v-btn>
     <v-card px-1 mx-1>
-      <v-layout row wrap ma-1>
-        <v-flex xs12 px-1>
-          <div class="headline">{{ game.title }}</div>
+      <v-layout row wrap pa-1 ma-1>
+        <v-flex xs12 md3 ma-1 pa-1 text-xs-center>
+          <img :src="cover()" />
         </v-flex>
-        <v-flex xs12 md3 lg2 px-1>
+        <v-flex xs12 md8 px-1>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <div class="display-3">{{ game.title }}</div>
+            </v-flex>
+            <v-flex xs12 ma-2>
+              <div class="body-1">{{ game.description }}</div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Developed By</div>
+              <div>{{ developer }}</div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Published By</div>
+              <div>{{ publisher }}</div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Genres</div>
+              <div>{{ genres }}</div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Format</div>
+              <div><v-icon>{{ format }}</v-icon></div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Release Date</div>
+              <div>{{ release }}</div>
+            </v-flex>
+            <v-flex xs4 ma-2>
+              <div class="caption grey--text">Purchase Date</div>
+              <div>{{ purchase }}</div>
+            </v-flex>
+            <v-flex xs12 ma-2>
+              <div>
+                <v-chip
+                  v-for="tag in game.tags"
+                  :key="tag"
+                  dark
+                  color="primary">{{ tag }}</v-chip>
+              </div>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex v-if="game.notes" xs12 md3 lg2 px-1>
+          <div class="caption grey--text">Notes</div>
+          <div>{{ game.notes }}</div>
+        </v-flex>
+        <v-flex xs8 md3 lg2 px-1>
           <v-checkbox
             v-model="game.completed"
             label="Completed"
           ></v-checkbox>
         </v-flex>
-        <v-flex xs12 md3 lg1 px-1>
+        <v-flex xs4 md3 lg1 px-1>
           <v-checkbox
             v-model="game.hundredpercent"
             label="100%"
@@ -81,7 +128,8 @@
 
 <script>
 import firebase from 'firebase/app'
-import { toDate } from '@/service/utils'
+import { toDate, formatDate } from '@/service/utils'
+import { coverBig } from '@/service/igdb'
 import StarRating from 'vue-star-rating'
 
 export default {
@@ -115,9 +163,48 @@ export default {
       const [year, month, day] = this.game.completiondateAsISOString.split('-')
       this.formattedCompletiondate = `${day}.${month}.${year}`
       this.completiondateMenu = false
+    },
+    cover() {
+      return coverBig(this.game.cover)
     }
   },
   computed: {
+    developer() {
+      if (this.game.developer) {
+        return this.game.developer
+      }
+      return 'n/a'
+    },
+    publisher() {
+      if (this.game.publisher) {
+        return this.game.publisher
+      }
+      return 'n/a'
+    },
+    genres() {
+      if (this.game.genres) {
+        return this.game.genres.join(', ')
+      }
+      return 'n/a'
+    },
+    format() {
+      if (this.game.digital && this.game.digital === true) {
+        return 'cloud_download'
+      }
+      return 'album'
+    },
+    release() {
+      if (this.game.releaseDate) {
+        return formatDate(toDate(this.game.releaseDate))
+      }
+      return 'n/a'
+    },
+    purchase() {
+      if (this.game.buydate) {
+        return formatDate(toDate(this.game.buydate))
+      }
+      return 'n/a'
+    },
     rating() {
       let rating = 'radio_button_unchecked'
       switch (this.game.rating) {
