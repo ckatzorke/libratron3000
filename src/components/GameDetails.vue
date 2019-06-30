@@ -1,15 +1,14 @@
 <template>
   <v-container>
-    <v-btn @click="back" left><v-icon>keyboard_backspace</v-icon>Back</v-btn>
-    <v-card px-1 mx-1>
+    <v-card>
       <v-layout row wrap pa-1 ma-1>
         <v-flex xs12 md3 ma-1 pa-1 text-xs-center>
           <img :src="cover()" />
         </v-flex>
-        <v-flex xs12 md8 px-1>
+        <v-flex xs12 md8>
           <v-layout row wrap>
-            <v-flex xs12>
-              <div class="display-3">{{ game.title }}</div>
+            <v-flex xs12 >
+              <div class="display-2">{{ game.title }}</div>
             </v-flex>
             <v-flex xs12 ma-2>
               <div class="body-1">{{ game.description }}</div>
@@ -44,7 +43,7 @@
                   v-for="tag in game.tags"
                   :key="tag"
                   dark
-                  color="primary">{{ tag }}</v-chip>
+                  color="blue-grey darken-1">{{ tag }}</v-chip>
               </div>
             </v-flex>
           </v-layout>
@@ -117,8 +116,11 @@
             round
             color="primary"
             dark
-            block
             @click="update">Update</v-btn>
+          <v-btn
+            round
+            color="secondary"
+            @click="back"><v-icon>keyboard_backspace</v-icon>Back</v-btn>
           {{ game }}
         </v-flex>
       </v-layout>
