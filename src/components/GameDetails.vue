@@ -105,11 +105,15 @@
         </v-flex>
         <v-flex xs12 px-1>
           <v-combobox
+            v-if="!isSold"
             v-model="game.loaned"
             label="Loan to"
             prepend-icon="compare_arrows"
             clearable
           ></v-combobox>
+          <div v-else class=" font-weight-light font-italic">
+            This game is no longer in your collection, sold at {{ prettyDate(game.sellDate) }}.
+          </div>
         </v-flex>
         <v-flex xs12>
           <v-btn
@@ -129,6 +133,7 @@
 </template>
 
 <script>
+import { format } from 'date-fns'
 import firebase from 'firebase/app'
 import { toDate, formatDate } from '@/service/utils'
 import { coverBig } from '@/service/igdb'
@@ -168,6 +173,15 @@ export default {
     },
     cover() {
       return coverBig(this.game.cover)
+    },
+    prettyDate(timestamp) {
+      if (timestamp) {
+        let date = new Date(timestamp.seconds * 1000)
+        const formatted = format(date, 'DD.MM.YYYY')
+        return formatted === '01.01.2000' ? 'n/a' : formatted
+      } else {
+        return 'n/a'
+      }
     }
   },
   computed: {
@@ -233,6 +247,12 @@ export default {
         default:
       }
       return rating
+    },
+    isSold() {
+      if (this.game.sellDate) {
+        return true
+      }
+      return false
     }
   },
   mounted() {
