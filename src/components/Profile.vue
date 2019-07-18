@@ -19,7 +19,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm12 md6>
+      <v-flex xs12 sm6>
         <v-card class="text-xs-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
@@ -30,19 +30,22 @@
           ></v-progress-circular>
           <div v-else>
             <div>
+              <span class="display-4">
+                {{ collectionCount }}
+              </span>
+              <span>Games</span>
+            </div>
+            <div>
               <v-btn
-                flat
+                round
                 to="/collection"
                 class="my-2"
               ><v-icon>list</v-icon> Collection</v-btn>
             </div>
-            <div>
-              {{ collectionCount }} Games
-            </div>
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm12 md6>
+      <v-flex xs12 sm6>
         <v-card class="text-xs-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
@@ -52,11 +55,11 @@
             class="my-2"
           ></v-progress-circular>
           <v-btn
-          v-else
-          flat
-          to="/add"
-          class="my-2"
-          >
+            v-else
+            round
+            to="/add"
+            class="my-2"
+            >
             <v-icon>add</v-icon> Add Game</v-btn>
         </v-card>
       </v-flex>
