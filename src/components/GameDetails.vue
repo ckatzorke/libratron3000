@@ -173,13 +173,15 @@ export default {
         })
     },
     deleteEntry() {
-      this.$store.dispatch('deleteGame',
-        {
-          id: this.game.id,
-          values: {
-            ...this.game
-          }
-        })
+      if (confirm('Do you really want to delete "' + this.game.title + '?')) {
+        this.$store.dispatch('deleteGame',
+          {
+            id: this.game.id,
+            values: {
+              ...this.game
+            }
+          })
+      }
     },
     setCompletionDate(date) {
       const newDate = new Date(this.game.completiondateAsISOString.split('-'))
