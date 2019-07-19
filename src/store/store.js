@@ -235,7 +235,16 @@ export const store = new Vuex.Store({
               })
               context.commit('updateCollection', collection)
             }
-            // TODO delete
+            if (change.type === 'removed') {
+              console.log('removing ' + change.doc.data().title)
+              collection.forEach((c, index) => {
+                if (c.id === change.doc.id) {
+                  console.log('removing existing entry....')
+                  collection.splice(index, 1)
+                }
+              })
+              context.commit('updateCollection', collection)
+            }
           })
           // sort
           collection.sort((a, b) => b.number - a.number)
@@ -279,6 +288,19 @@ export const store = new Vuex.Store({
           console.error('Error updating document: ', error)
           context.dispatch('notify', 'Document could not be updated!')
         })
-    }
+    },
+    deleteGame: (context, game) => {
+      const db = firebase.firestore()
+      db.collection(`users/${context.state.user.uid}/collection`).doc(game.id).delete()
+        .then(function() {
+          console.log('Document deleted')
+          context.commit('updateCollection', context.state.collection)
+          context.dispatch('notify', `Removed from collection.`)
+        })
+        .catch(function(error) {
+          console.error('Error removing document: ', error)
+          context.dispatch('notify', 'Document could not be removed!')
+        })
+    },
   }
 })

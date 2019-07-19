@@ -120,11 +120,19 @@
             round
             color="primary"
             dark
-            @click="update">Update</v-btn>
+            large
+            @click="update"><v-icon>save</v-icon> Update</v-btn>
           <v-btn
             round
+            color="error"
+            dark
+            large
+            @click="deleteEntry"><v-icon>delete</v-icon> Delete</v-btn>&nbsp;&nbsp;
+          <v-btn
+            round
+            large
             color="secondary"
-            @click="back"><v-icon>keyboard_backspace</v-icon>Back</v-btn>
+            @click="back"><v-icon>keyboard_backspace</v-icon> Back</v-btn>
           {{ game }}
         </v-flex>
       </v-layout>
@@ -157,6 +165,15 @@ export default {
     },
     update() {
       this.$store.dispatch('updateGame',
+        {
+          id: this.game.id,
+          values: {
+            ...this.game
+          }
+        })
+    },
+    deleteEntry() {
+      this.$store.dispatch('deleteGame',
         {
           id: this.game.id,
           values: {
