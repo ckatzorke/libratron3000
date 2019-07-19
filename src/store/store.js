@@ -237,6 +237,8 @@ export const store = new Vuex.Store({
             }
             // TODO delete
           })
+          // sort
+          collection.sort((a, b) => b.number - a.number)
           context.commit('updateCollection', collection)
           context.commit('updateLoading', false)
           // context.dispatch('notify', `Added ${changes.length} entries.`)
