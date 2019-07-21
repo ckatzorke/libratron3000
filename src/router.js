@@ -27,8 +27,10 @@ export const routes = [
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
         next('/')
+      } else {
+        next()
       }
-      next()
+
     }
   },
   {
@@ -38,8 +40,9 @@ export const routes = [
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
         next('/')
+      } else {
+        next()
       }
-      next()
     }
   },
   {
@@ -49,8 +52,10 @@ export const routes = [
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
         next('/')
+      } else {
+        next()
       }
-      next()
+
     }
   },
   {
@@ -60,8 +65,10 @@ export const routes = [
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
         next('/')
+      } else {
+        next()
       }
-      next()
+
     }
   },
   {
@@ -71,8 +78,9 @@ export const routes = [
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
         next('/')
+      } else {
+        next()
       }
-      next()
     }
   },
   {

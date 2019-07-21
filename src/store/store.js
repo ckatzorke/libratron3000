@@ -56,13 +56,14 @@ export const store = new Vuex.Store({
      */
     getDisplayCollection: state => {
       let dc = []
+      let collectionListSize = 20
       // filter all sold games
       // dc = state.collection.filter(g => !g.sellDate)
       dc = state.collection
       if (state.displaySettings.filter) {
         dc = dc.filter(c => c.title.toLowerCase().indexOf(state.displaySettings.filter.toLowerCase()) > -1)
       }
-      return dc.slice((state.displaySettings.page - 1) * 10, (state.displaySettings.page) * 10)
+      return dc.slice((state.displaySettings.page - 1) * collectionListSize, (state.displaySettings.page) * collectionListSize)
     },
     getDisplaySettings: state => {
       return state.displaySettings

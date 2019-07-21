@@ -126,6 +126,8 @@ import StarRating from 'vue-star-rating'
 
 let searchIntervalId = null
 
+let collectionListSize = 20
+
 export default {
   components: {
     'lib-search-dialog': SearchGameDialog,
@@ -219,9 +221,9 @@ export default {
     numberOfPages() {
       if (this.search) {
         console.log('Displaycoll', Math.ceil(this.$store.getters.getDisplayCollection.length))
-        return Math.ceil(this.$store.getters.getDisplayCollection.length / 10)
+        return Math.ceil(this.$store.getters.getDisplayCollection.length / collectionListSize)
       }
-      return Math.ceil(this.$store.getters.getCollection.length / 10)
+      return Math.ceil(this.$store.getters.getCollection.length / collectionListSize)
     }
 
   },

@@ -69,8 +69,15 @@
         <v-card>
           <v-card-title primary-title>
             <div>
-              <div class="headline">Please sign in to use Libratron 3000&trade;</div>
-              <div class="title grey--text">In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</div>
+              <h1 class="headline">Please sign in to use Libratron 3000&trade;</h1>
+              <p class="body-2 grey--text py-2">
+                <strong>Libratron3000&trade;</strong> is <a href="https://github.com/ckatzorke/libratron3000" target="_blank" rel="noopener">my little side project</a>, that helps you keep track of your games collection, or - like in my case - your pile of shame.<br/>
+                See also <a href="https://piletron3000.katzorke.io/" target="_blank" rel="noopener">Piletron3000&trade;</a> to keep track of your pile of shame.
+              </p>
+              <p class="body-2 grey--text py-2">
+                Libratron3000&trade; uses data from the Internet Games Database, when adding a new game to your database, you are able to search for this game in the IGDB to link these entries.
+                <a href="https://www.igdb.com/" rel="noopener" target="_blank">Check out their great work!</a></p>
+              <p class="subheading  py-2">In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</p>
             </div>
           </v-card-title>
 
