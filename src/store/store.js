@@ -302,6 +302,6 @@ export const store = new Vuex.Store({
           console.error('Error removing document: ', error)
           context.dispatch('notify', 'Document could not be removed!')
         })
-    },
+    }
   }
 })
