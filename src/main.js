@@ -1,7 +1,7 @@
 import 'vuetify/dist/vuetify.min.css'
 
 import Vue from 'vue'
-import './plugins/vuetify'
+import vuetify from '@/plugins/vuetify' // path to vuetify export
 import VueResource from 'vue-resource'
 import App from './App.vue'
 import { router } from './router'
@@ -25,6 +25,7 @@ Vue.config.productionTip = false
 Vue.use(VueResource)
 
 new Vue({
+  vuetify,
   router,
   store,
   render: h => h(App)

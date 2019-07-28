@@ -37,7 +37,7 @@
             </div>
             <div>
               <v-btn
-                round
+                rounded
                 to="/collection"
                 class="my-2"
               ><v-icon>list</v-icon> Collection</v-btn>
@@ -56,7 +56,7 @@
           ></v-progress-circular>
           <v-btn
             v-else
-            round
+            rounded
             to="/add"
             class="my-2"
             >

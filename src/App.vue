@@ -1,49 +1,30 @@
 <template>
-  <div id="app">
-    <v-app id="inspire" light>
-      <lib-navbar></lib-navbar>
-
-      <v-content>
-          <router-view></router-view>
-      </v-content>
-      <!-- v-footer app fixed>
-        <span class="mx-3">&copy; 2019</span>
-      </v-footer  -->
-    </v-app>
-  </div>
+  <v-app id="libratron">
+    <lib-navigation/>
+    <lib-notification></lib-notification>
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue'
-
+import Navigation from './components/Navigation'
+import Notification from './components/Notification'
 export default {
-  name: 'libratron3000',
-  components: {
-    'lib-navbar': Navbar
-  },
-  data() {
-    return {
-      drawer: true,
-      mini: true
-    }
-  },
   props: {
     source: String
   },
-  methods: {
-
+  components: {
+    'lib-navigation': Navigation,
+    'lib-notification': Notification
   },
-  computed: {
-    menuFlyoutDirection() {
-      return this.mini ? 'chevron_right' : 'chevron_left'
-    }
-  },
+  data: () => ({
+  }),
   created() {
+    this.$vuetify.theme.dark = false
     console.log('Created... Logging in.')
     this.$store.dispatch('bootstrapLogin')
   }
 }
 </script>
-
-<style>
-</style>

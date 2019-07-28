@@ -1,8 +1,8 @@
 <template>
 <nav>
   <v-toolbar app flat>
-    <lib-notification></lib-notification>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
+
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     <v-toolbar-title>
       <div>
         <span class="font-weight-light">Libratron</span><span class="font-weight-medium">3000</span><span>&trade;</span>
@@ -59,10 +59,9 @@
 </nav>
 </template>
 <script>
-import Notification from './Notification'
+
 export default {
   components: {
-    'lib-notification': Notification
   },
   data() {
     return {

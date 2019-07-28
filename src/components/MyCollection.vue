@@ -2,10 +2,6 @@
   <v-container grid-list-xs>
     <v-layout row wrap px-2 justify-end>
       <v-flex xs6 >
-        <v-text-field
-          v-model="search"
-          append-icon="search"
-          @input="searchTitle"></v-text-field>
       </v-flex>
     </v-layout>
     <lib-search-dialog
@@ -115,7 +111,6 @@
 <script>
 // import GameDetails from './GameDetails'
 import { format } from 'date-fns'
-import { setInterval, clearInterval } from 'timers'
 import { shortPlatform } from '@/service/platforms.js'
 import { micro, thumbnail } from '@/service/igdb.js'
 import firebase from 'firebase/app'
@@ -135,7 +130,6 @@ export default {
   },
   data() {
     return {
-      search: '',
       selectedGameForLink: {},
       showIgdbDialog: false,
       mycollection: [],
@@ -160,13 +154,6 @@ export default {
     },
     showDetails(id) {
       this.$router.push(`/details/${id}`)
-    },
-    searchTitle() {
-      clearInterval(searchIntervalId)
-      searchIntervalId = setInterval(() => {
-        clearInterval(searchIntervalId)
-        this.$store.commit('updateSearchFilter', this.search)
-      }, 500)
     },
     paginate(page) {
       this.$store.commit('updateDisplayPage', page)
