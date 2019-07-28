@@ -91,10 +91,10 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-      { icon: 'dashboard', text: 'Dashboard', to: '/' },
+      // { icon: 'dashboard', text: 'Dashboard', to: '/' },
       { icon: 'list', text: 'Collection', to: '/collection' },
       { icon: 'pie_chart', text: 'Statistics', to: '/statistics' },
-      { icon: 'add', text: 'Add', to: '/add' },
+      // { icon: 'add', text: 'Add', to: '/add' },
       { icon: 'compare_arrows', text: 'Loan Status', to: '/loan' },
       { icon: 'help_outline', text: 'About', to: '/about' }
     ],

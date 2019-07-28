@@ -20,7 +20,7 @@
         </v-card>
       </v-flex>
       <v-flex xs12 sm6>
-        <v-card class="text-xs-center pa-1 ma-3">
+        <v-card class="text-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
             :size="70"

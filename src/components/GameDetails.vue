@@ -118,19 +118,16 @@
           <v-btn
             rounded
             color="primary"
-            large
             @click="update"><v-icon>save</v-icon><span class="hidden-xs-only">Update</span></v-btn>
           <v-btn
             rounded
             color="error"
-            large
             @click="deleteEntry"><v-icon>delete</v-icon><span class="hidden-xs-only">Delete</span></v-btn>
           <v-btn
             rounded
-            large
             color="blue-grey lighten-1"
             @click="back"><v-icon>keyboard_backspace</v-icon><span class="hidden-xs-only">Back</span></v-btn>
-          <!--{{ game }}-->
+          {{ game }}
         </v-flex>
       </v-layout>
     </v-card>
@@ -179,6 +176,7 @@ export default {
             }
           })
       }
+      this.$store.push('/collection')
     },
     setCompletionDate(date) {
       const newDate = new Date(this.game.completiondateAsISOString.split('-'))

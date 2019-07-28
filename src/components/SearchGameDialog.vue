@@ -94,23 +94,7 @@ export default {
     },
     search() {
       this.searching = true
-      // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
-      this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.searchTerm}`)
-      // this.$http
-      //  .get('/assets/results.json')
-        .then(res => {
-          if (res.status !== 200) {
-            console.error('Error from res ', res)
-          } else {
-            console.log('Search response ', res)
-            this.results = res.data.result
-            this.searching = false
-          }
-        })
-        .catch(e => {
-          console.error(e)
-          this.searching = false
-        })
+      this.searching = false
     },
     displayDate(timestamp) {
       if (timestamp) {

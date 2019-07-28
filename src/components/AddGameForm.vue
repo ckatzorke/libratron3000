@@ -3,8 +3,6 @@
     <v-card>
       <v-card-title>
         <h2>Add a new game (#{{ game.number }})</h2>
-        <v-spacer/>
-        <lib-search-dialog v-bind:searchTerm="game.title" @entrySelected="selectSearchEntry"></lib-search-dialog>
       </v-card-title>
       <v-card-text>
         <v-form class="px-3">
@@ -14,7 +12,55 @@
                 label="Title"
                 v-model="game.title"
                 prepend-icon="title"
+                @input="searchForGames"
               ></v-text-field>
+            </v-flex>
+            <v-flex xs12 v-if="searchResults">
+              <v-expansion-panels>
+              <v-expansion-panel v-for="result in searchResults" :key="result.id">
+                <v-expansion-panel-header>
+                    <v-layout row wrap class="pa-3">
+                      <v-flex xs6>
+                        <div class="caption grey--text">Title</div>
+                        <div>
+                          {{ result.name }}&nbsp;<a
+                          :href="result.url"
+                          target="_blank"
+                          ><v-icon small>link</v-icon></a></div>
+                      </v-flex>
+                      <v-flex xs6 sm6 md2>
+                        <div class="caption grey--text">Release Date</div>
+                        <div>{{ displayDate(result.first_release_date) }}</div>
+                      </v-flex>
+                      <v-flex xs6 sm6 md2>
+                        <div class="caption grey--text">Genres</div>
+                        <div>{{ displayGenres(result.genres) }}</div>
+                      </v-flex>
+                      <v-flex xs6 sm6 md2>
+                        <div class="caption grey--text">Platforms</div>
+                        <div>{{ displayPlatforms(result.platforms) }}</div>
+                      </v-flex>
+                    </v-layout>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <v-layout row wrap class="pa-3">
+                      <v-flex hidden-sm-and-down md2 text-md-center>
+                        <img :src="coverImage(result.cover)" height="125">
+                      </v-flex>
+                      <v-flex xs12 sm12 md10>
+                        <div v-html="result.summary"></div>
+                        <div>
+                          <v-btn
+                            @click="selectSearchEntry(result)"
+                            >
+                            <v-icon small>check_box</v-icon> Use this entry
+                          </v-btn>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-flex>
             <v-flex xs12>
               <v-textarea
@@ -34,17 +80,28 @@
               ></v-combobox>
             </v-flex>
              <v-flex xs12 md2 lg2 px-1>
-              <v-menu>
-                <v-text-field
-                  slot="activator"
-                  :value="formatReleaseDate"
-                  label="Release Date"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
+              <v-menu
+                v-model="releasedateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="formattedReleasedate"
+                    label="Date of release"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
                 <v-date-picker
-                  v-model="game.releaseDate"
-                  ></v-date-picker>
+                  v-model="game.releasedateAsISOString"
+                  @input="setReleaseDate">
+                </v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs12 md2 lg2 px-1>
@@ -75,15 +132,28 @@
               ></v-combobox>
             </v-flex>
             <v-flex xs12 md3 lg3 px-1>
-              <v-menu>
-                <v-text-field
-                  slot="activator"
-                  :value="formatBuyDate"
-                  label="Date of purchase"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker v-model="game.buydate"></v-date-picker>
+              <v-menu
+                v-model="purchasedateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="formattedPurchasedate"
+                    label="Date of purchase"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="game.purchasedateAsISOString"
+                  @input="setPurchaseDate">
+                </v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs12 md3 lg3 px-1>
@@ -125,15 +195,28 @@
               ></v-checkbox>
             </v-flex>
             <v-flex xs12 md6 lg3 px-1>
-              <v-menu>
-                <v-text-field
-                  slot="activator"
-                  :value="formatCompletionDate"
-                  label="Date of completion"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker v-model="game.completiondate"></v-date-picker>
+              <v-menu
+                v-model="completiondateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="formattedCompletiondate"
+                    label="Date of completion"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="game.completiondateAsISOString"
+                  @input="setCompletionDate">
+                </v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs12 md12 lg6 px-1>
@@ -166,9 +249,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import SearchGameDialog from './SearchGameDialog'
 import firebase from 'firebase/app'
 import format from 'date-fns/format'
+import { setInterval, clearInterval } from 'timers'
 import StarRating from 'vue-star-rating'
 
 const blankGame = {
@@ -190,14 +273,22 @@ const blankGame = {
   rating: 0
 }
 
+let searchIntervalId = null
+
 export default {
   components: {
-    'lib-search-dialog': SearchGameDialog,
     'star-rating': StarRating
   },
   data() {
     return {
-      game: blankGame
+      game: blankGame,
+      searchResults: [],
+      releasedateMenu: false,
+      formattedReleasedate: null,
+      purchasedateMenu: false,
+      formattedPurchasedate: null,
+      completiondateMenu: false,
+      formattedCompletiondate: null
     }
   },
   methods: {
@@ -205,6 +296,7 @@ export default {
       console.log('ADD')
       // convert dates
       let game2Add = this.game
+      /**
       if (game2Add.buydate) {
         game2Add.buydate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.buydate))
       }
@@ -214,8 +306,62 @@ export default {
       if (game2Add.completiondate) {
         game2Add.completiondate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.completiondate))
       }
+      */
       this.$store.dispatch('addGame', game2Add)
       this.game = blankGame
+      this.formattedReleasedate = null
+      this.formattedCompletiondate = null
+      this.formattedPurchasedate = null
+    },
+    searchForGames() {
+      clearInterval(searchIntervalId)
+      searchIntervalId = setInterval(() => {
+        clearInterval(searchIntervalId)
+        console.log('searching for ', this.game.title)
+        if (this.game.title) {
+          // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
+          // this.$http
+          //  .get('/assets/results.json')
+            .then(res => {
+              if (res.status !== 200) {
+                console.error('Error from res ', res)
+              } else {
+                console.log('Search response ', res)
+                this.searchResults = res.data.result
+              }
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        }
+      }, 700)
+    },
+    displayDate(timestamp) {
+      if (timestamp) {
+        return format(new Date(timestamp * 1000), 'DD.MM.YYYY')
+      }
+      return ''
+    },
+    coverImage(cover) {
+      if (cover && cover.image_id) {
+        return `https://images.igdb.com/igdb/image/upload/t_cover_big/${
+          cover.image_id
+        }.png`
+      }
+      return '' // todo placeholder
+    },
+    displayGenres(genres) {
+      if (genres) {
+        return genres.map(g => g.name).join(', ')
+      }
+      return 'n/a'
+    },
+    displayPlatforms(platforms) {
+      if (platforms) {
+        return platforms.map(p => p.name).join(', ')
+      }
+      return 'n/a'
     },
     selectSearchEntry(searchEntry) {
       console.log('Searchentry', searchEntry)
@@ -231,6 +377,32 @@ export default {
         poweredBy: 'IGDB'
       }
       this.game = newGame
+      // update releaseDate
+      this.game.releasedateAsISOString = this.game.releaseDate.toISOString().substring(0, 10)
+      this.setReleaseDate()
+      // reset search results
+      this.searchResults = []
+    },
+    setCompletionDate(date) {
+      const newDate = new Date(this.game.completiondateAsISOString.split('-'))
+      this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
+      const [year, month, day] = this.game.completiondateAsISOString.split('-')
+      this.formattedCompletiondate = `${day}.${month}.${year}`
+      this.completiondateMenu = false
+    },
+    setPurchaseDate(date) {
+      const newDate = new Date(this.game.purchasedateAsISOString.split('-'))
+      this.game.buydate = firebase.firestore.Timestamp.fromDate(newDate)
+      const [year, month, day] = this.game.purchasedateAsISOString.split('-')
+      this.formattedPurchasedate = `${day}.${month}.${year}`
+      this.purchasedateMenu = false
+    },
+    setReleaseDate(date) {
+      const newDate = new Date(this.game.releasedateAsISOString.split('-'))
+      this.game.releaseDate = firebase.firestore.Timestamp.fromDate(newDate)
+      const [year, month, day] = this.game.releasedateAsISOString.split('-')
+      this.formattedReleasedate = `${day}.${month}.${year}`
+      this.releasedateMenu = false
     }
   },
   computed: {
