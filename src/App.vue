@@ -22,7 +22,7 @@ export default {
   data: () => ({
   }),
   created() {
-    this.$vuetify.theme.dark = false
+    this.$vuetify.theme.dark = true
     console.log('Created... Logging in.')
     this.$store.dispatch('bootstrapLogin')
   }

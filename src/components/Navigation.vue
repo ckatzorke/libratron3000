@@ -58,13 +58,14 @@
         style="max-width: 650px"
       >
         <v-text-field
-          :append-icon-cb="() => {}"
+          append-icon-cb="clearSearch"
           placeholder="Search..."
           single-line
           append-icon="search"
           v-model="search"
           color="white"
           @input="searchTitle"
+          clearable
           hide-details
         ></v-text-field>
       </v-layout>
@@ -118,6 +119,10 @@ export default {
         this.$store.commit('updateSearchFilter', this.search)
         this.$router.push('/collection')
       }, 500)
+    },
+    clearSearch() {
+      this.search = ''
+      this.$store.commit('updateSearchFilter', this.search)
     }
   }
 }
