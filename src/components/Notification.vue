@@ -1,7 +1,7 @@
 <template>
   <v-snackbar v-model="notification.show" :timeout="notification.timeout" top>
     <span v-html="notification.text" class="ma-3"></span>
-    <v-btn color="pink" flat @click="hideNotification">Close</v-btn>
+    <v-btn color="pink" @click="hideNotification">Close</v-btn>
   </v-snackbar>
 </template>
 <script>
