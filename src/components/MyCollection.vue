@@ -72,23 +72,42 @@
               </v-btn>
             </template>
 
-            <v-list>
-              <v-list-tile
-                @click="showDetails(item.id)"
-              >
-                <v-list-tile-title><v-icon small>details</v-icon>&nbsp;Details</v-list-tile-title>
-              </v-list-tile>
-              <v-list-tile
-                @click="connectWithIgdb(item)"
-              >
-                <v-list-tile-title><v-icon small>link</v-icon>&nbsp;Link with IGDB</v-list-tile-title>
-              </v-list-tile>
-              <v-list-tile v-if="!isSold(item)"
-                @click="sellGame(item)"
-              >
-                <v-list-tile-title><v-icon small>attach_money</v-icon>&nbsp;Sell</v-list-tile-title>
-              </v-list-tile>
-            </v-list>
+            <v-card
+              class="mx-auto"
+              max-width="300"
+              tile
+            >
+              <v-list shaped>
+                <v-list-item-group color="primary">
+                  <v-list-item @click="showDetails(item.id)">
+                    <v-list-item-icon>
+                      <v-icon>details</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Details</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item @click="connectWithIgdb(item)">
+                    <v-list-item-icon>
+                      <v-icon>link</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Link with IGDB</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item
+                    v-if="!isSold(item)"
+                @   click="sellGame(item)">
+                    <v-list-item-icon>
+                      <v-icon>attach_money</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Sell</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-card>
           </v-menu>
         </div>
       </v-flex>
