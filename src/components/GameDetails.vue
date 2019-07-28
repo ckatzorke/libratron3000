@@ -2,7 +2,7 @@
   <v-container>
     <v-card>
       <v-layout row wrap pa-1 ma-1>
-        <v-flex xs12 md3 ma-1 pa-1 text-xs-center>
+        <v-flex xs12 md3 ma-1 pa-1 text-center>
           <img :src="cover()" />
         </v-flex>
         <v-flex xs12 md8>
@@ -69,7 +69,6 @@
             v-model="completiondateMenu"
             :close-on-content-click="false"
             :nudge-right="40"
-            lazy
             transition="scale-transition"
             offset-y
             full-width
@@ -119,21 +118,19 @@
           <v-btn
             rounded
             color="primary"
-            dark
             large
-            @click="update"><v-icon>save</v-icon> Update</v-btn>
+            @click="update"><v-icon>save</v-icon><span class="hidden-xs-only">Update</span></v-btn>
           <v-btn
             rounded
             color="error"
-            dark
             large
-            @click="deleteEntry"><v-icon>delete</v-icon> Delete</v-btn>&nbsp;&nbsp;
+            @click="deleteEntry"><v-icon>delete</v-icon><span class="hidden-xs-only">Delete</span></v-btn>
           <v-btn
             rounded
             large
-            color="secondary"
-            @click="back"><v-icon>keyboard_backspace</v-icon> Back</v-btn>
-          {{ game }}
+            color="blue-grey lighten-1"
+            @click="back"><v-icon>keyboard_backspace</v-icon><span class="hidden-xs-only">Back</span></v-btn>
+          <!--{{ game }}-->
         </v-flex>
       </v-layout>
     </v-card>
