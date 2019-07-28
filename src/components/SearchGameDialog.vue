@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="show">
-    <v-btn slot="activator" flat right v-if="!hideBtn">
+    <v-btn slot="activator" right v-if="!hideBtn">
       <img src="/assets/logo/igdb-icon.jpeg" height="28px" style="vertical-align: middle"/>&nbsp;Search
     </v-btn>
     <v-card>
@@ -9,7 +9,7 @@
             <h1 class="subheading grey--text"><img src="/assets/logo/igdb-icon.jpeg" height="32px" style="vertical-align: middle"/>&nbsp;IGDB Search</h1>
           </v-flex>
           <v-flex xs6 text-xs-right>
-            <v-btn @click="show = false" small flat>
+            <v-btn @click="show = false" small>
               <v-icon small>close</v-icon><span class="subheading grey--text">Close</span>
             </v-btn>
           </v-flex>
@@ -28,7 +28,7 @@
         </v-layout>
         <v-expansion-panel>
           <v-expansion-panel-content v-for="result in results" :key="result.id">
-            <v-card flat slot="header" >
+            <v-card slot="header" >
               <v-layout row wrap class="pa-3">
                 <v-flex xs6>
                   <div class="caption grey--text">Title</div>
@@ -61,7 +61,6 @@
                   <div v-html="result.summary"></div>
                   <div>
                     <v-btn
-                      flat
                       @click="selectEntry(result)"
                       >
                       <v-icon small>check_box</v-icon> Use this entry
