@@ -2,8 +2,8 @@
   <v-container>
     <v-layout row wrap v-if="loggedIn" justify-space-around >
       <v-flex xs12  >
-        <v-card class="text-xs-center pa-1 ma-3">
-          <v-avatar size="125" class="text-xs-center ma-2 grey lighten-2">
+        <v-card class="text-center pa-1 ma-3">
+          <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
           </v-avatar>
           <v-card-text>
@@ -28,7 +28,7 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <div v-else>
+          <div v-else  class="text-center">
             <div>
               <span class="display-4">
                 {{ collectionCount }}
@@ -46,7 +46,7 @@
         </v-card>
       </v-flex>
       <v-flex xs12 sm6>
-        <v-card class="text-xs-center pa-1 ma-3">
+        <v-card class="text-center pa-1 ma-3">
           <v-progress-circular
             v-if="loading"
             :size="70"

@@ -119,8 +119,6 @@ import SearchGameDialog from './SearchGameDialog'
 
 import StarRating from 'vue-star-rating'
 
-let searchIntervalId = null
-
 let collectionListSize = 20
 
 export default {
