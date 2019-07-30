@@ -110,7 +110,7 @@
             prepend-icon="compare_arrows"
             clearable
           ></v-combobox>
-          <div v-else class=" font-weight-light font-italic">
+          <div v-else class=" font-weight-light font-italic py-2">
             This game is no longer in your collection, sold at {{ prettyDate(game.sellDate) }}.
           </div>
         </v-flex>
@@ -125,6 +125,12 @@
             rounded
             color="error"
             @click="deleteEntry"><v-icon>delete</v-icon><span class="hidden-xs-only">Delete</span></v-btn>
+          <v-btn
+            outlined
+            rounded
+            :disabled="isSold"
+            color="green"
+            @click="sellEntry"><v-icon>attach_money</v-icon><span class="hidden-xs-only">Sell</span></v-btn>
           <v-btn
             outlined
             rounded
@@ -170,7 +176,7 @@ export default {
         })
     },
     deleteEntry() {
-      if (confirm('Do you really want to delete "' + this.game.title + '?')) {
+      if (confirm(`Do you really want to delete "${this.game.title}?`)) {
         this.$store.dispatch('deleteGame',
           {
             id: this.game.id,
@@ -179,7 +185,20 @@ export default {
             }
           })
       }
-      this.$store.push('/collection')
+      this.$router.push('/collection')
+    },
+    sellEntry() {
+      if (confirm(`Sell '${this.game.title}'?`)) {
+        // do not remove, set state to sold
+        this.game.sellDate = firebase.firestore.Timestamp.fromDate(new Date())
+        this.$store.dispatch('updateGame', { id: this.game.id, values: this.game })
+      }
+    },
+    isSold() {
+      if (this.game.sellDate) {
+        return true
+      }
+      return false
     },
     setCompletionDate(date) {
       const newDate = new Date(this.game.completiondateAsISOString.split('-'))

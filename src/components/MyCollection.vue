@@ -97,7 +97,7 @@
                   </v-list-item>
                   <v-list-item
                     v-if="!isSold(item)"
-                @   click="sellGame(item)">
+                    @click="sellGame(item)">
                     <v-list-item-icon>
                       <v-icon>attach_money</v-icon>
                     </v-list-item-icon>
