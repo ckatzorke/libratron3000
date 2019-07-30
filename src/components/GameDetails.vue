@@ -116,14 +116,17 @@
         </v-flex>
         <v-flex xs12>
           <v-btn
+            outlined
             rounded
             color="primary"
             @click="update"><v-icon>save</v-icon><span class="hidden-xs-only">Update</span></v-btn>
           <v-btn
+            outlined
             rounded
             color="error"
             @click="deleteEntry"><v-icon>delete</v-icon><span class="hidden-xs-only">Delete</span></v-btn>
           <v-btn
+            outlined
             rounded
             color="blue-grey lighten-1"
             @click="back"><v-icon>keyboard_backspace</v-icon><span class="hidden-xs-only">Back</span></v-btn>
