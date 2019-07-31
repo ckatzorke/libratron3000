@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <lib-searchresultpopup :searchResults="searchResults" :show="showSearchResults" @entrySelected="selectSearchEntry"></lib-searchresultpopup>
     <v-card>
       <v-layout row wrap pa-1 ma-1>
         <v-flex xs12 md3 ma-1 pa-1 text-center>
@@ -123,6 +124,11 @@
           <v-btn
             outlined
             rounded
+            color="white"
+            @click="linkWithIgdb"><v-icon>link</v-icon><span class="hidden-xs-only">Link with IGDB</span></v-btn>
+          <v-btn
+            outlined
+            rounded
             color="error"
             @click="deleteEntry"><v-icon>delete</v-icon><span class="hidden-xs-only">Delete</span></v-btn>
           <v-btn
@@ -146,20 +152,24 @@
 <script>
 import { format } from 'date-fns'
 import firebase from 'firebase/app'
+import StarRating from 'vue-star-rating'
+import SearchResultPopup from '@/components/SearchResultPopup'
 import { toDate, formatDate } from '@/service/utils'
 import { coverBig } from '@/service/igdb'
-import StarRating from 'vue-star-rating'
 
 export default {
   props: ['id'],
   components: {
-    'star-rating': StarRating
+    'star-rating': StarRating,
+    'lib-searchresultpopup': SearchResultPopup
   },
   data() {
     return {
       completiondateMenu: false,
       formattedCompletiondate: null,
-      game: {}
+      game: {},
+      searchResults: [],
+      showSearchResults: false
     }
   },
   methods: {
@@ -194,12 +204,6 @@ export default {
         this.$store.dispatch('updateGame', { id: this.game.id, values: this.game })
       }
     },
-    isSold() {
-      if (this.game.sellDate) {
-        return true
-      }
-      return false
-    },
     setCompletionDate(date) {
       const newDate = new Date(this.game.completiondateAsISOString.split('-'))
       this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
@@ -218,6 +222,56 @@ export default {
       } else {
         return 'n/a'
       }
+    },
+    linkWithIgdb() {
+      if (!this.game.igdbId || (this.game.igdbId && confirm(`'${this.game.title}' is already linked, update?`))) {
+        console.log('link to igdb')
+        if (this.game.title) {
+          // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
+          // this.$http
+          //  .get('/assets/results.json')
+            .then(res => {
+              if (res.status !== 200) {
+                console.error('Error from res ', res)
+              } else {
+                console.log('Search response ', res)
+                this.searchResults = res.data.result
+                this.showSearchResults = true
+              }
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        }
+      }
+    },
+    selectSearchEntry(searchEntry) {
+      console.log('Searchentry', searchEntry)
+      let newGame = {
+        ...this.game,
+        title: searchEntry.name,
+        description: searchEntry.summary,
+        genres: searchEntry.genres ? searchEntry.genres.map(g => g.name) : [],
+        releaseDate: searchEntry.first_release_date ? new Date(searchEntry.first_release_date * 1000) : new Date('2000-0-01'),
+        igdbId: searchEntry.id,
+        cover: searchEntry.cover ? searchEntry.cover.image_id : '',
+        poweredBy: 'IGDB'
+      }
+      this.game = newGame
+      // update releaseDate
+      this.game.releasedateAsISOString = this.game.releaseDate.toISOString().substring(0, 10)
+      this.setReleaseDate()
+      // reset search results
+      this.searchResults = []
+      this.showSearchResults = false
+    },
+    setReleaseDate() {
+      const newDate = new Date(this.game.releasedateAsISOString.split('-'))
+      this.game.releaseDate = firebase.firestore.Timestamp.fromDate(newDate)
+      const [year, month, day] = this.game.releasedateAsISOString.split('-')
+      this.formattedReleasedate = `${day}.${month}.${year}`
+      this.releasedateMenu = false
     }
   },
   computed: {
