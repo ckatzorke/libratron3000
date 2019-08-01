@@ -1,5 +1,6 @@
 <template>
   <v-container grid-list-xs>
+    <lib-searchresultpopup :searchResults="searchResults" :show="showSearchResults" @entrySelected="selectSearchEntry"></lib-searchresultpopup>
     <v-layout row wrap px-2 justify-end>
       <v-flex xs6 >
       </v-flex>
@@ -134,7 +135,7 @@ import { shortPlatform } from '@/service/platforms.js'
 import { micro, thumbnail } from '@/service/igdb.js'
 import firebase from 'firebase/app'
 
-import SearchGameDialog from './SearchGameDialog'
+import SearchResultPopup from '@/components/SearchResultPopup'
 
 import StarRating from 'vue-star-rating'
 
@@ -142,7 +143,7 @@ let collectionListSize = 20
 
 export default {
   components: {
-    'lib-search-dialog': SearchGameDialog,
+    'lib-searchresultpopup': SearchResultPopup,
     'star-rating': StarRating
   },
   data() {
@@ -150,7 +151,9 @@ export default {
       selectedGameForLink: {},
       showIgdbDialog: false,
       mycollection: [],
-      page: 1
+      page: 1,
+      searchResults: [],
+      showSearchResults: false
     }
   },
   methods: {
@@ -188,11 +191,27 @@ export default {
         this.$store.dispatch('updateGame', { id: game.id, values: game })
       }
     },
-    connectWithIgdb(game) {
-      if (!game.igdbId || (game.igdbId && confirm(`'${game.title}' is already linked, update?`))) {
+    linkWithIgdb() {
+      if (!this.game.igdbId || (this.game.igdbId && confirm(`'${this.game.title}' is already linked, update?`))) {
         console.log('link to igdb')
-        this.selectedGameForLink = game
-        this.showIgdbDialog = true
+        if (this.game.title) {
+          // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
+          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
+          // this.$http
+          //  .get('/assets/results.json')
+            .then(res => {
+              if (res.status !== 200) {
+                console.error('Error from res ', res)
+              } else {
+                console.log('Search response ', res)
+                this.searchResults = res.data.result
+                this.showSearchResults = true
+              }
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        }
       }
     },
     selectSearchIgdbEntry(igdbEntry) {
@@ -209,7 +228,9 @@ export default {
         poweredBy: 'IGDB'
       }
       this.$store.dispatch('updateGame', { id: update.id, values: update })
-      this.showIgdbDialog = false
+      // reset search results
+      this.searchResults = []
+      this.showSearchResults = false
     },
     isSold(item) {
       if (item.sellDate) {
