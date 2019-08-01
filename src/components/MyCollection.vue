@@ -5,13 +5,6 @@
       <v-flex xs6 >
       </v-flex>
     </v-layout>
-    <lib-search-dialog
-      v-bind:searchTerm="selectedGameForLink.title"
-      @entrySelected="selectSearchIgdbEntry"
-      :hideBtn="true"
-      :show="showIgdbDialog"
-      >
-    </lib-search-dialog>
     <v-layout row wrap  ma-1
       v-for="item in displayCollection"
       :key="item.id">
@@ -88,7 +81,7 @@
                       <v-list-item-title>Details</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item @click="connectWithIgdb(item)">
+                  <v-list-item @click="linkWithIgdb(item)">
                     <v-list-item-icon>
                       <v-icon>link</v-icon>
                     </v-list-item-icon>
@@ -152,6 +145,7 @@ export default {
       showIgdbDialog: false,
       mycollection: [],
       page: 1,
+      itemToLink: null,
       searchResults: [],
       showSearchResults: false
     }
@@ -191,12 +185,13 @@ export default {
         this.$store.dispatch('updateGame', { id: game.id, values: game })
       }
     },
-    linkWithIgdb() {
-      if (!this.game.igdbId || (this.game.igdbId && confirm(`'${this.game.title}' is already linked, update?`))) {
+    linkWithIgdb(item) {
+      if (!item.igdbId || (item.igdbId && confirm(`'${item.title}' is already linked, update?`))) {
         console.log('link to igdb')
-        if (this.game.title) {
+        this.itemToLink = item
+        if (item.title) {
           // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
-          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
+          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${item.title}`)
           // this.$http
           //  .get('/assets/results.json')
             .then(res => {
@@ -214,10 +209,11 @@ export default {
         }
       }
     },
-    selectSearchIgdbEntry(igdbEntry) {
+    selectSearchEntry(igdbEntry) {
       console.log('Result from IGDB link dialog', igdbEntry)
+      console.log('updating ', this.itemToLink)
       let update = {
-        ...this.selectedGameForLink,
+        ...this.itemToLink,
         title: igdbEntry.name,
         description: igdbEntry.summary,
         // platform: igdbEntry.platforms ? igdbEntry.platforms.map(p => p.name)[0] : '',

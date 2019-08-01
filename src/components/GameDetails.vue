@@ -11,6 +11,9 @@
             <v-flex xs12 >
               <div class="display-2">{{ game.title }}</div>
             </v-flex>
+            <v-flex xs12 mx-2>
+              <div class="caption grey--text">{{ shortPlatform }}</div>
+            </v-flex>
             <v-flex xs12 ma-2>
               <div class="body-1">{{ game.description }}</div>
             </v-flex>
@@ -154,6 +157,7 @@ import { format } from 'date-fns'
 import firebase from 'firebase/app'
 import StarRating from 'vue-star-rating'
 import SearchResultPopup from '@/components/SearchResultPopup'
+import { shortPlatform } from '@/service/platforms.js'
 import { toDate, formatDate } from '@/service/utils'
 import { coverBig } from '@/service/igdb'
 
@@ -275,6 +279,9 @@ export default {
     }
   },
   computed: {
+    shortPlatform() {
+      return shortPlatform(this.game.platform)
+    },
     developer() {
       if (this.game.developer) {
         return this.game.developer
