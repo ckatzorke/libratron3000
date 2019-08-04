@@ -232,7 +232,9 @@ export default {
         console.log('link to igdb')
         if (this.game.title) {
           // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
-          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
+          let search = this.game.title
+          debugger
+          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${search}`)
           // this.$http
           //  .get('/assets/results.json')
             .then(res => {
@@ -241,7 +243,11 @@ export default {
               } else {
                 console.log('Search response ', res)
                 this.searchResults = res.data.result
-                this.showSearchResults = true
+                if (this.searchResults.length > 0) {
+                  this.showSearchResults = true
+                } else {
+                  this.$store.dispatch('notify', 'No entries found...')
+                }
               }
             })
             .catch(e => {
