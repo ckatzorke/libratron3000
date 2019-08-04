@@ -12,7 +12,7 @@ const headers = {
 */
 exports.handler = (event, context, callback) => {
   let search = event.queryStringParameters.search
-  let limit = 10
+  let limit = 15
   if (search && search.trim() !== '') {
     const client = new IgdbProxy(process.env.IGDB_API_KEY)
     client.searchGame(search, limit).then((response) => {

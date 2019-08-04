@@ -1,14 +1,14 @@
 <template>
   <v-container grid-list-xs>
     <v-layout row wrap px-2 justify-start>
-      <v-flex xs12 sm6>
+      <v-flex xs12>
         <v-card>
           <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Games by Platform</h3>
-              <lib-platformstats></lib-platformstats>
-            </div>
+            <h3 class="headline mb-0">Games by Platform</h3>
           </v-card-title>
+          <v-card-text>
+            <lib-platformstats></lib-platformstats>
+          </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>

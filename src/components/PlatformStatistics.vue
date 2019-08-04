@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div>
-      <lib-doughnut :chartdata="platformStats" />
-    </div>
+    <lib-doughnut :chartdata="platformStats" />
   </div>
 </template>
 <script>
