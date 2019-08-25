@@ -99,7 +99,7 @@
             <star-rating
                 v-model="game.rating"
                 :max-rating="10"
-                :show-rating="true"
+                :show-rating="false"
                 :star-size="25"
                 :glow="2"
                 class="v-input"
@@ -235,6 +235,7 @@ export default {
         if (this.game.title) {
           // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
           let search = this.game.title
+          search = search.replace(/[&\-:]*/g, '')
           debugger
           this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${search}`)
           // this.$http

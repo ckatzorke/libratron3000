@@ -192,6 +192,7 @@ export default {
         if (item.title) {
           // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
           let search = item.title
+          search = search.replace(/[&\-:]*/g, '')
           debugger
           this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${search}`)
           // this.$http
