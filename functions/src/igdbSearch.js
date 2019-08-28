@@ -16,12 +16,11 @@ exports.handler = (event, context, callback) => {
   if (search && search.trim() !== '') {
     const client = new IgdbProxy(process.env.IGDB_API_KEY)
     client.searchGame(search, limit).then((response) => {
-      let resultArray = response.filter(element => (element && element.name))
       callback(null, {
         statusCode: 200,
         headers,
         body: JSON.stringify(
-          { result: resultArray }
+          { result: response }
         )
       })
     }).catch((e) => {
@@ -87,7 +86,7 @@ class IgdbProxy {
     const result = []
     const igdb = response.data
     igdb.forEach((igdbEntry) => {
-      if (igdbEntry.game) {
+      if (igdbEntry.game && igdbEntry.game.name) {
         result.push(igdbEntry.game)
       }
     })
