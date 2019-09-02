@@ -10,22 +10,19 @@ const headers = {
 * @param {number} limit the number of max results, default is 5
 * @returns {object}
 */
-exports.handler = async(event, context, callback) => {
+exports.handler = (event, context, callback) => {
   let search = event.queryStringParameters.search
-  let limit = 20
   if (search && search.trim() !== '') {
-    try {
-      const client = new IgdbProxy(process.env.IGDB_API_KEY)
-      // search for slug and by name
-      let [slugResult, searchResult] = await Promise.all(client.getGameBySlug(search), client.searchGame(search, limit))
+    const client = new IgdbProxy(process.env.IGDB_API_KEY)
+    client.identifyGame(search).then(response => {
       callback(null, {
         statusCode: 200,
         headers,
         body: JSON.stringify(
-          { result: slugResult.concat(searchResult) }
+          { result: response }
         )
       })
-    } catch (e) {
+    }).catch(e => {
       callback(null, {
         statusCode: 503,
         headers,
@@ -33,7 +30,7 @@ exports.handler = async(event, context, callback) => {
           { e }
         )
       })
-    }
+    })
   } else {
     callback(null, {
       statusCode: 400,
@@ -49,14 +46,14 @@ class IgdbProxy {
    * Constructor for IgdbProxy.
    * Previously in v2:
    * fields: [
-        'id', 'name', 'slug', 'url', 'created_at', 'updated_at', 'summary', 'first_release_date',
-        'release_dates', 'time_to_beat', 'cover', 'screenshots', 'videos', 'websites',
-        'platforms.name', 'platforms.slug', 'platforms.url', 'platforms.logo',
-        'platforms.created_at', 'platforms.updated_at', 'genres.name', 'genres.slug', 'genres.url',
-        'genres.created_at', 'genres.updated_at'],
-      expand: ['platforms', 'genres'],
-   * @param {string} igdbApiKey the api key from idgb.com
-   */
+    'id', 'name', 'slug', 'url', 'created_at', 'updated_at', 'summary', 'first_release_date',
+    'release_dates', 'time_to_beat', 'cover', 'screenshots', 'videos', 'websites',
+    'platforms.name', 'platforms.slug', 'platforms.url', 'platforms.logo',
+    'platforms.created_at', 'platforms.updated_at', 'genres.name', 'genres.slug', 'genres.url',
+    'genres.created_at', 'genres.updated_at'],
+    expand: ['platforms', 'genres'],
+    * @param {string} igdbApiKey the api key from idgb.com
+    */
   constructor(igdbApiKey) {
     this.client = axios.create({
       queryMethod: 'url',
@@ -70,6 +67,18 @@ class IgdbProxy {
       responseType: 'json',
       timeout: 10000
     })
+  }
+
+  async identifyGame(search) {
+    let limit = 20
+    // search for slug
+    let slugResult = await this.getGameBySlug(search)
+    if (slugResult.length === 1) {
+      return slugResult
+    }
+    // if no unique slug, continue searching
+    let searchResult = await this.searchGame(search, limit)
+    return searchResult
   }
 
   async getGameByName(name) {
@@ -103,3 +112,5 @@ class IgdbProxy {
     return result
   }
 }
+
+exports.IgdbProxy = IgdbProxy
