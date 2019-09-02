@@ -10,20 +10,22 @@ const headers = {
 * @param {number} limit the number of max results, default is 5
 * @returns {object}
 */
-exports.handler = (event, context, callback) => {
+exports.handler = async(event, context, callback) => {
   let search = event.queryStringParameters.search
   let limit = 20
   if (search && search.trim() !== '') {
-    const client = new IgdbProxy(process.env.IGDB_API_KEY)
-    client.searchGame(search, limit).then((response) => {
+    try {
+      const client = new IgdbProxy(process.env.IGDB_API_KEY)
+      // search for slug and by name
+      let [slugResult, searchResult] = await Promise.all(client.getGameBySlug(search), client.searchGame(search, limit))
       callback(null, {
         statusCode: 200,
         headers,
         body: JSON.stringify(
-          { result: response }
+          { result: slugResult.concat(searchResult) }
         )
       })
-    }).catch((e) => {
+    } catch (e) {
       callback(null, {
         statusCode: 503,
         headers,
@@ -31,7 +33,7 @@ exports.handler = (event, context, callback) => {
           { e }
         )
       })
-    })
+    }
   } else {
     callback(null, {
       statusCode: 400,
@@ -75,6 +77,14 @@ class IgdbProxy {
             fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date;
             limit 5;
             where name = "${name}";`)
+    return response.data
+  }
+
+  async getGameBySlug(slug) {
+    const response = await this.client.post('/games', `
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date;
+            limit 1;
+            where slug = "${slug.toLowerCase()}";`)
     return response.data
   }
 
