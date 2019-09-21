@@ -178,14 +178,14 @@
             <v-flex xs12 md12 lg6 px-1>
               <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
               <v-label>
-                <star-rating
-                    v-model="game.rating"
-                    :max-rating="10"
-                    :show-rating="true"
-                    :star-size="25"
-                    :glow="2"
-                    class="v-input"
-                ></star-rating>
+                <v-rating
+                  v-model="game.rating"
+                  background-color="yellow lighten-3"
+                  color="yellow"
+                  large
+                  hover
+                  length="10"
+                ></v-rating>
               </v-label>
             </v-flex>
             <v-flex xs12>
@@ -208,7 +208,6 @@ import { mapGetters } from 'vuex'
 import firebase from 'firebase/app'
 import format from 'date-fns/format'
 import { setInterval, clearInterval } from 'timers'
-import StarRating from 'vue-star-rating'
 import SearchResult from '@/components/IgdbSearchResult'
 
 const blankGame = {
@@ -234,7 +233,6 @@ let searchIntervalId = null
 
 export default {
   components: {
-    'star-rating': StarRating,
     'lib-searchresult': SearchResult
   },
   data() {
