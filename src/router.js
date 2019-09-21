@@ -7,11 +7,10 @@ import AddGame from '@/views/AddGame'
 import Dashboard from '@/views/Dashboard'
 import Details from '@/views/Details'
 import LoanStatus from '@/views/LoanStatus'
+import ShowroomView from '@/views/ShowroomView'
 import About from '@/views/About'
 
-import {
-  store
-} from './store/store'
+import { store } from './store/store'
 
 Vue.use(VueRouter)
 
@@ -30,7 +29,19 @@ export const routes = [
       } else {
         next()
       }
-
+    }
+  },
+  {
+    // TODO: auch anonym, aber nur wenn uid in der url
+    path: '/showroom',
+    component: ShowroomView,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next('/')
+      } else {
+        next()
+      }
     }
   },
   {
@@ -55,7 +66,6 @@ export const routes = [
       } else {
         next()
       }
-
     }
   },
   {
@@ -68,7 +78,6 @@ export const routes = [
       } else {
         next()
       }
-
     }
   },
   {
@@ -94,7 +103,8 @@ export const router = new VueRouter({
   routes,
   scrollBehavior() {
     return {
-      x: 0, y: 0
+      x: 0,
+      y: 0
     }
   }
 })

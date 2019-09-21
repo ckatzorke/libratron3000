@@ -13,9 +13,6 @@
             <li>
               <a href="https://vuetifyjs.com/" target="_blank" rel="noopener">Vuetify</a>
             </li>
-            <li>
-              <a href="https://github.com/craigh411/vue-star-rating" target="_blank" rel="noopener">Vue Star Rating</a>
-            </li>
           </ul>
           <p class="my-2">Game information powered by</p>
           <ul>

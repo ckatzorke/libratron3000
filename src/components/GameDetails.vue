@@ -96,14 +96,14 @@
         <v-flex xs12 md12 lg6 px-1>
           <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
           <v-label>
-            <star-rating
-                v-model="game.rating"
-                :max-rating="10"
-                :show-rating="false"
-                :star-size="25"
-                :glow="2"
-                class="v-input"
-            ></star-rating>
+            <v-rating
+              v-model="game.rating"
+              background-color="yellow lighten-3"
+              color="yellow"
+              large
+              hover
+              length="10"
+            ></v-rating>
           </v-label>
         </v-flex>
         <v-flex xs12 px-1>
@@ -157,7 +157,6 @@
 <script>
 import { format } from 'date-fns'
 import firebase from 'firebase/app'
-import StarRating from 'vue-star-rating'
 import SearchResultPopup from '@/components/SearchResultPopup'
 import { shortPlatform } from '@/service/platforms.js'
 import { toDate, formatDate } from '@/service/utils'
@@ -166,7 +165,6 @@ import { coverBig } from '@/service/igdb'
 export default {
   props: ['id'],
   components: {
-    'star-rating': StarRating,
     'lib-searchresultpopup': SearchResultPopup
   },
   data() {

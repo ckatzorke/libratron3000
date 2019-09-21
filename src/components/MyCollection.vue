@@ -31,14 +31,23 @@
           <span v-if="isSold(item)"><strong>&nbsp;sold at {{ prettyDate(item.sellDate) }}</strong></span>
         </div>
         <div v-if="item.rating">
-            <star-rating
+            <v-rating
+              v-model="item.rating"
+              background-color="yellow lighten-3"
+              color="yellow"
+              small
+              dense
+              length="10"
+              readonly
+            ></v-rating>
+            <!--star-rating
               v-model="item.rating"
               :max-rating="10"
               read-only
               :show-rating="false"
               :star-size="10"
               :glow="2"
-            ></star-rating>
+            ></star-rating -->
         </div>
       </v-flex>
       <!-- purchase date, hidden on xs -->
@@ -123,21 +132,18 @@
 </template>
 <script>
 // import GameDetails from './GameDetails'
-import { format } from 'date-fns'
 import { shortPlatform } from '@/service/platforms.js'
 import { micro, thumbnail } from '@/service/igdb.js'
+import { prettyDate } from '@/service/utils.js'
 import firebase from 'firebase/app'
 
 import SearchResultPopup from '@/components/SearchResultPopup'
-
-import StarRating from 'vue-star-rating'
 
 let collectionListSize = 20
 
 export default {
   components: {
-    'lib-searchresultpopup': SearchResultPopup,
-    'star-rating': StarRating
+    'lib-searchresultpopup': SearchResultPopup
   },
   data() {
     return {
@@ -152,13 +158,7 @@ export default {
   },
   methods: {
     prettyDate(timestamp) {
-      if (timestamp) {
-        let date = new Date(timestamp.seconds * 1000)
-        const formatted = format(date, 'DD.MM.YYYY')
-        return formatted === '01.01.2000' ? 'n/a' : formatted
-      } else {
-        return 'n/a'
-      }
+      return prettyDate(timestamp)
     },
     shortPlatform(platform) {
       return shortPlatform(platform)
