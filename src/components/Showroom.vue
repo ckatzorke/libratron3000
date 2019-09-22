@@ -1,15 +1,23 @@
 <template>
   <v-container grid-list-xs>
     <v-row>
-      <v-col v-for="item in collection" :key="item.id" cols="2" xs="6" sm="6" md="4" lg="3">
+      <v-col v-for="item in collection" :key="item.id" cols="12" xs="1" sm="4" md="3" lg="2">
         <div class="thumbnailcontainer">
           <img
             :src="coverBig(item.cover)"
-            height="374px"
-            width="264px"
+            height="262px"
+            width="185px"
             :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
+            @mouseover="showTitle(item.id)"
+            @mouseout="hideTitle(item.id)"
           />
-          <div class="caption" :title="item.title">{{ caption(item.title) }}</div>
+          <div
+            :id="item.id + '-title'"
+            class="caption hidden"
+            :title="item.title"
+            >
+            {{ caption(item.title) }}
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -38,10 +46,20 @@ export default {
       return false
     },
     caption(title) {
-      if (title.length >= 32) {
-        return title.substring(0, 28) + '...'
+      if (title.length >= 28) {
+        return title.substring(0, 24) + '...'
       }
       return title
+    },
+    showTitle(id) {
+      console.log('Showing ', id)
+      console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
+      document.getElementById(`${id}-title`).classList.remove('hidden')
+    },
+    hideTitle(id) {
+      console.log('Hiding ', id)
+      console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
+      document.getElementById(`${id}-title`).classList.add('hidden')
     }
   },
   computed: {
@@ -73,6 +91,11 @@ export default {
   background-color: #302f2c;
   border: 1px solid black;
   border-radius: 3px;
+  visibility: visible;
+  white-space: nowrap;
   transform: translate(-50%);
+}
+.hidden {
+  visibility: hidden;
 }
 </style>
