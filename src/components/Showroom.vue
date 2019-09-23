@@ -13,7 +13,7 @@
           />
           <div
             :id="item.id + '-title'"
-            class="caption hidden"
+            class="titlecaption hidden"
             :title="item.title"
             >
             {{ caption(item.title) }}
@@ -79,7 +79,7 @@ export default {
   text-align: center;
   color: white;
 }
-.caption {
+.titlecaption {
   position: absolute;
   bottom: 1px;
   left: 50%;
