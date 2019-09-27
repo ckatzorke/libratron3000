@@ -4,7 +4,8 @@
       <v-col v-for="item in collection" :key="item.id" cols="12" xs="1" sm="4" md="3" lg="2">
         <div class="thumbnailcontainer">
           <img
-            :src="coverBig(item.cover)"
+            :data-src="coverBig(item.cover)"
+            class="lozad"
             height="262px"
             width="185px"
             :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
@@ -24,8 +25,11 @@
   </v-container>
 </template>
 <script>
+import lozad from 'lozad'
 import { coverBig } from '@/service/igdb.js'
 import { prettyDate } from '@/service/utils.js'
+
+let observer = null
 
 export default {
   components: {},
@@ -52,13 +56,13 @@ export default {
       return title
     },
     showTitle(id) {
-      console.log('Showing ', id)
-      console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
+      // console.log('Showing ', id)
+      // console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
       document.getElementById(`${id}-title`).classList.remove('hidden')
     },
     hideTitle(id) {
-      console.log('Hiding ', id)
-      console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
+      // console.log('Hiding ', id)
+      // console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
       document.getElementById(`${id}-title`).classList.add('hidden')
     }
   },
@@ -70,7 +74,10 @@ export default {
       return this.$store.getters.getCollection
     }
   },
-  created() {}
+  mounted() {
+    observer = lozad()
+    observer.observe()
+  }
 }
 </script>
 <style>
