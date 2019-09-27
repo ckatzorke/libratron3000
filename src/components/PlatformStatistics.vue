@@ -1,13 +1,10 @@
 <template>
   <div>
-    <lib-doughnut :chartdata="platformStats" />
   </div>
 </template>
 <script>
-import Doughnut from '@/components/Doughnut'
 export default {
   components: {
-    'lib-doughnut': Doughnut
   },
   data() {
     return {
