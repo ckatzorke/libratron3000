@@ -182,7 +182,7 @@
                   v-model="game.rating"
                   background-color="yellow lighten-3"
                   color="yellow"
-                  large
+                  dense
                   hover
                   length="10"
                 ></v-rating>
