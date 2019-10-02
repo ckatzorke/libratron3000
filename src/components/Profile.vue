@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row wrap v-if="loggedIn" justify-space-around >
-      <v-flex xs12  >
+      <v-flex xs12 sm2 >
         <v-card class="text-center pa-1 ma-3">
           <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
@@ -31,7 +31,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 sm2>
+      <v-flex xs6 sm2>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -256,7 +256,6 @@ export default {
       }
       // sort and select top 3
       let topPlatforms = platforms.sort((a, b) => b[1] - a[1]).slice(0, 4)
-      debugger
       return topPlatforms
     }
   },
