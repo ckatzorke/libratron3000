@@ -1,30 +1,40 @@
 <template>
-  <div id="chart">Bla
-  </div>
+  <div id="chart"></div>
 </template>
 <script>
 import ApexCharts from 'apexcharts'
 
 let options = {
   chart: {
-    type: 'line'
+    type: 'pie'
   },
-  series: [{
-    name: 'sales',
-    data: [30,40,35,50,49,60,70,91,125]
-  }],
-  xaxis: {
-    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-  }
+  theme: {
+    mode: 'dark'
+  },
+  legend: {
+    show: true
+  },
+  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+  series: [44, 55, 13, 43, 22],
+  responsive: [
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200
+        },
+        legend: {
+          show: false
+        }
+      }
+    }
+  ]
 }
 
-
 export default {
-  components: {
-  },
+  components: {},
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
     platformStats() {
@@ -39,12 +49,13 @@ export default {
           return {
             ...acc
           }
-        }, {}
-        )
+        }, {})
       let data = {
-        datasets: [{
-          data: []
-        }],
+        datasets: [
+          {
+            data: []
+          }
+        ],
         // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: []
       }
@@ -57,10 +68,9 @@ export default {
     }
   },
   mounted() {
-    var chart = new ApexCharts(document.querySelector("#chart"), options)
+    var chart = new ApexCharts(document.querySelector('#chart'), options)
 
     chart.render()
-
   }
 }
 </script>
