@@ -1,7 +1,9 @@
 import 'vuetify/dist/vuetify.min.css'
+import 'pretty-checkbox/dist/pretty-checkbox.min.css'
 
 import Vue from 'vue'
 import vuetify from '@/plugins/vuetify' // path to vuetify export
+import PrettyCheckbox from 'pretty-checkbox-vue'
 import VueResource from 'vue-resource'
 import App from './App.vue'
 import { router } from './router'
@@ -23,6 +25,7 @@ firebase.initializeApp(config)
 // initialize Vue
 Vue.config.productionTip = false
 Vue.use(VueResource)
+Vue.use(PrettyCheckbox)
 
 new Vue({
   vuetify,

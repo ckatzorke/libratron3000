@@ -27,7 +27,7 @@
       <v-flex xs9 sm6 md7 style="cursor: pointer" @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Title</div>
         <div :class="{ 'grey--text': isSold(item) }">
-          {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>
+          {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>&nbsp;<v-icon small>{{ isFavorite(item) }}</v-icon>
           <span v-if="isSold(item)"><strong>&nbsp;sold at {{ prettyDate(item.sellDate) }}</strong></span>
         </div>
         <div v-if="item.rating">
@@ -88,6 +88,14 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title>Details</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item @click="handleFavorite(item)">
+                    <v-list-item-icon>
+                      <v-icon>favorite</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Favorite</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item @click="linkWithIgdb(item)">
@@ -240,6 +248,16 @@ export default {
         return true
       }
       return false
+    },
+    isFavorite(item) {
+      if (item.favorite) {
+        return 'favorite'
+      }
+      return ''
+    },
+    handleFavorite(game) {
+      game.favorite = !game.favorite
+      this.$store.dispatch('updateGame', { id: game.id, values: game })
     }
   },
   computed: {

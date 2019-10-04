@@ -93,7 +93,7 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs12 md12 lg5 px-1>
+        <v-flex xs11 md11 lg5 px-1>
           <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
           <v-label>
             <v-rating
@@ -106,11 +106,13 @@
             ></v-rating>
           </v-label>
         </v-flex>
-        <v-flex xs12 md12 lg1 px-1>
-          <v-checkbox
-            v-model="game.hundredpercent"
-            label="100%"
-          ></v-checkbox>
+        <v-flex xs1 md1 lg1 px-1>
+          <div class="hidden-xs-only caption grey--text text--darken-1">Favorite</div>
+          <p-check class="p-icon p-plain p-bigger" color="danger-o" toggle v-model="game.favorite">
+              <i slot="extra" class="icon mdi mdi-heart"></i>
+              <i slot="off-extra" class="icon mdi mdi-heart-outline"></i>
+              <label slot="off-label"></label>
+          </p-check>
         </v-flex>
         <v-flex xs12 px-1>
           <v-combobox
@@ -161,6 +163,7 @@
 </template>
 
 <script>
+import PrettyCheck from 'pretty-checkbox-vue/check'
 import { format } from 'date-fns'
 import firebase from 'firebase/app'
 import SearchResultPopup from '@/components/SearchResultPopup'
@@ -171,6 +174,7 @@ import { coverBig } from '@/service/igdb'
 export default {
   props: ['id'],
   components: {
+    'p-check': PrettyCheck,
     'lib-searchresultpopup': SearchResultPopup
   },
   data() {
