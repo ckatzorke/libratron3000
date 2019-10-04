@@ -93,7 +93,7 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs12 md12 lg6 px-1>
+        <v-flex xs12 md12 lg5 px-1>
           <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
           <v-label>
             <v-rating
@@ -105,6 +105,12 @@
               length="10"
             ></v-rating>
           </v-label>
+        </v-flex>
+        <v-flex xs12 md12 lg1 px-1>
+          <v-checkbox
+            v-model="game.hundredpercent"
+            label="100%"
+          ></v-checkbox>
         </v-flex>
         <v-flex xs12 px-1>
           <v-combobox

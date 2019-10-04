@@ -9,7 +9,7 @@
       v-for="item in displayCollection"
       :key="item.id">
       <!--thumbnail, micro on sm, thumb on sm and up -->
-      <v-flex hidden-xs-only sm2 md1>
+      <v-flex hidden-xs-only sm2 md1 @click="showDetails(item.id)">
         <div class="thumbnail">
           <img
             :src="thumbnail(item.cover)" height="90px" width="90px"
@@ -20,11 +20,11 @@
           </div>
         </div>
       </v-flex>
-      <v-flex hidden-sm-and-up xs2>
+      <v-flex hidden-sm-and-up xs2 @click="showDetails(item.id)">
         <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
       </v-flex>
       <!-- Title, completed and rating -->
-      <v-flex xs9 sm6 md7 @click="showDetails(item.id)" style="cursor: pointer">
+      <v-flex xs9 sm6 md7 style="cursor: pointer" @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Title</div>
         <div :class="{ 'grey--text': isSold(item) }">
           {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>
@@ -51,12 +51,12 @@
         </div>
       </v-flex>
       <!-- purchase date, hidden on xs -->
-      <v-flex hidden-xs-only sm1>
+      <v-flex hidden-xs-only sm1 @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Purchased</div>
         <div :class="{ 'grey--text': isSold(item) }">{{ prettyDate(item.buydate) }}</div>
       </v-flex>
       <!-- Platform, hidden on xs -->
-      <v-flex hidden-xs-only sm2>
+      <v-flex hidden-xs-only sm2 @click="showDetails(item.id)">
         <div class="hidden-xs-only text-xs-right caption grey--text">Platform</div>
         <div
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
