@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row wrap v-if="loggedIn" justify-space-around >
-      <v-flex xs12 sm2 >
+      <v-flex xs12 >
         <v-card class="text-center pa-1 ma-3">
           <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
