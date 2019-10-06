@@ -1,8 +1,42 @@
 <template>
   <v-container grid-list-xs>
     <lib-searchresultpopup :searchResults="searchResults" :show="showSearchResults" @entrySelected="selectSearchEntry"></lib-searchresultpopup>
-    <v-layout row wrap px-2 justify-end>
+    <v-layout row wrap px-2 justify-left>
       <v-flex xs6 >
+        <v-menu
+          bottom
+          origin="center center"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color=""
+              dark
+              small
+              v-on="on"
+            >
+              Sort By
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              @click="sortBy('RATING')"
+            >
+              <v-list-item-title>Rating Desc.</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('NAME')"
+            >
+              <v-list-item-title>Name</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('ID')"
+            >
+              <v-list-item-title>Id</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-flex>
     </v-layout>
     <v-layout row wrap  ma-1
@@ -165,6 +199,9 @@ export default {
     }
   },
   methods: {
+    sortBy(sortOrder) {
+      this.$store.dispatch('sort', sortOrder)
+    },
     prettyDate(timestamp) {
       return prettyDate(timestamp)
     },
