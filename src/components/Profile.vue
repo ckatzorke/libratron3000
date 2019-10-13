@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-layout row wrap v-if="loggedIn" justify-space-around >
-      <v-flex xs12 sm2 >
+    <v-layout row wrap v-if="loggedIn" justify-space-around>
+      <v-flex xs12 >
         <v-card class="text-center pa-1 ma-3">
           <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
@@ -16,13 +16,13 @@
               to="/collection"
               class="my-2"
             >
-              <v-icon>list</v-icon> collection
+              <v-icon>list</v-icon> <span class="hidden-xs-only">Collection</span>
             </v-btn>
             <v-btn
               to="/add"
               class="my-2"
             >
-              <v-icon>add</v-icon> Add Games
+              <v-icon>add</v-icon> <span class="hidden-xs-only">Add Games</span>
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="logout">
@@ -65,6 +65,25 @@
             </div>
             <div class="py-2 text-right display-2 orange--text ">
               {{ addedThisYear }}
+            </div>
+          </div>
+        </v-card>
+      </v-flex>
+       <v-flex xs6 sm2>
+        <v-card class="text-center pa-1 ma-3 fill-height">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-2"
+          ></v-progress-circular>
+          <div v-else>
+            <div class="body-1 text-center">
+              Played {{ thisYear }}
+            </div>
+            <div class="py-2 text-right display-2 orange--text ">
+              {{ playedThisYear }}
             </div>
           </div>
         </v-card>
@@ -222,6 +241,19 @@ export default {
         }
       })
       return added
+    },
+    playedThisYear() {
+      let collection = this.$store.getters.getCollection
+      let played = 0
+      let now = new Date(Date.now())
+      let year = now.getFullYear()
+      collection.forEach(item => {
+        let buydate = toDate(item.buydate)
+        if (buydate.getFullYear() === year && item.rating && item.rating > 0) {
+          played++
+        }
+      })
+      return played
     },
     finishedThisYear() {
       let collection = this.$store.getters.getCollection

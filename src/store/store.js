@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
     collection: null,
     displaySettings: {
       filter: '',
+      sortOrder: 'ID', // ID, NAME, RATING
       page: 1
     },
     platforms
@@ -103,6 +104,9 @@ export const store = new Vuex.Store({
     },
     updateSearchFilter: (state, filtertext) => {
       state.displaySettings.filter = filtertext
+    },
+    updateSortOrder: (state, sortOrder) => {
+      state.displaySettings.sortOrder = sortOrder
     },
     updateDisplayPage: (state, page) => {
       state.displaySettings.page = page
@@ -248,11 +252,43 @@ export const store = new Vuex.Store({
             }
           })
           // sort
-          collection.sort((a, b) => b.number - a.number)
           context.commit('updateCollection', collection)
+          context.dispatch('sort', context.state.displaySettings.sortOrder)
           context.commit('updateLoading', false)
           // context.dispatch('notify', `Added ${changes.length} entries.`)
         })
+    },
+    /**
+     * Sorts the entries according given order
+     */
+    sort: (context, orderBy) => {
+      debugger
+      const sortOrder = orderBy
+      let collection = context.state.collection
+      if (sortOrder === 'NAME') {
+        context.commit('updateSortOrder', sortOrder)
+        collection.sort((a, b) => {
+          if (a.title.toLowerCase() < b.title.toLowerCase()) {
+            return -1
+          }
+          if (a.title > b.title) {
+            return 1
+          }
+          return 0
+        })
+      } else if (sortOrder === 'RATING') {
+        context.commit('updateSortOrder', sortOrder)
+        collection.sort((a, b) => {
+          const ratingA = a.rating ? a.rating : 0
+          const ratingB = b.rating ? b.rating : 0
+          return ratingB - ratingA
+        })
+      } else {
+        // Default is ID
+        context.commit('updateSortOrder', 'NAME')
+        collection.sort((a, b) => b.number - a.number)
+      }
+      context.commit('updateCollection', collection)
     },
     /**
      * Adds the given game to collection

@@ -1,15 +1,49 @@
 <template>
   <v-container grid-list-xs>
     <lib-searchresultpopup :searchResults="searchResults" :show="showSearchResults" @entrySelected="selectSearchEntry"></lib-searchresultpopup>
-    <v-layout row wrap px-2 justify-end>
+    <v-layout row wrap px-2 justify-left>
       <v-flex xs6 >
+        <v-menu
+          bottom
+          origin="center center"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color=""
+              dark
+              small
+              v-on="on"
+            >
+              Sort By
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              @click="sortBy('RATING')"
+            >
+              <v-list-item-title>Rating Desc.</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('NAME')"
+            >
+              <v-list-item-title>Name</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('ID')"
+            >
+              <v-list-item-title>Id</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-flex>
     </v-layout>
     <v-layout row wrap  ma-1
       v-for="item in displayCollection"
       :key="item.id">
       <!--thumbnail, micro on sm, thumb on sm and up -->
-      <v-flex hidden-xs-only sm2 md1>
+      <v-flex hidden-xs-only sm2 md1 @click="showDetails(item.id)">
         <div class="thumbnail">
           <img
             :src="thumbnail(item.cover)" height="90px" width="90px"
@@ -20,14 +54,14 @@
           </div>
         </div>
       </v-flex>
-      <v-flex hidden-sm-and-up xs2>
+      <v-flex hidden-sm-and-up xs2 @click="showDetails(item.id)">
         <div><img :src="micro(item.cover)" height="35px" width="35px"></div>
       </v-flex>
       <!-- Title, completed and rating -->
-      <v-flex xs9 sm6 md7 @click="showDetails(item.id)" style="cursor: pointer">
+      <v-flex xs9 sm6 md7 style="cursor: pointer" @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Title</div>
         <div :class="{ 'grey--text': isSold(item) }">
-          {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>
+          {{ item.title }}&nbsp;<v-icon small>{{ completedIndicator(item.completed, item.hundredpercent) }}</v-icon>&nbsp;<v-icon small>{{ isFavorite(item) }}</v-icon>
           <span v-if="isSold(item)"><strong>&nbsp;sold at {{ prettyDate(item.sellDate) }}</strong></span>
         </div>
         <div v-if="item.rating">
@@ -51,12 +85,12 @@
         </div>
       </v-flex>
       <!-- purchase date, hidden on xs -->
-      <v-flex hidden-xs-only sm1>
+      <v-flex hidden-xs-only sm1 @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Purchased</div>
         <div :class="{ 'grey--text': isSold(item) }">{{ prettyDate(item.buydate) }}</div>
       </v-flex>
       <!-- Platform, hidden on xs -->
-      <v-flex hidden-xs-only sm2>
+      <v-flex hidden-xs-only sm2 @click="showDetails(item.id)">
         <div class="hidden-xs-only text-xs-right caption grey--text">Platform</div>
         <div
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
@@ -88,6 +122,14 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title>Details</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item @click="handleFavorite(item)">
+                    <v-list-item-icon>
+                      <v-icon>favorite</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Favorite</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item @click="linkWithIgdb(item)">
@@ -157,6 +199,9 @@ export default {
     }
   },
   methods: {
+    sortBy(sortOrder) {
+      this.$store.dispatch('sort', sortOrder)
+    },
     prettyDate(timestamp) {
       return prettyDate(timestamp)
     },
@@ -240,6 +285,16 @@ export default {
         return true
       }
       return false
+    },
+    isFavorite(item) {
+      if (item.favorite) {
+        return 'favorite'
+      }
+      return ''
+    },
+    handleFavorite(game) {
+      game.favorite = !game.favorite
+      this.$store.dispatch('updateGame', { id: game.id, values: game })
     }
   },
   computed: {

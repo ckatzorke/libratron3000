@@ -1,13 +1,31 @@
 <template>
   <v-container grid-list-xs>
     <v-row>
-      <v-col v-for="item in collection" :key="item.id" cols="12" xs="1" sm="4" md="3" lg="2">
-        <div class="thumbnailcontainer">
+      <v-col v-for="item in collection" :key="item.id" cols="3" xs="2" sm="3" md="2" lg="2">
+        <div class="thumbnailcontainer hidden-xs-only">
           <img
             :data-src="coverBig(item.cover)"
-            class="lozad"
-            height="262px"
-            width="185px"
+            class="lozad cover"
+            height="182px"
+            width="159px"
+            :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
+            @mouseover="showTitle(item.id)"
+            @mouseout="hideTitle(item.id)"
+          />
+          <div
+            :id="item.id + '-title'"
+            class="titlecaption hidden"
+            :title="item.title"
+            >
+            {{ caption(item.title) }}
+          </div>
+        </div>
+        <div class="thumbnailcontainer hidden-sm-and-up">
+          <img
+            :data-src="coverBig(item.cover)"
+            class="lozad coverxs"
+            height="91px"
+            width="80px"
             :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
             @mouseover="showTitle(item.id)"
             @mouseout="hideTitle(item.id)"
@@ -85,6 +103,20 @@ export default {
   position: relative;
   text-align: center;
   color: white;
+}
+img.cover {
+  display: block;
+  max-width: 159px;
+  max-height: 182px;
+  width: auto;
+  height: auto;
+}
+img.coverxs {
+  display: block;
+  max-width: 80px;
+  max-height: 91px;
+  width: auto;
+  height: auto;
 }
 .titlecaption {
   position: absolute;
