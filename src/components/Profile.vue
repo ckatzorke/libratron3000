@@ -69,7 +69,7 @@
           </div>
         </v-card>
       </v-flex>
-       <v-flex xs6 sm2>
+      <v-flex xs6 sm2>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -84,6 +84,27 @@
             </div>
             <div class="py-2 text-right display-2 orange--text ">
               {{ playedThisYear }}
+            </div>
+          </div>
+        </v-card>
+      </v-flex>
+      <v-flex xs6 sm2>
+        <v-card class="text-center pa-1 ma-3 fill-height">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-2"
+          ></v-progress-circular>
+          <div v-else>
+            <div class="body-1 text-center">
+              Top Games {{ thisYear }}
+            </div>
+            <div class="py-2 text-left orange--text ">
+              <div v-for="t in topGames" :key="t.id">
+                <router-link :to="`/details/${t.id}`">{{ t.title }}</router-link>
+              </div>
             </div>
           </div>
         </v-card>
@@ -258,8 +279,26 @@ export default {
     finishedThisYear() {
       let collection = this.$store.getters.getCollection
       let thisYear = new Date(Date.now()).getFullYear()
-      let finished = collection.filter(item => toDate(item.buydate).getFullYear() === thisYear && item.completed).length
+      let finished = collection
+        .filter(item => item.completiondate)
+        .filter(item => toDate(item.completiondate).getFullYear() === thisYear && item.completed).length
       return finished
+    },
+    topGames() {
+      let collection = this.$store.getters.getCollection
+      let now = new Date(Date.now())
+      let thisYear = now.getFullYear()
+      let top = collection
+        .filter(item => item.completiondate)
+        .filter(item => toDate(item.completiondate).getFullYear() === thisYear && item.completed)
+        .sort((a, b) => {
+          const ratingA = a.rating ? a.rating : 0
+          const ratingB = b.rating ? b.rating : 0
+          return ratingB - ratingA
+        })
+        .slice(0, 5)
+      console.log('Top Games ' + thisYear, top)
+      return top
     },
     unplayed() {
       let collection = this.$store.getters.getCollection
