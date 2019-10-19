@@ -33,7 +33,12 @@
             <v-list-item
               @click="sortBy('ID')"
             >
-              <v-list-item-title>Id</v-list-item-title>
+              <v-list-item-title>Id Desc.</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('PLATFORM')"
+            >
+              <v-list-item-title>Platform</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>

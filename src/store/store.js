@@ -271,7 +271,7 @@ export const store = new Vuex.Store({
           if (a.title.toLowerCase() < b.title.toLowerCase()) {
             return -1
           }
-          if (a.title > b.title) {
+          if (a.title.toLowerCase() > b.title.toLowerCase()) {
             return 1
           }
           return 0
@@ -283,9 +283,20 @@ export const store = new Vuex.Store({
           const ratingB = b.rating ? b.rating : 0
           return ratingB - ratingA
         })
+      } else if (sortOrder === 'PLATFORM') {
+        context.commit('updateSortOrder', sortOrder)
+        collection.sort((a, b) => {
+          if (a.platform.toLowerCase() < b.platform.toLowerCase()) {
+            return -1
+          }
+          if (a.platform.toLowerCase() > b.platform.toLowerCase()) {
+            return 1
+          }
+          return 0
+        })
       } else {
         // Default is ID
-        context.commit('updateSortOrder', 'NAME')
+        context.commit('updateSortOrder', 'ID')
         collection.sort((a, b) => b.number - a.number)
       }
       context.commit('updateCollection', collection)
