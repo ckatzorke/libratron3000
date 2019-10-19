@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { platforms } from '@/service/platforms'
+import { toDate } from '@/service/utils'
 
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -27,7 +28,7 @@ export const store = new Vuex.Store({
     collection: null,
     displaySettings: {
       filter: '',
-      sortOrder: 'ID', // ID, NAME, RATING
+      sortOrder: 'PURCHASE', // ID, NAME, RATING, PLATFORM, PURCHASE
       page: 1
     },
     platforms
@@ -283,6 +284,13 @@ export const store = new Vuex.Store({
           const ratingB = b.rating ? b.rating : 0
           return ratingB - ratingA
         })
+      } else if (sortOrder === 'PURCHASE') {
+        context.commit('updateSortOrder', sortOrder)
+        collection.sort((a, b) => {
+          const pDateA = toDate(a.buydate)
+          const pDateB = toDate(b.buydate)
+          return pDateB.getTime() - pDateA.getTime()
+        })
       } else if (sortOrder === 'PLATFORM') {
         context.commit('updateSortOrder', sortOrder)
         collection.sort((a, b) => {
@@ -294,9 +302,8 @@ export const store = new Vuex.Store({
           }
           return 0
         })
-      } else {
-        // Default is ID
-        context.commit('updateSortOrder', 'ID')
+      } else if (sortOrder === 'ID') {
+        context.commit('updateSortOrder', sortOrder)
         collection.sort((a, b) => b.number - a.number)
       }
       context.commit('updateCollection', collection)

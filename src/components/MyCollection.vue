@@ -31,14 +31,19 @@
               <v-list-item-title>Name</v-list-item-title>
             </v-list-item>
             <v-list-item
-              @click="sortBy('ID')"
+              @click="sortBy('PURCHASE')"
             >
-              <v-list-item-title>Id Desc.</v-list-item-title>
+              <v-list-item-title>Purchase Date Desc.</v-list-item-title>
             </v-list-item>
             <v-list-item
               @click="sortBy('PLATFORM')"
             >
               <v-list-item-title>Platform</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              @click="sortBy('ID')"
+            >
+              <v-list-item-title>Id Desc.</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -90,12 +95,12 @@
         </div>
       </v-flex>
       <!-- purchase date, hidden on xs -->
-      <v-flex hidden-xs-only sm1 @click="showDetails(item.id)">
+      <v-flex hidden-xs-only sm2 @click="showDetails(item.id)">
         <div class="hidden-xs-only caption grey--text">Purchased</div>
         <div :class="{ 'grey--text': isSold(item) }">{{ prettyDate(item.buydate) }}</div>
       </v-flex>
       <!-- Platform, hidden on xs -->
-      <v-flex hidden-xs-only sm2 @click="showDetails(item.id)">
+      <v-flex hidden-xs-only sm1 @click="showDetails(item.id)">
         <div class="hidden-xs-only text-xs-right caption grey--text">Platform</div>
         <div
           :class="`text-xs-right ${shortPlatform(item.platform)}`"
