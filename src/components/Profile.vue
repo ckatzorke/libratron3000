@@ -31,7 +31,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -50,7 +50,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -69,7 +69,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -88,7 +88,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -109,7 +109,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -128,7 +128,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -147,7 +147,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -166,7 +166,7 @@
           </div>
         </v-card>
       </v-flex>
-      <v-flex xs6 sm2>
+      <v-flex xs12 sm4>
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"

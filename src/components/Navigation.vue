@@ -56,6 +56,7 @@
         align-center
         justify-center
         style="max-width: 650px"
+        v-if="loggedIn"
       >
         <v-text-field
           append-icon-cb="clearSearch"
