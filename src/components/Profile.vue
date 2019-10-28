@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-layout row wrap v-if="loggedIn" justify-space-around>
-      <v-flex xs12 >
+  <v-container v-if="loggedIn">
+    <v-row>
+      <v-col xs="12">
         <v-card class="text-center pa-1 ma-3">
           <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
@@ -30,8 +30,10 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col xs="12" sm="6">
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -41,94 +43,40 @@
             class="my-2"
           ></v-progress-circular>
           <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
               # of Games
             </div>
-            <div class="py-2 text-right display-2 orange--text ">
+            <div class="py-2 text-right display-1 orange--text ">
               {{ collectionCount }}
             </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
-        <v-card class="text-center pa-1 ma-3 fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
+              Unplayed
+            </div>
+            <div class="py-2 text-right display-1 orange--text ">
+              {{ unplayed }}
+            </div>
+            <div class="body-1 text-center font-weight-bold">
               Added {{ thisYear }}
             </div>
-            <div class="py-2 text-right display-2 orange--text ">
+            <div class="py-2 text-right display-1 orange--text ">
               {{ addedThisYear }}
             </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
-        <v-card class="text-center pa-1 ma-3 fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
               Played {{ thisYear }}
             </div>
-            <div class="py-2 text-right display-2 orange--text ">
+            <div class="py-2 text-right display-1 orange--text ">
               {{ playedThisYear }}
             </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
-        <v-card class="text-center pa-1 ma-3 fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else>
-            <div class="body-1 text-center">
-              Top Games {{ thisYear }}
-            </div>
-            <div class="py-2 text-left orange--text ">
-              <div v-for="t in topGames" :key="t.id">
-                <router-link :to="`/details/${t.id}`">{{ t.title }}</router-link>
-              </div>
-            </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
-        <v-card class="text-center pa-1 ma-3 fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
               Added this month
             </div>
-            <div class="py-2 text-right display-2 orange--text ">
+            <div class="py-2 text-right display-1 orange--text ">
               {{ addedThisMonth }}
             </div>
           </div>
         </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
+      </v-col>
+      <v-col xs="12" sm="6">
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -138,16 +86,23 @@
             class="my-2"
           ></v-progress-circular>
           <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
               Finished {{ thisYear }}
             </div>
-            <div class="py-2 text-right display-2 orange--text ">
-              {{ finishedThisYear }}
+            <div class="py-2 text-right display-1 orange--text ">
+              {{ finishedThisYear.length }}
+            </div>
+            <div class="text-left">
+              <div
+                v-for="finished in finishedThisYear"
+                :key="finished.id">
+                {{ finished.title }} ({{ formatDate(finished.completiondate) }}) - {{ finished.rating }}/10
+              </div>
             </div>
           </div>
         </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
+      </v-col>
+      <v-col xs="12" sm="6">
         <v-card class="text-center pa-1 ma-3 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -157,31 +112,12 @@
             class="my-2"
           ></v-progress-circular>
           <div v-else>
-            <div class="body-1 text-center">
-              Unplayed
-            </div>
-            <div class="py-2 text-right display-2 orange--text ">
-              {{ unplayed }}
-            </div>
-          </div>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm4>
-        <v-card class="text-center pa-1 ma-3 fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else>
-            <div class="body-1 text-center">
+            <div class="body-1 text-center font-weight-bold">
               Top platforms
             </div>
             <div
               v-for="(platform) in platforms"
-              :key="platform"
+              :key="platform[0]"
               class="platformcontainer px-2 text-right orange--text">
               <span class="platformleft">
                 <span class="hidden-lg-and-up">{{ short(platform[0]) }}</span>
@@ -191,9 +127,33 @@
             </div>
           </div>
         </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout v-else>
+      </v-col>
+      <v-col xs="12" sm="6">
+        <v-card class="text-center pa-1 ma-3 fill-height">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-2"
+          ></v-progress-circular>
+          <div v-else>
+            <div class="body-1 text-center font-weight-bold">
+              Top genres
+            </div>
+            <div
+              v-for="(genre) in genres"
+              :key="genre[0]"
+              class="text-left px-2">
+              <span class="">{{ genre[0] }}</span>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-else>
+    <v-layout>
       <v-flex xs12 justify-space-around>
         <v-card>
           <v-card-title primary-title>
@@ -222,12 +182,14 @@
   </v-container>
 </template>
 <script>
-import { toDate } from '@/service/utils.js'
+import { toDate, prettyDate } from '@/service/utils.js'
 import { shortPlatform } from '@/service/platforms.js'
 
 export default {
   data: () => ({
   }),
+  components: {
+  },
   computed: {
     loggedIn() { return this.$store.getters.loggedIn },
     profilePicture() { return this.$store.getters.getUser.photoURL },
@@ -281,24 +243,13 @@ export default {
       let thisYear = new Date(Date.now()).getFullYear()
       let finished = collection
         .filter(item => item.completiondate)
-        .filter(item => toDate(item.completiondate).getFullYear() === thisYear && item.completed).length
-      return finished
-    },
-    topGames() {
-      let collection = this.$store.getters.getCollection
-      let now = new Date(Date.now())
-      let thisYear = now.getFullYear()
-      let top = collection
-        .filter(item => item.completiondate)
         .filter(item => toDate(item.completiondate).getFullYear() === thisYear && item.completed)
         .sort((a, b) => {
           const ratingA = a.rating ? a.rating : 0
           const ratingB = b.rating ? b.rating : 0
           return ratingB - ratingA
         })
-        .slice(0, 5)
-      console.log('Top Games ' + thisYear, top)
-      return top
+      return finished
     },
     unplayed() {
       let collection = this.$store.getters.getCollection
@@ -325,12 +276,43 @@ export default {
           platforms.push([platform, gamesByPlatforms[platform]])
         }
       }
-      // sort and select top 3
+      // sort and select top 4
       let topPlatforms = platforms.sort((a, b) => b[1] - a[1]).slice(0, 4)
       return topPlatforms
+    },
+    genres() {
+      let gamesByGenre = this.$store.getters.getCollection
+        .map(game => game.genres)
+        .flatMap(genres => genres)
+        .reduce((acc, current) => {
+          // console.log(`reducing. adding ${current}`, acc)
+          if (!acc[current]) {
+            acc[current] = 0
+          }
+          acc[current] += 1
+          return {
+            ...acc
+          }
+        }, {}
+        )
+      let genres = []
+      // transform object to array for sorting
+      for (var genre in gamesByGenre) {
+        if (gamesByGenre.hasOwnProperty(genre)) {
+          genres.push([genre, gamesByGenre[genre]])
+        }
+      }
+      // sort and select top 10
+      let topGenres = genres.sort((a, b) => b[1] - a[1]).slice(0, 10)
+      console.log('Genres', genres)
+      console.log('Top Genres', topGenres)
+      return topGenres
     }
   },
   methods: {
+    formatDate(timestamp) {
+      return prettyDate(timestamp)
+    },
     short(platform) {
       return shortPlatform(platform)
     },
