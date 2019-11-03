@@ -305,11 +305,27 @@ export default {
     },
     selectSearchEntry(searchEntry) {
       console.log('Searchentry', searchEntry)
+      let involvedCompanies = searchEntry.involved_companies
+      let developer = ''
+      let publisher = ''
+      debugger
+      if (involvedCompanies && involvedCompanies.length > 0) {
+        let devs = involvedCompanies.filter(c => c.developer)
+        if (devs.length > 0) {
+          developer = devs[0].company.name
+        }
+        let pubs = involvedCompanies.filter(c => !c.developer)
+        if (pubs.length > 0) {
+          publisher = pubs[0].company.name
+        }
+      }
       let newGame = {
         ...this.game,
         title: searchEntry.name,
         description: searchEntry.summary,
         platform: searchEntry.platforms ? searchEntry.platforms.map(p => p.name)[0] : '',
+        publisher: publisher,
+        developer: developer,
         genres: searchEntry.genres ? searchEntry.genres.map(g => g.name) : [],
         releaseDate: searchEntry.first_release_date ? new Date(searchEntry.first_release_date * 1000) : new Date('2000-0-01'),
         igdbId: searchEntry.id,
