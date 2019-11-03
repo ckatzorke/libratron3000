@@ -2,7 +2,7 @@
   <v-container v-if="loggedIn">
     <v-row>
       <v-col xs="12">
-        <v-card class="text-center pa-1 ma-3">
+        <v-card class="text-center pa-1">
           <v-avatar size="125" class="text-center ma-2 grey lighten-2">
             <img :src="profilePicture"/>
           </v-avatar>
@@ -34,7 +34,7 @@
     </v-row>
     <v-row>
       <v-col xs="12" sm="6">
-        <v-card class="text-center pa-1 ma-3 fill-height">
+        <v-card class="text-center pa-1 fill-height">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -42,7 +42,7 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <div v-else>
+          <div v-else class="ma-3">
             <div class="body-1 text-center font-weight-bold">
               # of Games
             </div>
@@ -77,7 +77,7 @@
         </v-card>
       </v-col>
       <v-col xs="12" sm="6">
-        <v-card class="text-center pa-1 ma-3 fill-height">
+        <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -85,25 +85,27 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <div v-else>
+          <div v-else class="ma-3">
             <div class="body-1 text-center font-weight-bold">
               Finished {{ thisYear }}
             </div>
             <div class="py-2 text-right display-1 orange--text ">
               {{ finishedThisYear.length }}
             </div>
-            <div class="text-left">
-              <div
-                v-for="finished in finishedThisYear"
-                :key="finished.id">
-                {{ finished.title }} ({{ formatDate(finished.completiondate) }}) - {{ finished.rating }}/10
-              </div>
+            <div
+              v-for="(finished) in finishedThisYear"
+              :key="finished.id"
+              class="profilecontainer px-2 text-right ">
+              <span class="profileleft">
+                <span>{{ finished.title }} ({{ formatDate(finished.completiondate) }})</span>
+              </span>
+              <span class="profileright orange--text">{{ finished.rating }}/10</span>
             </div>
           </div>
         </v-card>
       </v-col>
       <v-col xs="12" sm="6">
-        <v-card class="text-center pa-1 ma-3 fill-height">
+        <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -111,25 +113,25 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <div v-else>
+          <div v-else  class="ma-3">
             <div class="body-1 text-center font-weight-bold">
               Top platforms
             </div>
             <div
               v-for="(platform) in platforms"
               :key="platform[0]"
-              class="platformcontainer px-2 text-right orange--text">
-              <span class="platformleft">
+              class="profilecontainer px-2 text-right ">
+              <span class="profileleft">
                 <span class="hidden-lg-and-up">{{ short(platform[0]) }}</span>
-                <span class="hidden-md-and-down">{{ platform[0] }}</span>
+                <span class="hidden-md-and-down ">{{ platform[0] }}</span>
               </span>
-              <span class="platformright">{{ platform[1] }}</span>
+              <span class="profileright orange--text">{{ platform[1] }}</span>
             </div>
           </div>
         </v-card>
       </v-col>
       <v-col xs="12" sm="6">
-        <v-card class="text-center pa-1 ma-3 fill-height">
+        <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
             :size="70"
@@ -137,7 +139,7 @@
             indeterminate
             class="my-2"
           ></v-progress-circular>
-          <div v-else>
+          <div v-else class="ma-3">
             <div class="body-1 text-center font-weight-bold">
               Top genres
             </div>
@@ -329,15 +331,15 @@ export default {
 }
 </script>
 <style>
-.platformcontainer {
+.profilecontainer {
   width: 100%;
 }
-.platformleft {
+.profileleft {
   width: 80%;
   text-align: left;
   float: left;
 }
-.platformright {
+.profileright {
   width: 20%;
   text-align: right;
   float: right;

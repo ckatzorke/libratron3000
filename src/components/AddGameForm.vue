@@ -308,7 +308,6 @@ export default {
       let involvedCompanies = searchEntry.involved_companies
       let developer = ''
       let publisher = ''
-      debugger
       if (involvedCompanies && involvedCompanies.length > 0) {
         let devs = involvedCompanies.filter(c => c.developer)
         if (devs.length > 0) {
