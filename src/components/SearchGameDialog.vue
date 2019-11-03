@@ -77,6 +77,7 @@
 </template>
 <script>
 import { format } from 'date-fns'
+import { coverBig } from '@/service/igdb.js'
 
 export default {
   data() {
@@ -104,9 +105,7 @@ export default {
     },
     coverImage(cover) {
       if (cover && cover.image_id) {
-        return `https://images.igdb.com/igdb/image/upload/t_cover_big/${
-          cover.image_id
-        }.png`
+        return coverBig(cover.image_id)
       }
       return '' // todo placeholder
     },

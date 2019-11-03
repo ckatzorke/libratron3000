@@ -83,7 +83,7 @@ class IgdbProxy {
 
   async getGameByName(name) {
     const response = await this.client.post('/games', `
-            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date;
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name;
             limit 5;
             where name = "${name}";`)
     return response.data
@@ -91,7 +91,7 @@ class IgdbProxy {
 
   async getGameBySlug(slug) {
     const response = await this.client.post('/games', `
-            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date;
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name;
             limit 1;
             where slug = "${slug.toLowerCase()}";`)
     return response.data
@@ -99,7 +99,7 @@ class IgdbProxy {
 
   async searchGame(searchString, limit = 10) {
     const response = await this.client.post('/search', `
-            fields game.name, game.url, game.summary, game.updated_at, game.cover.image_id, game.platforms.abbreviation, game.platforms.name, game.platforms.slug, game.genres.name, game.first_release_date;
+            fields game.name, game.url, game.summary, game.updated_at, game.cover.image_id, game.platforms.abbreviation, game.platforms.name, game.platforms.slug, game.genres.name, game.first_release_date, game.involved_companies.developer, game.involved_companies.company.name;
             limit ${limit};
             search "${searchString}"; where game != null;`)
     const result = []
