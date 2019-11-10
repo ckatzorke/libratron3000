@@ -33,7 +33,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col xs="12" sm="6">
+      <v-col>
         <v-card class="text-center pa-1 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -76,7 +76,9 @@
           </div>
         </v-card>
       </v-col>
-      <v-col xs="12" sm="6">
+    </v-row>
+    <v-row>
+      <v-col>
         <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
@@ -104,7 +106,9 @@
           </div>
         </v-card>
       </v-col>
-      <v-col xs="12" sm="6">
+    </v-row>
+    <v-row>
+      <v-col>
         <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
@@ -122,15 +126,17 @@
               :key="platform[0]"
               class="profilecontainer px-2 text-right ">
               <span class="profileleft">
-                <span class="hidden-lg-and-up">{{ short(platform[0]) }}</span>
-                <span class="hidden-md-and-down ">{{ platform[0] }}</span>
+                <span class="hidden-sm-and-up">{{ short(platform[0]) }}</span>
+                <span class="hidden-xs-only ">{{ platform[0] }}</span>
               </span>
               <span class="profileright orange--text">{{ platform[1] }}</span>
             </div>
           </div>
         </v-card>
       </v-col>
-      <v-col xs="12" sm="6">
+    </v-row>
+    <v-row>
+      <v-col>
         <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
