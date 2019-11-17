@@ -33,7 +33,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col xs="12">
         <v-card class="text-center pa-1 fill-height">
           <v-progress-circular
             v-if="loading"
@@ -78,37 +78,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <v-card class="text-center pa-1  fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else class="ma-3">
-            <div class="body-1 text-center font-weight-bold">
-              Finished {{ thisYear }}
-            </div>
-            <div class="py-2 text-right display-1 orange--text ">
-              {{ finishedThisYear.length }}
-            </div>
-            <div
-              v-for="(finished) in finishedThisYear"
-              :key="finished.id"
-              class="profilecontainer px-2 text-right ">
-              <span class="profileleft">
-                <span>{{ finished.title }} ({{ formatDate(finished.completiondate) }})</span>
-              </span>
-              <span class="profileright orange--text">{{ finished.rating }}/10</span>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
+      <v-col xs="12">
         <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
@@ -136,7 +106,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col  xs="12">
         <v-card class="text-center pa-1  fill-height">
           <v-progress-circular
             v-if="loading"
@@ -154,6 +124,36 @@
               :key="genre[0]"
               class="text-left px-2">
               <span class="">{{ genre[0] }}</span>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col xs="12">
+        <v-card class="text-center pa-1  fill-height">
+          <v-progress-circular
+            v-if="loading"
+            :size="70"
+            :width="7"
+            indeterminate
+            class="my-2"
+          ></v-progress-circular>
+          <div v-else class="ma-3">
+            <div class="body-1 text-center font-weight-bold">
+              Finished {{ thisYear }}
+            </div>
+            <div class="py-2 text-right display-1 orange--text ">
+              {{ finishedThisYear.length }}
+            </div>
+            <div
+              v-for="(finished) in finishedThisYear"
+              :key="finished.id"
+              class="profilecontainer px-2 text-right ">
+              <span class="profileleft">
+                <span>{{ finished.title }} ({{ formatDate(finished.completiondate) }})</span>
+              </span>
+              <span class="profileright orange--text">{{ finished.rating }}/10</span>
             </div>
           </div>
         </v-card>
