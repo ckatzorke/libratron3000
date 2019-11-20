@@ -160,34 +160,47 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container v-else>
-    <v-layout>
-      <v-flex xs12 justify-space-around>
-        <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h1 class="headline">Please sign in to use Libratron 3000&trade;</h1>
-              <p class="body-2 grey--text py-2">
-                <strong>Libratron3000&trade;</strong> is <a href="https://github.com/ckatzorke/libratron3000" target="_blank" rel="noopener">my little side project</a>, that helps you keep track of your games collection, or - like in my case - your pile of shame.<br/>
-                See also <a href="https://piletron3000.katzorke.io/" target="_blank" rel="noopener">Piletron3000&trade;</a> to keep track of your pile of shame.
-              </p>
-              <p class="body-2 grey--text py-2">
-                Libratron3000&trade; uses data from the Internet Games Database, when adding a new game to your database, you are able to search for this game in the IGDB to link these entries.
-                <a href="https://www.igdb.com/" rel="noopener" target="_blank">Check out their great work!</a></p>
-              <p class="subheading  py-2">In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</p>
-            </div>
-          </v-card-title>
+  <div v-else>
+    <v-container>
+      <v-layout>
+        <v-flex xs12 justify-space-around>
+          <v-card>
+            <v-card-title primary-title>
+              <div>
+                <h1 class="headline">Welcome to Libratron 3000&trade;</h1>
+                <p class="body-2 grey--text  py-2">In order to use Libratron3000&trade;, you need to sign in (using Google sign in).</p>
+              </div>
+            </v-card-title>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn  @click="login">
-              Login<v-icon right>perm_identity</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+            <div class="text-center">
+              <img src="/assets/btn_google_signin_light_normal_web.png" @click="login" class="hand"/>
+            </div>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-container>
+      <v-layout>
+        <v-flex xs12 justify-space-around>
+          <v-card>
+            <v-card-title primary-title>
+              <div>
+                <h1 class="headline">What is Libratron 3000&trade;?</h1>
+                <p class="body-2 grey--text py-2">
+                  <strong>Libratron3000&trade;</strong> is <a href="https://github.com/ckatzorke/libratron3000" target="_blank" rel="noopener">my little side project</a>, that helps you keep track of your games collection, or - like in my case - your pile of shame.<br/>
+                  See also <a href="https://piletron3000.katzorke.io/" target="_blank" rel="noopener">Piletron3000&trade;</a> to keep track of your pile of shame.
+                </p>
+                <p class="body-2 grey--text py-2">
+                  Libratron3000&trade; uses data from the Internet Games Database, when adding a new game to your database, you are able to search for this game in the IGDB to link these entries.
+                  <a href="https://www.igdb.com/" rel="noopener" target="_blank">Check out their great work!</a></p>
+              </div>
+            </v-card-title>
+
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
 import { toDate, prettyDate } from '@/service/utils.js'
@@ -337,6 +350,9 @@ export default {
 }
 </script>
 <style>
+.hand {
+  cursor: pointer;
+}
 .profilecontainer {
   width: 100%;
 }
