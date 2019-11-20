@@ -70,7 +70,7 @@
           hide-details
         ></v-text-field>
       </v-layout>
-      <v-toolbar-items>
+      <v-toolbar-items class="hidden-xs-only">
         <v-btn text to="/" class="px-3">
           <span v-if="loggedIn">
             <img :src="profilePicture" height="40" style="border-radius: 50%"/>
