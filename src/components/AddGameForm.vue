@@ -15,8 +15,19 @@
                 @input="searchForGames"
               ></v-text-field>
             </v-flex>
-            <v-flex xs12 v-if="searchResults.length > 0">
+            <v-flex xs12 v-if="searchResults.length > 0 && !searching">
               <lib-searchresult :searchResults="searchResults" @entrySelected="selectSearchEntry"></lib-searchresult>
+            </v-flex>
+            <v-flex xs12 v-else class="font-weight-light">
+              <div v-if="game.title.length > 0 && !searching && !selected"><i>Nothing found...</i></div>
+              <div v-if="game.title.length === 0 && !searching"><i>Start typing a title to search for a game...</i></div>
+            </v-flex>
+            <v-flex xs-12 v-if="searching">
+              <div>&nbsp;
+                <v-progress-linear
+                  indeterminate
+                ></v-progress-linear>
+              </div>
             </v-flex>
             <v-flex xs12>
               <v-textarea
@@ -252,6 +263,8 @@ export default {
         ...blankGame,
         buydate: firebase.firestore.Timestamp.fromDate(new Date())
       },
+      searching: false,
+      selected: false,
       searchResults: [],
       releasedateMenu: false,
       formattedReleasedate: null,
@@ -271,6 +284,7 @@ export default {
       this.formattedReleasedate = null
       this.formattedCompletiondate = null
       this.formattedPurchasedate = formatDate(new Date())
+      this.selected = false
     },
     searchForGames() {
       clearInterval(searchIntervalId)
@@ -278,13 +292,16 @@ export default {
         clearInterval(searchIntervalId)
         console.log('searching for ', this.game.title)
         if (this.game.title) {
+          this.searching = true
           // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
           this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
           // this.$http
           //  .get('/assets/results.json')
             .then(res => {
+              this.searching = false
               if (res.status !== 200) {
                 console.error('Error from res ', res)
+                this.$store.dispatch('notify', `Error searching for games (Status=${res.status}).`)
               } else {
                 console.log('Search response ', res)
                 this.searchResults = res.data.result
@@ -292,12 +309,15 @@ export default {
             })
             .catch(e => {
               console.error(e)
+              this.$store.dispatch('notify', `Error searching for games ${e}.`)
+              this.searching = false
             })
         }
       }, 700)
     },
     selectSearchEntry(searchEntry) {
       console.log('Searchentry', searchEntry)
+      this.selected = true
       let involvedCompanies = searchEntry.involved_companies
       let developer = ''
       let publisher = ''
