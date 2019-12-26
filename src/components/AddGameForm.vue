@@ -218,6 +218,7 @@ import firebase from 'firebase/app'
 import format from 'date-fns/format'
 import { setInterval, clearInterval } from 'timers'
 import SearchResult from '@/components/IgdbSearchResult'
+import { formatDate } from '@/service/utils'
 
 const blankGame = {
   number: 0,
@@ -247,12 +248,15 @@ export default {
   },
   data() {
     return {
-      game: blankGame,
+      game: {
+        ...blankGame,
+        buydate: firebase.firestore.Timestamp.fromDate(new Date())
+      },
       searchResults: [],
       releasedateMenu: false,
       formattedReleasedate: null,
       purchasedateMenu: false,
-      formattedPurchasedate: null,
+      formattedPurchasedate: formatDate(new Date()),
       completiondateMenu: false,
       formattedCompletiondate: null
     }
@@ -262,22 +266,11 @@ export default {
       console.log('ADD')
       // convert dates
       let game2Add = this.game
-      /**
-      if (game2Add.buydate) {
-        game2Add.buydate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.buydate))
-      }
-      if (game2Add.releaseDate) {
-        game2Add.releaseDate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.releaseDate))
-      }
-      if (game2Add.completiondate) {
-        game2Add.completiondate = firebase.firestore.Timestamp.fromDate(new Date(game2Add.completiondate))
-      }
-      */
       this.$store.dispatch('addGame', game2Add)
       this.game = blankGame
       this.formattedReleasedate = null
       this.formattedCompletiondate = null
-      this.formattedPurchasedate = null
+      this.formattedPurchasedate = formatDate(new Date())
     },
     searchForGames() {
       clearInterval(searchIntervalId)
