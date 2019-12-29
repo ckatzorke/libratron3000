@@ -56,23 +56,14 @@
               {{ unplayed }}
             </div>
             <div class="body-1 text-center font-weight-bold">
-              Added {{ thisYear }}
-            </div>
-            <div class="py-2 text-right display-1 orange--text ">
-              {{ addedThisYear }}
-            </div>
-            <div class="body-1 text-center font-weight-bold">
-              Played {{ thisYear }}
-            </div>
-            <div class="py-2 text-right display-1 orange--text ">
-              {{ playedThisYear }}
-            </div>
-            <div class="body-1 text-center font-weight-bold">
               Added this month
             </div>
             <div class="py-2 text-right display-1 orange--text ">
               {{ addedThisMonth }}
             </div>
+            <diV>
+              <lib-added-year :year="thisYear"></lib-added-year>
+            </diV>
           </div>
         </v-card>
       </v-col>
@@ -129,36 +120,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col xs="12">
-        <v-card class="text-center pa-1  fill-height">
-          <v-progress-circular
-            v-if="loading"
-            :size="70"
-            :width="7"
-            indeterminate
-            class="my-2"
-          ></v-progress-circular>
-          <div v-else class="ma-3">
-            <div class="body-1 text-center font-weight-bold">
-              Finished {{ thisYear }}
-            </div>
-            <div class="py-2 text-right display-1 orange--text ">
-              {{ finishedThisYear.length }}
-            </div>
-            <div
-              v-for="(finished) in finishedThisYear"
-              :key="finished.id"
-              class="profilecontainer px-2 text-right ">
-              <span class="profileleft">
-                <span>{{ finished.title }} ({{ formatDate(finished.completiondate) }})</span>
-              </span>
-              <span class="profileright orange--text">{{ finished.rating }}/10</span>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
   </v-container>
   <div v-else>
     <v-container>
@@ -205,11 +166,12 @@
 <script>
 import { toDate, prettyDate } from '@/service/utils.js'
 import { shortPlatform } from '@/service/platforms.js'
-
+import YearStats from '@/components/YearStats.vue'
 export default {
   data: () => ({
   }),
   components: {
+    'lib-added-year': YearStats
   },
   computed: {
     loggedIn() { return this.$store.getters.loggedIn },
@@ -232,45 +194,6 @@ export default {
         }
       })
       return added
-    },
-    addedThisYear() {
-      let collection = this.$store.getters.getCollection
-      let added = 0
-      let now = new Date(Date.now())
-      let year = now.getFullYear()
-      collection.forEach(item => {
-        let buydate = toDate(item.buydate)
-        if (buydate.getFullYear() === year) {
-          added++
-        }
-      })
-      return added
-    },
-    playedThisYear() {
-      let collection = this.$store.getters.getCollection
-      let played = 0
-      let now = new Date(Date.now())
-      let year = now.getFullYear()
-      collection.forEach(item => {
-        let buydate = toDate(item.buydate)
-        if (buydate.getFullYear() === year && item.rating && item.rating > 0) {
-          played++
-        }
-      })
-      return played
-    },
-    finishedThisYear() {
-      let collection = this.$store.getters.getCollection
-      let thisYear = new Date(Date.now()).getFullYear()
-      let finished = collection
-        .filter(item => item.completiondate)
-        .filter(item => toDate(item.completiondate).getFullYear() === thisYear && item.completed)
-        .sort((a, b) => {
-          const ratingA = a.rating ? a.rating : 0
-          const ratingB = b.rating ? b.rating : 0
-          return ratingB - ratingA
-        })
-      return finished
     },
     unplayed() {
       let collection = this.$store.getters.getCollection
@@ -336,9 +259,6 @@ export default {
     },
     short(platform) {
       return shortPlatform(platform)
-    },
-    testNotify() {
-      this.$store.dispatch('notify', 'Hellooooo')
     },
     logout() {
       this.$store.dispatch('logout')
