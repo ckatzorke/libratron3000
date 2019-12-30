@@ -70,7 +70,7 @@
     </v-row>
     <v-row>
       <v-col xs="12">
-        <v-card class="text-center pa-1  fill-height">
+        <v-card class="text-center pa-1 fill-height">
           <v-progress-circular
             v-if="loading"
             :size="70"
