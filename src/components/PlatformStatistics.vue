@@ -1,6 +1,17 @@
 <template>
   <div>
-    <apexchart type="pie" :options="platformStats.options" :series="platformStats.data" ></apexchart>
+    <div class="hidden-xs-only">
+      <apexchart type="pie" :options="platformStats.options" :series="platformStats.data" ></apexchart>
+    </div>
+    <div class="hidden-sm-and-up text-left">
+      <ul>
+        <li
+          v-for="(value, name) in gamesByPlatform"
+          :key="name">
+          {{ name }} ({{ value }})
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -23,6 +34,21 @@ export default {
     }
   },
   computed: {
+    gamesByPlatform() {
+      let gamesByPlatforms = this.$store.getters.getCollection
+        .map(game => game.platform)
+        .reduce((acc, current) => {
+          // console.log(`reducing. adding ${current}`, acc)
+          if (!acc[current]) {
+            acc[current] = 0
+          }
+          acc[current] += 1
+          return {
+            ...acc
+          }
+        }, {})
+      return gamesByPlatforms
+    },
     platformStats() {
       let gamesByPlatforms = this.$store.getters.getCollection
         .map(game => game.platform)
