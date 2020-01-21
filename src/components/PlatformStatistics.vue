@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     gamesByPlatform() {
-      let gamesByPlatforms = this.$store.getters.getCollection
+      let gamesByPlatform = this.$store.getters.getCollection
         .map(game => game.platform)
         .reduce((acc, current) => {
           // console.log(`reducing. adding ${current}`, acc)
@@ -47,21 +47,10 @@ export default {
             ...acc
           }
         }, {})
-      return gamesByPlatforms
+      return gamesByPlatform
     },
     platformStats() {
-      let gamesByPlatforms = this.$store.getters.getCollection
-        .map(game => game.platform)
-        .reduce((acc, current) => {
-          // console.log(`reducing. adding ${current}`, acc)
-          if (!acc[current]) {
-            acc[current] = 0
-          }
-          acc[current] += 1
-          return {
-            ...acc
-          }
-        }, {})
+      let gamesByPlatforms = this.gamesByPlatform
       let dataset = {
         data: [],
         options: {
