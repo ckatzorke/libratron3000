@@ -10,6 +10,14 @@ export const coverBig = cover => {
  * Checks if the given cover image id is truesy and returns the proper image url for thumbnail size.
  * @param {string} cover an igdb image id for the cover
  */
+export const coverSmall = cover => {
+  return igdbImageUrl('cover_small', cover)
+}
+
+/**
+ * Checks if the given cover image id is truesy and returns the proper image url for thumbnail size.
+ * @param {string} cover an igdb image id for the cover
+ */
 export const thumbnail = cover => {
   return igdbImageUrl('thumb', cover)
 }

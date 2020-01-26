@@ -9,7 +9,7 @@
           class="pa-2"
         >
           <div class="py-2 text-center display-1 orange--text ">{{ added }}</div>
-          <div class="body-1 text-center font-weight-light">Added {{ year }}</div>
+          <div class="body-2 text-center font-weight-light">Added {{ year }}</div>
         </div>
       </v-col>
       <v-col
@@ -20,7 +20,7 @@
           class="pa-2"
         >
           <div class="py-2 text-center display-1 orange--text ">{{ played }}</div>
-          <div class="body-1 text-center font-weight-light">Played {{ year }}</div>
+          <div class="body-2 text-center font-weight-light">Played {{ year }}</div>
         </div>
       </v-col>
       <v-col
@@ -31,7 +31,7 @@
           class="pa-2"
         >
           <div class="py-2 text-center display-1 orange--text ">{{ finished.length }}</div>
-          <div class="body-1 text-center font-weight-light">Finished {{ year }}</div>
+          <div class="body-2 text-center font-weight-light">Finished {{ year }}</div>
         </div>
       </v-col>
     </v-row>
@@ -43,15 +43,20 @@
       </v-col>
     </v-row>
     <v-row no-gutters pa-2>
-      <v-col>
-        <div
-          v-for="(finishedGame) in finished"
-          :key="finishedGame.id"
-          class="profilecontainer px-2 text-right ">
-          <span class="profileleft">
-            <span>{{ finishedGame.title }} ({{ formatDate(finishedGame.completiondate) }})</span>
-          </span>
-          <span class="profileright orange--text">{{ finishedGame.rating }}/10</span>
+      <v-col
+        cols="1"
+        v-for="(finishedGame) in finished"
+        :key="finishedGame.id"
+        class="text-center"
+        >
+        <img
+            :src="thumbnail(finishedGame.cover)"
+            height="128px"
+            width="90px"
+            :title="finishedGame.rating + ' / 10'"
+          />
+        <div class="caption text-center">
+          {{ formatDate(finishedGame.completiondate) }}
         </div>
       </v-col>
     </v-row>
@@ -59,6 +64,7 @@
 </template>
 <script>
 import { toDate, prettyDate } from '@/service/utils.js'
+import { coverSmall } from '@/service/igdb.js'
 export default {
   data() {
     return {
@@ -104,6 +110,9 @@ export default {
     }
   },
   methods: {
+    thumbnail(cover) {
+      return coverSmall(cover)
+    },
     formatDate(timestamp) {
       return prettyDate(timestamp)
     }

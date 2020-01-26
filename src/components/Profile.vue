@@ -45,48 +45,50 @@
       </v-col>
     </v-row>
     <div v-else>
-      <v-row>
-        <v-col
-          cols="12"
-          sm="4"
-        >
-          <div
-            class="pa-2"
+      <v-card>
+        <v-row>
+          <v-col
+            cols="12"
+            sm="4"
           >
-            <div class="py-2 text-center display-1 orange--text ">{{ collectionCount }}</div>
-            <div class="body-1 text-center font-weight-light"># of Games</div>
-          </div>
-        </v-col>
-        <v-col
-          cols="12"
-          sm="4"
-        >
-          <div
-            class="pa-2"
+            <div
+              class="pa-2"
+            >
+              <div class="py-2 text-center display-1 orange--text ">{{ collectionCount }}</div>
+              <div class="body-2 text-center font-weight-light"># of Games</div>
+            </div>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="4"
           >
-            <div class="py-2 text-center display-1 orange--text ">{{ unplayed }}</div>
-            <div class="body-1 text-center font-weight-light">Unplayed</div>
-          </div>
-        </v-col>
-        <v-col
-          cols="12"
-          sm="4"
-        >
-          <div
-            class="pa-2"
+            <div
+              class="pa-2"
+            >
+              <div class="py-2 text-center display-1 orange--text ">{{ unplayed }}</div>
+              <div class="body-2 text-center font-weight-light">Unplayed</div>
+            </div>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="4"
           >
-            <div class="py-2 text-center display-1 orange--text ">{{ addedThisMonth }}</div>
-            <div class="body-1 text-center font-weight-light">Added this month</div>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-            <diV>
-              <lib-added-year :year="thisYear"></lib-added-year>
-            </diV>
-        </v-col>
-      </v-row>
+            <div
+              class="pa-2"
+            >
+              <div class="py-2 text-center display-1 orange--text ">{{ addedThisMonth }}</div>
+              <div class="body-2 text-center font-weight-light">Added this month</div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+              <diV>
+                <lib-added-year :year="thisYear"></lib-added-year>
+              </diV>
+          </v-col>
+        </v-row>
+      </v-card>
     </div>
     <v-row>
       <v-col xs="12">
@@ -99,7 +101,7 @@
             class="my-2"
           ></v-progress-circular>
           <div v-else  class="ma-3">
-            <div class="body-1 text-center font-weight-bold">
+            <div class="body-2 text-center font-weight-bold">
               Top platforms
             </div>
             <div
@@ -127,7 +129,7 @@
             class="my-2"
           ></v-progress-circular>
           <div v-else class="ma-3">
-            <div class="body-1 text-center font-weight-bold">
+            <div class="body-2 text-center font-weight-bold">
               Top genres
             </div>
             <div
