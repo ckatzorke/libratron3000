@@ -4,7 +4,7 @@
                 v-model="year"
                 :items="years"
               ></v-combobox>
-    <lib-gamestats :year="year"></lib-gamestats>
+    <lib-yearstats :year="year"></lib-gamestats>
   </div>
 </template>
 <script>
@@ -17,7 +17,7 @@ export default {
     }
   },
   components: {
-    'lib-gamestats': YearStats
+    'lib-yearstats': YearStats
   },
   computed: {
     years() {
