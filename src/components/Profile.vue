@@ -84,10 +84,17 @@
         <v-row>
           <v-col>
               <diV>
-                <lib-added-year :year="thisYear"></lib-added-year>
+                <lib-yearstats :year="thisYear"></lib-yearstats>
               </diV>
           </v-col>
         </v-row>
+        <!-- v-row>
+          <v-col>
+              <diV>
+                <lib-ratingspread></lib-ratingspread>
+              </diV>
+          </v-col>
+        </v-row -->
       </v-card>
     </div>
     <v-row>
@@ -189,11 +196,14 @@
 import { toDate, prettyDate } from '@/service/utils.js'
 import { shortPlatform } from '@/service/platforms.js'
 import YearStats from '@/components/YearStats.vue'
+import RatingSpread from '@/components/RatingSpread.vue'
+
 export default {
   data: () => ({
   }),
   components: {
-    'lib-added-year': YearStats
+    'lib-yearstats': YearStats,
+    'lib-ratingspread': RatingSpread
   },
   computed: {
     loggedIn() { return this.$store.getters.loggedIn },

@@ -4,7 +4,7 @@
                 v-model="year"
                 :items="years"
               ></v-combobox>
-    <lib-yearstats :year="year"></lib-gamestats>
+    <lib-yearstats :year="year"></lib-yearstats>
   </div>
 </template>
 <script>

@@ -44,7 +44,9 @@
     </v-row>
     <v-row no-gutters pa-2>
       <v-col
-        cols="1"
+        xs="3"
+        sm="2"
+        lg="1"
         v-for="(finishedGame) in finished"
         :key="finishedGame.id"
         class="text-center"
