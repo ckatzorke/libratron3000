@@ -51,14 +51,16 @@
         :key="finishedGame.id"
         class="text-center"
         >
-        <img
-            :src="thumbnail(finishedGame.cover)"
-            height="128px"
-            width="90px"
-            :title="finishedGame.rating + ' / 10'"
-          />
-        <div class="caption text-center">
-          {{ formatDate(finishedGame.completiondate) }}
+        <div @click="showDetails(finishedGame.id)" style="cursor: pointer">
+          <img
+              :src="thumbnail(finishedGame.cover)"
+              height="128px"
+              width="90px"
+              :title="finishedGame.rating + ' / 10'"
+            />
+          <div class="caption text-center">
+            {{ formatDate(finishedGame.completiondate) }}
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -117,6 +119,9 @@ export default {
     },
     formatDate(timestamp) {
       return prettyDate(timestamp)
+    },
+    showDetails(id) {
+      this.$router.push(`/details/${id}`)
     }
   }
 }
