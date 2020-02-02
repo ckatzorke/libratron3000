@@ -68,7 +68,7 @@
               :src="thumbnail(game.cover)"
               height="128px"
               width="90px"
-              :title="game.rating + ' / 10'"
+              :title="ratingInfo(game)"
             />
           <div class="caption text-center">
             {{ formatDate(game.completiondate) }}
@@ -84,7 +84,6 @@ import { coverSmall } from '@/service/igdb.js'
 export default {
   data() {
     return {
-      listing: [],
       listingType: 'Finished'
     }
   },
@@ -125,11 +124,30 @@ export default {
           return ratingB - ratingA
         })
       return finished
+    },
+    listing() {
+      let listing = []
+      switch (this.listingType) {
+        case 'Finished':
+          listing = this.finished
+          break
+        case 'Played':
+          listing = this.played
+          break
+        case 'Added':
+          listing = this.added
+          break
+        default:
+      }
+      return listing
     }
   },
   methods: {
     thumbnail(cover) {
       return coverSmall(cover)
+    },
+    ratingInfo(game) {
+      return game.rating ? game.rating + ' / 10' : 'Not played'
     },
     formatDate(timestamp) {
       return prettyDate(timestamp)
@@ -138,20 +156,23 @@ export default {
       this.$router.push(`/details/${id}`)
     },
     switchListingFinished() {
-      this.listingType = 'Finished'
-      this.listing = this.finished
+      this.listingType = `Finished`
+      // this.listing = this.finished
     },
     switchListingPlayed() {
-      this.listingType = 'Played'
-      this.listing = this.played
+      this.listingType = `Played`
+      // this.listing = this.played
     },
     switchListingAdded() {
-      this.listingType = 'Added'
-      this.listing = this.added
+      this.listingType = `Added`
+      // this.listing = this.added
     }
   },
   mounted() {
-    this.switchListingFinished()
+    // this.switchListingFinished()
+  },
+  updated() {
+    //
   }
 }
 </script>
