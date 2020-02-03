@@ -196,14 +196,12 @@
 import { toDate, prettyDate } from '@/service/utils.js'
 import { shortPlatform } from '@/service/platforms.js'
 import YearStats from '@/components/YearStats.vue'
-import RatingSpread from '@/components/RatingSpread.vue'
 
 export default {
   data: () => ({
   }),
   components: {
-    'lib-yearstats': YearStats,
-    'lib-ratingspread': RatingSpread
+    'lib-yearstats': YearStats
   },
   computed: {
     loggedIn() { return this.$store.getters.loggedIn },
