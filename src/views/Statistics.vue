@@ -12,9 +12,9 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout row wrap px-2 justify-start>
+    <v-layout row wrap justify-start>
       <v-flex xs12>
-        <v-card  class="text-center pa-1 fill-height">
+        <v-card  class="text-center fill-height">
           <v-card-title primary-title>
             <h3 class="headline mb-0">Games by Year</h3>
           </v-card-title>
