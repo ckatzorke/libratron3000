@@ -2,7 +2,7 @@ const hltb = require('howlongtobeat')
 const hltbService = new hltb.HowLongToBeatService()
 
 const headers = {
-  'Access-Control-Allow-Origin': 'https:://libratron3000.katzorke.io'
+  'Access-Control-Allow-Origin': 'https://libratron3000.katzorke.io'
 }
 
 /**
