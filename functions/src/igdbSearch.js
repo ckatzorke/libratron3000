@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const headers = {
-  'Access-Control-Allow-Origin': '*'
+  'Access-Control-Allow-Origin': 'https://libratron3000.katzorke.io'
 }
 
 /**
