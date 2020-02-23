@@ -143,6 +143,7 @@
               <v-combobox
                 v-model="game.tags"
                 label="Tags"
+                :items="getAvailableTags"
                 multiple
                 prepend-icon="label"
                 clearable
@@ -280,7 +281,7 @@ export default {
       // convert dates
       let game2Add = this.game
       this.$store.dispatch('addGame', game2Add)
-      this.game = blankGame
+      this.game = { ...blankGame }
       this.formattedReleasedate = null
       this.formattedCompletiondate = null
       this.formattedPurchasedate = formatDate(new Date())
@@ -394,6 +395,10 @@ export default {
     getAvailablePublishers() {
       let publishers = this.$store.state.collection.flatMap(c => c.publisher).filter(p => p)
       return [...new Set(publishers)].sort()
+    },
+    getAvailableTags() {
+      let tags = this.$store.state.collection.flatMap(c => c.tags).filter(t => t)
+      return [...new Set(tags)].sort()
     },
     rating() {
       let rating = 'radio_button_unchecked'
