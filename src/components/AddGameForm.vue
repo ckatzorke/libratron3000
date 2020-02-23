@@ -215,7 +215,7 @@
                 dark
                 block
                 @click="add">Add</v-btn>
-              {{ game }}
+              <!-- {{ game }} -->
             </v-flex>
           </v-layout>
         </v-form>

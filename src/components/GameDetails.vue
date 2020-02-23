@@ -155,7 +155,7 @@
             @click="back"><v-icon>keyboard_backspace</v-icon><span class="hidden-xs-only">Back</span></v-btn>
         </v-flex>
         <v-flex xs12>
-          {{ game }}
+          <!-- {{ game }} -->
         </v-flex>
       </v-layout>
     </v-card>
