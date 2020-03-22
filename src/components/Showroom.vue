@@ -11,6 +11,7 @@
             :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
             @mouseover="showTitle(item.id)"
             @mouseout="hideTitle(item.id)"
+            @click="showDetails(item.id)"
           />
           <div
             :id="item.id + '-title'"
@@ -29,6 +30,7 @@
             :title="isSold(item) ? 'sold at ' + prettyDate(item.sellDate) : ''"
             @mouseover="showTitle(item.id)"
             @mouseout="hideTitle(item.id)"
+            @click="showDetails(item.id)"
           />
           <div
             :id="item.id + '-title'"
@@ -77,6 +79,9 @@ export default {
       // console.log('Showing ', id)
       // console.log('Classlist: ', document.getElementById(`${id}-title`).classList)
       document.getElementById(`${id}-title`).classList.remove('hidden')
+    },
+    showDetails(id) {
+      this.$router.push(`/details/${id}`)
     },
     hideTitle(id) {
       // console.log('Hiding ', id)
