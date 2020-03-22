@@ -46,6 +46,31 @@
     </v-row>
     <div v-else>
       <v-card>
+        <v-row no-gutters>
+          <v-col>
+            <div class="font-weight-light text-left font-italic pa-3">
+              Recently added
+            </div>
+          </v-col>
+        </v-row>
+        <v-row no-gutters pa-2 justify-space-around>
+          <v-col
+            xs="3"
+            sm="2"
+            lg="1"
+            v-for="(game) in recently"
+            :key="game.id"
+            class="text-center"
+            >
+            <div @click="showDetails(game.id)" class="hand">
+              <img
+                  :src="thumbnail(game.cover)"
+                  height="128px"
+                  width="90px"
+                />
+            </div>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col
             cols="12"
@@ -194,6 +219,7 @@
 </template>
 <script>
 import { toDate, prettyDate } from '@/service/utils.js'
+import { coverSmall } from '@/service/igdb.js'
 import { shortPlatform } from '@/service/platforms.js'
 import YearStats from '@/components/YearStats.vue'
 
@@ -209,6 +235,14 @@ export default {
     displayName() { return this.$store.getters.getUser.displayName },
     email() { return this.$store.getters.getUser.email },
     loading() { return this.$store.getters.loading },
+    recently() {
+      let recently = this.$store.getters.getCollection
+      return recently.sort((a, b) => {
+        const pDateA = toDate(a.buydate)
+        const pDateB = toDate(b.buydate)
+        return pDateB.getTime() - pDateA.getTime()
+      }).slice(0, 10)
+    },
     collectionCount() { return this.$store.getters.getCollection.length },
     thisYear() { return new Date(Date.now()).getFullYear() },
     addedThisMonth() {
@@ -289,6 +323,12 @@ export default {
     },
     short(platform) {
       return shortPlatform(platform)
+    },
+    thumbnail(cover) {
+      return coverSmall(cover)
+    },
+    showDetails(id) {
+      this.$router.push(`/details/${id}`)
     },
     logout() {
       this.$store.dispatch('logout')
