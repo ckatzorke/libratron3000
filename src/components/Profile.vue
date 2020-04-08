@@ -53,14 +53,14 @@
             </div>
           </v-col>
         </v-row>
-        <v-row no-gutters pa-2 justify-space-around>
+        <v-row no-gutters pa-3 justify-space-around>
           <v-col
             xs="3"
             sm="2"
             lg="1"
             v-for="(game) in recently"
             :key="game.id"
-            class="text-center"
+            class="px-3 text-center"
             >
             <div @click="showDetails(game.id)" class="hand">
               <img
