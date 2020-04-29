@@ -241,7 +241,7 @@ export default {
         const pDateA = toDate(a.buydate)
         const pDateB = toDate(b.buydate)
         return pDateB.getTime() - pDateA.getTime()
-      }).slice(0, 10)
+      }).slice(0, 12)
     },
     collectionCount() { return this.$store.getters.getCollection.length },
     thisYear() { return new Date(Date.now()).getFullYear() },
