@@ -8,6 +8,8 @@ module.exports = {
     '@vue/standard'
   ],
   rules: {
+    'no-console': 'off',
+    'no-debugger': 'off',
     'space-before-function-paren': ['error', 'never']
   },
   parserOptions: {
