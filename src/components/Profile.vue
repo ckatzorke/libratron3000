@@ -60,7 +60,7 @@
             lg="1"
             v-for="(game) in recently"
             :key="game.id"
-            class="px-3 text-center"
+            class=" text-center"
             >
             <div @click="showDetails(game.id)" class="hand">
               <img
