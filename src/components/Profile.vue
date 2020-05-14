@@ -162,14 +162,9 @@
           ></v-progress-circular>
           <div v-else class="ma-3">
             <div class="body-2 text-center font-weight-bold">
-              Top genres
+              Genres
             </div>
-            <div
-              v-for="(genre) in genres"
-              :key="genre[0]"
-              class="text-left px-2">
-              <span class="">{{ genre[0] }}</span>
-            </div>
+            <lib-genres :genres="genres"></lib-genres>
           </div>
         </v-card>
       </v-col>
@@ -222,12 +217,14 @@ import { toDate, prettyDate } from '@/service/utils.js'
 import { coverSmall } from '@/service/igdb.js'
 import { shortPlatform } from '@/service/platforms.js'
 import YearStats from '@/components/YearStats.vue'
+import GenresCloud from '@/components/GenresCloud'
 
 export default {
   data: () => ({
   }),
   components: {
-    'lib-yearstats': YearStats
+    'lib-yearstats': YearStats,
+    'lib-genres': GenresCloud
   },
   computed: {
     loggedIn() { return this.$store.getters.loggedIn },
@@ -306,15 +303,19 @@ export default {
       let genres = []
       // transform object to array for sorting
       for (var genre in gamesByGenre) {
-        if (gamesByGenre.hasOwnProperty(genre)) {
-          genres.push([genre, gamesByGenre[genre]])
+        if (gamesByGenre.hasOwnProperty(genre) && genre !== 'undefined') {
+          genres.push({
+            name: genre,
+            value: gamesByGenre[genre]
+          })
         }
       }
       // sort and select top 10
-      let topGenres = genres.sort((a, b) => b[1] - a[1]).slice(0, 10)
+      // let topGenres = genres.sort((a, b) => b[1] - a[1]).slice(0, 10)
       console.log('Genres', genres)
-      console.log('Top Genres', topGenres)
-      return topGenres
+      // console.log('Top Genres', topGenres)
+      // return topGenres
+      return genres
     }
   },
   methods: {
