@@ -13,6 +13,12 @@
             <li>
               <a href="https://vuetifyjs.com/" target="_blank" rel="noopener">Vuetify</a>
             </li>
+            <li>
+              <a href="https://github.com/hamed-ehtesham/pretty-checkbox-vue" target="_blank" rel="noopener">pretty-checkbox-vue</a>
+            </li>
+            <li>
+              <a href="https://github.com/feifang/vue-wordcloud" target="_blank" rel="noopener">vue-wordcloud</a>
+            </li>
           </ul>
           <p class="my-2">Game information powered by</p>
           <ul>
