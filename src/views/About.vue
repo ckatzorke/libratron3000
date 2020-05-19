@@ -25,9 +25,6 @@
             <li>
               <a href="https://www.igdb.com/" target="_blank" rel="noopener">IGDB</a>
             </li>
-            <li>
-              <a href="https://www.collectorz.com/game" target="_blank" rel="noopener">CLZ Game Collector</a>
-            </li>
           </ul>
         </div>
       </v-card>
