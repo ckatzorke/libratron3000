@@ -287,8 +287,8 @@ export const store = new Vuex.Store({
       } else if (sortOrder === 'PURCHASE') {
         context.commit('updateSortOrder', sortOrder)
         collection.sort((a, b) => {
-          const pDateA = toDate(a.buydate) || new Date('2000-01-01')
-          const pDateB = toDate(b.buydate) || new Date('2000-01-01')
+          const pDateA = toDate(a.buydate)
+          const pDateB = toDate(b.buydate)
           return pDateB.getTime() - pDateA.getTime()
         })
       } else if (sortOrder === 'PLATFORM') {
