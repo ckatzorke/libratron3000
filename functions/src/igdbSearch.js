@@ -17,22 +17,24 @@ exports.handler = (event, context, callback) => {
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET
     )
-    client
-      .identifyGame(search)
-      .then(response => {
-        callback(null, {
-          statusCode: 200,
-          headers,
-          body: JSON.stringify({ result: response })
+    client.authenticate().then(() => {
+      client
+        .identifyGame(search)
+        .then(response => {
+          callback(null, {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({ result: response })
+          })
         })
-      })
-      .catch(e => {
-        callback(null, {
-          statusCode: 503,
-          headers,
-          body: JSON.stringify({ e })
+        .catch(e => {
+          callback(null, {
+            statusCode: 503,
+            headers,
+            body: JSON.stringify({ e })
+          })
         })
-      })
+    })
   } else {
     callback(null, {
       statusCode: 400,
