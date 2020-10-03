@@ -201,6 +201,14 @@
                   See also <a href="https://piletron3000.katzorke.io/" target="_blank" rel="noopener">Piletron3000&trade;</a> to keep track of your pile of shame.
                 </p>
                 <p class="body-2 grey--text py-2">
+                  With Libratron3000&trade; you can
+                  <ul>
+                    <li>Add games easily by searching for titles</li>
+                    <li>Browse  your collection</li>
+                    <li>Track you completions status and ratings</li>
+                  </ul>
+                </p>
+                <p class="body-2 grey--text py-2">
                   Libratron3000&trade; uses data from the Internet Games Database, when adding a new game to your database, you are able to search for this game in the IGDB to link these entries.
                   <a href="https://www.igdb.com/" rel="noopener" target="_blank">Check out their great work!</a></p>
               </div>
