@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-class IgdbProxy {
+module.exports = class IgdbProxy {
   static get BASE_URL() {
     return 'https://api.igdb.com/v4'
   }
@@ -94,5 +94,3 @@ class IgdbProxy {
     return result
   }
 }
-
-exports.IgdbProxy = IgdbProxy
