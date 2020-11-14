@@ -8,6 +8,7 @@ export const platforms = [
   'PlayStation 2',
   'PlayStation 3',
   'PlayStation 4',
+  'PlayStation 5',
   'PSP',
   'PlayStation Vita',
   'Nintendo 3DS',
@@ -16,7 +17,8 @@ export const platforms = [
   'Wii',
   'Wii U',
   'Xbox 360',
-  'Xbox One'
+  'Xbox One',
+  'Xbox Series X'
 ]
 
 export const getIcon = (platform) => {
@@ -63,6 +65,9 @@ export const getIcon = (platform) => {
   if (platform === 'Xbox One') {
     return path + 'xone.png'
   }
+  if (platform === 'Xbox Series X') {
+    return path + 'xone.png'
+  }
 }
 
 export const shortPlatform = (platform) => {
@@ -99,6 +104,9 @@ export const shortPlatform = (platform) => {
   if (platform === 'PlayStation 4') {
     return 'PS4'
   }
+  if (platform === 'PlayStation 5') {
+    return 'PS5'
+  }
   if (platform === 'PSP') {
     return 'PSP'
   }
@@ -125,5 +133,8 @@ export const shortPlatform = (platform) => {
   }
   if (platform === 'Xbox One') {
     return 'XOne'
+  }
+  if (platform === 'Xbox Series X') {
+    return 'XSeX'
   }
 }
