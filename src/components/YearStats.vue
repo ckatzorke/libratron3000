@@ -3,7 +3,7 @@
     <v-row>
       <v-col
         cols="12"
-        sm="4"
+        sm="3"
       >
         <div
           class="pa-2"
@@ -18,7 +18,7 @@
       </v-col>
       <v-col
         cols="12"
-        sm="4"
+        sm="3"
       >
         <div
           class="pa-2"
@@ -33,7 +33,7 @@
       </v-col>
       <v-col
         cols="12"
-        sm="4"
+        sm="3"
       >
         <div
           class="pa-2"
@@ -44,6 +44,21 @@
               {{ finished.length }}
           </div>
           <div class="body-2 text-center font-weight-light">Finished {{ year }}</div>
+        </div>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="3"
+      >
+        <div
+          class="pa-2"
+        >
+          <div
+            class="py-2 text-center display-1 orange--text hand"
+            @click="switchListingUnplayed()">
+              {{ unplayed.length }}
+          </div>
+          <div class="body-2 text-center font-weight-light">Unplayed {{ year }}</div>
         </div>
       </v-col>
     </v-row>
@@ -113,6 +128,18 @@ export default {
       })
       return played
     },
+    unplayed() {
+      let collection = this.$store.getters.getCollection
+      let unplayed = []
+      collection.forEach(item => {
+        let buydate = toDate(item.buydate)
+        // added this year but not rated
+        if ((buydate.getFullYear() === this.year && (!item.rating || item.rating === 0))) {
+          unplayed.push(item)
+        }
+      })
+      return unplayed
+    },
     finished() {
       let collection = this.$store.getters.getCollection
       let finished = collection
@@ -133,6 +160,9 @@ export default {
           break
         case 'Played':
           listing = this.played
+          break
+        case 'Unplayed':
+          listing = this.unplayed
           break
         case 'Added':
           listing = this.added
@@ -162,6 +192,10 @@ export default {
     switchListingPlayed() {
       this.listingType = `Played`
       // this.listing = this.played
+    },
+    switchListingUnplayed() {
+      this.listingType = `Unplayed`
+      // this.listing = this.unplayed
     },
     switchListingAdded() {
       this.listingType = `Added`
