@@ -58,9 +58,29 @@ module.exports = class IgdbProxy {
     const response = await this.client.post(
       '/games',
       `
-            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name;
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name, screenshots.id, screenshots.image_id;
             limit 5;
             where name = "${name}";`
+    )
+    return response.data
+  }
+
+  async getGameById(id) {
+    const response = await this.client.post(
+      '/games',
+      `
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name, screenshots.id, screenshots.image_id;
+            where id = ${id};`
+    )
+    return response.data
+  }
+
+  async getScreenshotsGameById(id) {
+    const response = await this.client.post(
+      '/games',
+      `
+            fields screenshots.image_id;
+            where id = ${id};`
     )
     return response.data
   }
@@ -69,7 +89,7 @@ module.exports = class IgdbProxy {
     const response = await this.client.post(
       '/games',
       `
-            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name;
+            fields name, url, summary, updated_at, cover.image_id, platforms.abbreviation, platforms.name, platforms.slug, genres.name, first_release_date, involved_companies.developer, involved_companies.company.name, screenshots.id, screenshots.image_id;
             limit 1;
             where slug = "${slug.toLowerCase()}";`
     )
@@ -80,7 +100,7 @@ module.exports = class IgdbProxy {
     const response = await this.client.post(
       '/search',
       `
-            fields game.name, game.url, game.summary, game.updated_at, game.cover.image_id, game.platforms.abbreviation, game.platforms.name, game.platforms.slug, game.genres.name, game.first_release_date, game.involved_companies.developer, game.involved_companies.company.name;
+            fields game.name, game.url, game.summary, game.updated_at, game.cover.image_id, game.platforms.abbreviation, game.platforms.name, game.platforms.slug, game.genres.name, game.first_release_date, game.involved_companies.developer, game.involved_companies.company.name, game.screenshots.id, game.screenshots.image_id;
             limit ${limit};
             search "${searchString}"; where game != null;`
     )
