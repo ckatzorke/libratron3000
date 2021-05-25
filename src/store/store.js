@@ -312,6 +312,7 @@ export const store = new Vuex.Store({
      * Adds the given game to collection
      */
     addGame: (context, game) => {
+      console.log('Adding game', game)
       const db = firebase.firestore()
       db.collection(`users/${context.state.user.uid}/collection`).add(game)
         .then(function(docRef) {
