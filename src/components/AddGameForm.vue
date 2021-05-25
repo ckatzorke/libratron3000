@@ -367,7 +367,7 @@ export default {
       this.purchasedateMenu = false
     },
     setReleaseDate(date) {
-      const newDate = new Date(this.game.releasedateAsISOString.split('-'))
+      const newDate = new Date(this.game.releasedateAsISOString)
       this.game.releaseDate = firebase.firestore.Timestamp.fromDate(newDate)
       const [year, month, day] = this.game.releasedateAsISOString.split('-')
       this.formattedReleasedate = `${day}.${month}.${year}`
