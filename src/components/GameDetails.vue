@@ -219,7 +219,7 @@ export default {
       }
     },
     setCompletionDate(date) {
-      const newDate = new Date(this.game.completiondateAsISOString.split('-'))
+      const newDate = new Date(this.game.completiondateAsISOString)
       this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
       const [year, month, day] = this.game.completiondateAsISOString.split('-')
       this.formattedCompletiondate = `${day}.${month}.${year}`
