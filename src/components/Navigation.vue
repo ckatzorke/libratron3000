@@ -50,6 +50,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="mr-12 align-center">
         <span class="title">Libratron3000&trade;</span>
+        <span class="caption"> {{ buildnumber }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-layout
@@ -85,11 +86,13 @@
 </template>
 <script>
 import { setInterval, clearInterval } from 'timers'
+import buildinfo from '../buildinfo.json'
 
 let searchIntervalId = null
 
 export default {
   data: () => ({
+    buildnumber: buildinfo.buildnumber,
     drawer: null,
     items: [
       // { icon: 'dashboard', text: 'Dashboard', to: '/' },
@@ -126,6 +129,9 @@ export default {
       this.search = ''
       this.$store.commit('updateSearchFilter', this.search)
     }
+  },
+  mounted: {
+
   }
 }
 </script>

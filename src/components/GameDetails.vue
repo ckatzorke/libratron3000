@@ -54,7 +54,7 @@
         </v-flex>
         <v-flex v-if="game.notes" xs12 md3 lg2 px-1>
           <div class="caption grey--text">Notes</div>
-          <div>{{ game.notes }}</div>
+          <div contenteditable="true">{{ game.notes }}</div>
         </v-flex>
         <v-flex xs8 md3 lg2 px-1>
           <v-checkbox
