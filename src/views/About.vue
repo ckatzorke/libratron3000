@@ -4,6 +4,7 @@
       <v-card>
         <div class="pa-1 ma-2">
           <p class="display-1 font-weight-medium">About libratron3000 &trade;</p>
+          <p>Build: {{ buildnumber }}</p>
           <p>Libratron is a private project by Christian Katzorke.</p>
           <p>Built with the power of</p>
           <ul>
@@ -33,4 +34,11 @@
 </template>
 
 <script>
+import buildinfo from '../buildinfo.json'
+
+export default {
+  data: () => ({
+    buildnumber: buildinfo.buildnumber,
+  })
+}
 </script>
