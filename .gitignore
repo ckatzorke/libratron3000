@@ -2,6 +2,7 @@
 node_modules
 /dist
 /build
+src/buildinfo.json
 
 # local env files
 .env.local
