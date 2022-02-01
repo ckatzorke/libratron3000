@@ -38,7 +38,7 @@ import buildinfo from '../buildinfo.json'
 
 export default {
   data: () => ({
-    buildnumber: buildinfo.buildnumber,
+    buildnumber: buildinfo.buildnumber
   })
 }
 </script>
