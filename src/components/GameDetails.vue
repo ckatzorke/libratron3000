@@ -52,9 +52,11 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex v-if="game.notes" xs12 md3 lg2 px-1>
+        <v-flex xs12 md8>
           <div class="caption grey--text">Notes</div>
-          <div contenteditable="true">{{ game.notes }}</div>
+          <div
+            contenteditable="true"
+            @blur="onUpdateNotes">{{ game.notes }}</div>
         </v-flex>
         <v-flex xs8 md3 lg2 px-1>
           <v-checkbox
@@ -293,6 +295,11 @@ export default {
       const [year, month, day] = this.game.releasedateAsISOString.split('-')
       this.formattedReleasedate = `${day}.${month}.${year}`
       this.releasedateMenu = false
+    },
+    onUpdateNotes(e) {
+      console.log('Notes before:', this.game.notes)
+      this.game.notes = e.target.innerText
+      console.log('Notes after:', this.game.notes)
     }
   },
   computed: {
