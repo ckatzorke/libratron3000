@@ -96,6 +96,7 @@ export default {
       { icon: 'list', text: 'Collection', to: '/collection' },
       { icon: 'all_out', text: 'Showroom', to: '/showroom' }, // TODO userid
       { icon: 'pie_chart', text: 'Statistics', to: '/statistics' },
+      { icon: 'star_half', text: 'All Time Favs', to: '/all-time-favs' },
       // { icon: 'add', text: 'Add', to: '/add' },
       { icon: 'compare_arrows', text: 'Loan Status', to: '/loan' },
       { icon: 'help_outline', text: 'About', to: '/about' }

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Collection from '@/views/Collection'
 import Statistics from '@/views/Statistics'
+import AllTimeFavs from '@/views/AllTimeFavs'
 import AddGame from '@/views/AddGame'
 import Dashboard from '@/views/Dashboard'
 import Details from '@/views/Details'
@@ -47,6 +48,18 @@ export const routes = [
   {
     path: '/statistics',
     component: Statistics,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user === null) {
+        console.log('Not authenticated yet...')
+        next('/')
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: '/all-time-favs',
+    component: AllTimeFavs,
     beforeEnter: (to, from, next) => {
       if (store.state.user === null) {
         console.log('Not authenticated yet...')
