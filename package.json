@@ -25,9 +25,9 @@
   },
   "devDependencies": {
     "@mdi/font": "^3.8.95",
-    "@vue/cli-plugin-babel": "^4.5.11",
-    "@vue/cli-plugin-eslint": "^4.5.11",
-    "@vue/cli-service": "^4.5.11",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.1.0",
     "deepmerge": "^4.0.0",
