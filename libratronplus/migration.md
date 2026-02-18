@@ -1,6 +1,7 @@
 This is a video game collection software named libratron, for my own purpose.
 The application is running on a very outdated techstack with vue 2, vue-cli and so on.
 Please analyse the application, and create a complete new one, called libratron3000plus. Since I have already more than 1000 games added to the database, the existing database should be reused, it is a firestore database, the collection is authorized to be read and written by the current user only.
+In the folder "libratronplus" you will also find some screenshots about the current application. The file name already indicates the function.
 Not the complete application must be recreated, please focus on
 - welcome screen with some information and Google login button
 - dashboard: Welcome screen, showing information about the collection like number of total games
@@ -9,5 +10,7 @@ Not the complete application must be recreated, please focus on
 - the second most important feature is the list view of the collection. It should by default list all games in a brief overview with title, platform, date added, and if available the given star rating (x out of 10) sorted by date added. There should be a filter mechanism, where you can filter the list by name (full text filter on title), platform, genre or format (physical media or digital download). When clicking on an entry, details should be shown, and the entry should be editable, especially for making some notes and giving a rating, or specifying that you have finished the game.
 These are the most important features. However, there are more things that should be added afterwards, like having a statistic of added games, played games, finished games. Also an integration with with howlongtobeat.com for accumulated gameplay times is planned.
 Use a modern toolstack, i would like to use vue3 with relevant toolings like vite. This also means, use Typescript.
-As design: use a modern and elegant look and feel, not to colorful, but not to serious. I have no requirement on CSS frameworks.
-Afterwards, make some recommendation about automated build plans and steps. The code should be hosted on github, and I currently use netlify as hosting platform for the application.
+As design: use a modern and elegant look and feel, not to colorful, but not to serious. I have no requirement on CSS frameworks or css pre- and postprocessors. Of course, the application must be responsive, running on webbrowser on desktops and mobile devices alike.
+The application should be runnable locally for dev and test purpose, the backend and login is already configured to support this in general, but you have to make sure it works.
+For hosting, it should work with github hosted source code and netlify as the hosting provider accessible on libratron3000.katzorke.io (SSL, certificate is configured on netlify). Also the lambda function should run on netlify.
+For automation, every push to github should automatically trigger the build and deployment to/on netlify.
