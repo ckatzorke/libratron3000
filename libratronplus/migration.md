@@ -14,4 +14,4 @@ For the UI and design: use a modern and elegant look and feel, not to colorful, 
 The application should be runnable locally for dev and test purpose, the backend and login is already configured to support this in general, but you have to make sure it works.
 For hosting, it should work with github hosted source code and netlify as the hosting provider accessible on libratron3000.katzorke.io (SSL, certificate is configured on netlify). Also the lambda function should run on netlify.
 For automation, every push to github should automatically trigger the build and deployment to/on netlify.
-Please check if I have considered all reasonable steps for the initial setup of the application.
+Please check if I have considered all reasonable steps for the initial setup of the application and start with the creation of the application. You can reuse the existing project, I have created a new branch.
