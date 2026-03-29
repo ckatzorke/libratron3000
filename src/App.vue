@@ -1,30 +1,41 @@
 <template>
-  <v-app id="libratron">
-    <lib-navigation/>
-    <lib-notification></lib-notification>
-    <v-content>
-      <router-view></router-view>
-    </v-content>
+  <v-app>
+    <AppNavigation v-if="authStore.loggedIn" />
+    <v-main>
+      <router-view />
+    </v-main>
+    <AddGameFab v-if="authStore.loggedIn" />
+    <AppNotification />
   </v-app>
 </template>
 
-<script>
-import Navigation from './components/Navigation'
-import Notification from './components/Notification'
-export default {
-  props: {
-    source: String
-  },
-  components: {
-    'lib-navigation': Navigation,
-    'lib-notification': Notification
-  },
-  data: () => ({
-  }),
-  created() {
-    this.$vuetify.theme.dark = true
-    console.log('Created... Logging in.')
-    this.$store.dispatch('bootstrapLogin')
-  }
-}
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { useCollectionStore, setCurrentUid } from '@/stores/collection'
+import AppNavigation from '@/components/AppNavigation.vue'
+import AddGameFab from '@/components/AddGameFab.vue'
+import AppNotification from '@/components/AppNotification.vue'
+
+const router = useRouter()
+const authStore = useAuthStore()
+const collectionStore = useCollectionStore()
+
+onMounted(() => {
+  authStore.bootstrapAuth(
+    () => {
+      const uid = authStore.user!.uid
+      setCurrentUid(uid)
+      collectionStore.loadCollection(uid)
+      if (router.currentRoute.value.path === '/') {
+        router.push('/dashboard')
+      }
+    },
+    () => {
+      collectionStore.clearCollection()
+      router.push('/')
+    }
+  )
+})
 </script>

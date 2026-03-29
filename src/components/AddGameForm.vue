@@ -1,443 +1,407 @@
 <template>
   <v-container>
-    <v-card>
-      <v-card-title>
-        <h2>Add a new game (#{{ game.number }})</h2>
+    <v-card rounded="lg" elevation="2">
+      <v-card-title class="pa-6 pb-2">
+        <span class="text-h6 font-weight-light">Add a new game</span>
+        <span class="text-medium-emphasis ml-2 text-body-2">#{{ collectionStore.nextNumber }}</span>
       </v-card-title>
-      <v-card-text>
-        <v-form class="px-3">
-          <v-layout row wrap>
-            <v-flex xs12>
-              <v-text-field
-                label="Title"
-                v-model="game.title"
-                prepend-icon="title"
-                @input="searchForGames"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 v-if="searchResults.length > 0 && !searching">
-              <lib-searchresult :searchResults="searchResults" @entrySelected="selectSearchEntry"></lib-searchresult>
-            </v-flex>
-            <v-flex xs12 v-else class="font-weight-light">
-              <div v-if="game.title.length > 0 && !searching && !selected"><i>Nothing found...</i></div>
-              <div v-if="game.title.length === 0 && !searching"><i>Start typing a title to search for a game...</i></div>
-            </v-flex>
-            <v-flex xs-12 v-if="searching">
-              <div>&nbsp;
-                <v-progress-linear
-                  indeterminate
-                ></v-progress-linear>
-              </div>
-            </v-flex>
-            <v-flex xs12>
-              <v-textarea
-                label="Description"
-                v-model="game.description"
-                prepend-icon="description"
-              ></v-textarea>
-            </v-flex>
-            <v-flex xs12 md6 lg6 px-1>
-              <v-combobox
-                v-model="game.genres"
-                :items="getAvailableGenres"
-                label="Genre(s)"
-                multiple
-                prepend-icon="assignment"
-                clearable
-              ></v-combobox>
-            </v-flex>
-             <v-flex xs12 md2 lg2 px-1>
-              <v-menu
-                v-model="releasedateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="formattedReleasedate"
-                    label="Date of release"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="game.releasedateAsISOString"
-                  @input="setReleaseDate">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs12 md2 lg2 px-1>
-              <v-combobox
-                v-model="game.developer"
-                :items="getAvailableDevelopers"
-                label="Developer"
-                prepend-icon="gavel"
-              >
-              </v-combobox>
-            </v-flex>
-            <v-flex xs12 md2 lg2 px-1>
-              <v-combobox
-                v-model="game.publisher"
-                :items="getAvailablePublishers"
-                label="Publisher"
-                prepend-icon="publish"
-              >
-              </v-combobox>
-            </v-flex>
-            <v-flex xs12 md4 lg4 px-1>
-              <v-combobox
-                v-model="game.platform"
-                :items="getPlatforms"
-                label="Platform"
-                prepend-icon="airplay"
-                clearable
-              ></v-combobox>
-            </v-flex>
-            <v-flex xs12 md3 lg3 px-1>
-              <v-menu
-                v-model="purchasedateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="formattedPurchasedate"
-                    label="Date of purchase"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="game.purchasedateAsISOString"
-                  @input="setPurchaseDate">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs12 md3 lg3 px-1>
-              <v-checkbox
-                v-model="game.digital"
-                label="Digital"
-                prepend-icon="cloud_download"
-              ></v-checkbox>
-            </v-flex>
 
-            <v-flex xs12 md6 lg6 px-1>
-              <v-text-field
-                v-model="game.notes"
-                label="Notes"
-                prepend-icon="notes"
-              ></v-text-field>
-            </v-flex>
-            <!-- TODO add possible tags from backend :items="items"-->
-            <v-flex xs12 md6 lg6 px-1>
-              <v-combobox
-                v-model="game.tags"
-                label="Tags"
-                :items="getAvailableTags"
-                multiple
-                prepend-icon="label"
-                clearable
-              ></v-combobox>
-            </v-flex>
+      <v-card-text class="pa-6">
+        <!-- Title + IGDB search -->
+        <v-text-field
+          v-model="game.title"
+          label="Title"
+          prepend-inner-icon="mdi-controller"
+          variant="outlined"
+          density="comfortable"
+          class="mb-2"
+          @update:model-value="onTitleInput"
+        />
 
-            <v-flex xs12 md3 lg2 px-1>
-              <v-checkbox
-                v-model="game.completed"
-                label="Completed"
-              ></v-checkbox>
-            </v-flex>
-            <v-flex xs12 md3 lg1 px-1>
-              <v-checkbox
-                v-model="game.hundredpercent"
-                label="100%"
-              ></v-checkbox>
-            </v-flex>
-            <v-flex xs12 md6 lg3 px-1>
-              <v-menu
-                v-model="completiondateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="formattedCompletiondate"
-                    label="Date of completion"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="game.completiondateAsISOString"
-                  @input="setCompletionDate">
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs11 md11 lg5 px-1>
-              <div class="hidden-xs-only caption grey--text text--darken-1">Rating</div>
-              <v-label>
-                <v-rating
-                  v-model="game.rating"
-                  background-color="yellow lighten-3"
-                  color="yellow"
-                  dense
-                  hover
-                  length="10"
-                ></v-rating>
-              </v-label>
-            </v-flex>
-            <v-flex xs1 md1 lg1 px-1>
-              <div class="hidden-xs-only caption grey--text text--darken-1">Favorite</div>
-              <p-check class="p-icon p-plain p-bigger" color="danger-o" toggle v-model="game.favorite">
-                  <i slot="extra" class="icon mdi mdi-heart"></i>
-                  <i slot="off-extra" class="icon mdi mdi-heart-outline"></i>
-                  <label slot="off-label"></label>
-              </p-check>
-            </v-flex>
-            <v-flex xs12>
-              <v-btn
-                rounded
-                color="primary"
-                dark
-                block
-                @click="add">Add</v-btn>
-              <!-- {{ game }} -->
-            </v-flex>
-          </v-layout>
-        </v-form>
+        <div v-if="igdb.searching.value" class="mb-4">
+          <v-progress-linear indeterminate color="primary" rounded />
+          <div class="text-caption text-medium-emphasis mt-1">Searching IGDB...</div>
+        </div>
+
+        <template v-if="igdb.results.value.length > 0 && !igdb.searching.value">
+          <div class="text-caption text-medium-emphasis mb-2">
+            Found {{ igdb.results.value.length }} result(s) — select one to pre-fill the form:
+          </div>
+          <IgdbSearchResult :results="igdb.results.value" @select="onIgdbSelect" />
+        </template>
+        <div
+          v-else-if="game.title.length > 0 && !igdb.searching.value && !igdbSelected"
+          class="text-caption text-medium-emphasis mb-4 font-italic"
+        >
+          Nothing found on IGDB for this title.
+        </div>
+
+        <!-- Cover preview -->
+        <v-row v-if="game.cover || game.imageUrl">
+          <v-col cols="auto">
+            <v-img
+              :src="coverBig(game.cover) || game.imageUrl"
+              width="90"
+              height="120"
+              cover
+              rounded="sm"
+              class="mb-2"
+            />
+          </v-col>
+        </v-row>
+
+        <!-- Description -->
+        <v-textarea
+          v-model="game.description"
+          label="Description"
+          prepend-inner-icon="mdi-text"
+          variant="outlined"
+          density="comfortable"
+          rows="3"
+          auto-grow
+          class="mb-2"
+        />
+
+        <v-row>
+          <!-- Platform -->
+          <v-col cols="12" sm="6" md="4">
+            <v-combobox
+              v-model="game.platform"
+              :items="collectionStore.availablePlatforms"
+              label="Platform"
+              prepend-inner-icon="mdi-monitor"
+              variant="outlined"
+              density="comfortable"
+              clearable
+            />
+          </v-col>
+
+          <!-- Genres -->
+          <v-col cols="12" sm="6" md="8">
+            <v-combobox
+              v-model="game.genres"
+              :items="collectionStore.availableGenres"
+              label="Genre(s)"
+              prepend-inner-icon="mdi-tag-multiple"
+              variant="outlined"
+              density="comfortable"
+              multiple
+              chips
+              closable-chips
+              clearable
+            />
+          </v-col>
+
+          <!-- Developer -->
+          <v-col cols="12" sm="6">
+            <v-combobox
+              v-model="game.developer"
+              :items="collectionStore.availableDevelopers"
+              label="Developer"
+              prepend-inner-icon="mdi-code-braces"
+              variant="outlined"
+              density="comfortable"
+            />
+          </v-col>
+
+          <!-- Publisher -->
+          <v-col cols="12" sm="6">
+            <v-combobox
+              v-model="game.publisher"
+              :items="collectionStore.availablePublishers"
+              label="Publisher"
+              prepend-inner-icon="mdi-briefcase"
+              variant="outlined"
+              density="comfortable"
+            />
+          </v-col>
+
+          <!-- Release date -->
+          <v-col cols="12" sm="4">
+            <v-menu v-model="releaseDateMenu" :close-on-content-click="false">
+              <template #activator="{ props }">
+                <v-text-field
+                  :model-value="formatIso(game.releasedateAsISOString)"
+                  label="Release date"
+                  prepend-inner-icon="mdi-calendar"
+                  variant="outlined"
+                  density="comfortable"
+                  readonly
+                  v-bind="props"
+                />
+              </template>
+              <v-date-picker
+                v-model="releaseDatePicker"
+                @update:model-value="onReleaseDateChange"
+              />
+            </v-menu>
+          </v-col>
+
+          <!-- Purchase date -->
+          <v-col cols="12" sm="4">
+            <v-menu v-model="purchaseDateMenu" :close-on-content-click="false">
+              <template #activator="{ props }">
+                <v-text-field
+                  :model-value="formatIso(game.purchasedateAsISOString)"
+                  label="Purchase date"
+                  prepend-inner-icon="mdi-calendar-check"
+                  variant="outlined"
+                  density="comfortable"
+                  readonly
+                  v-bind="props"
+                />
+              </template>
+              <v-date-picker
+                v-model="purchaseDatePicker"
+                @update:model-value="onPurchaseDateChange"
+              />
+            </v-menu>
+          </v-col>
+
+          <!-- Digital -->
+          <v-col cols="12" sm="4" class="d-flex align-center">
+            <v-checkbox
+              v-model="game.digital"
+              label="Digital download"
+              prepend-icon="mdi-cloud-download"
+              hide-details
+            />
+          </v-col>
+
+          <!-- Notes -->
+          <v-col cols="12" sm="6">
+            <v-textarea
+              v-model="game.notes"
+              label="Notes"
+              prepend-inner-icon="mdi-note-text"
+              variant="outlined"
+              density="comfortable"
+              rows="2"
+              auto-grow
+            />
+          </v-col>
+
+          <!-- Tags -->
+          <v-col cols="12" sm="6">
+            <v-combobox
+              v-model="game.tags"
+              :items="collectionStore.availableTags"
+              label="Tags"
+              prepend-inner-icon="mdi-label"
+              variant="outlined"
+              density="comfortable"
+              multiple
+              chips
+              closable-chips
+              clearable
+            />
+          </v-col>
+
+          <!-- Completed + 100% -->
+          <v-col cols="12" sm="4" class="d-flex align-center gap-2">
+            <v-checkbox v-model="game.completed" label="Completed" hide-details />
+            <v-checkbox v-model="game.hundredpercent" label="100%" hide-details />
+          </v-col>
+
+          <!-- Completion date (visible when completed) -->
+          <v-col v-if="game.completed" cols="12" sm="4">
+            <v-menu v-model="completionDateMenu" :close-on-content-click="false">
+              <template #activator="{ props }">
+                <v-text-field
+                  :model-value="formatIso(game.completiondateAsISOString)"
+                  label="Completion date"
+                  prepend-inner-icon="mdi-flag-checkered"
+                  variant="outlined"
+                  density="comfortable"
+                  readonly
+                  v-bind="props"
+                />
+              </template>
+              <v-date-picker
+                v-model="completionDatePicker"
+                @update:model-value="onCompletionDateChange"
+              />
+            </v-menu>
+          </v-col>
+
+          <!-- Rating -->
+          <v-col cols="12">
+            <div class="text-caption text-medium-emphasis mb-1">Rating</div>
+            <v-rating
+              v-model="game.rating"
+              length="10"
+              color="yellow-darken-2"
+              active-color="yellow"
+              hover
+              density="comfortable"
+            />
+          </v-col>
+
+          <!-- Favourite -->
+          <v-col cols="12">
+            <v-btn
+              :icon="game.favorite ? 'mdi-heart' : 'mdi-heart-outline'"
+              :color="game.favorite ? 'red' : 'default'"
+              variant="text"
+              @click="game.favorite = !game.favorite"
+            />
+            <span class="text-body-2 text-medium-emphasis ml-1">Favourite</span>
+          </v-col>
+        </v-row>
       </v-card-text>
+
+      <v-card-actions class="pa-6 pt-0">
+        <v-btn
+          color="primary"
+          variant="elevated"
+          size="large"
+          prepend-icon="mdi-plus"
+          :loading="saving"
+          @click="add"
+        >
+          Add to collection
+        </v-btn>
+        <v-btn variant="text" @click="reset">Clear</v-btn>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
-<script>
-import PrettyCheck from 'pretty-checkbox-vue/check'
-import { mapGetters } from 'vuex'
-import firebase from 'firebase/app'
-import format from 'date-fns/format'
-import { setInterval, clearInterval } from 'timers'
-import SearchResult from '@/components/IgdbSearchResult'
-import { formatDate } from '@/service/utils'
 
-const blankGame = {
-  number: 0,
-  title: '',
-  description: '',
-  platform: '',
-  genres: [],
-  developer: '',
-  publisher: '',
-  notes: '',
-  tags: [],
-  releaseDate: null,
-  buydate: null,
-  digital: false,
-  completed: false,
-  hundredpercent: false,
-  completiondate: null,
-  rating: 0
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { Timestamp } from 'firebase/firestore'
+import { useCollectionStore } from '@/stores/collection'
+import { useNotificationStore } from '@/stores/notification'
+import { useIgdb } from '@/composables/useIgdb'
+import { coverBig } from '@/services/igdb'
+import type { Game, IgdbGame } from '@/types/game'
+import IgdbSearchResult from '@/components/IgdbSearchResult.vue'
+
+const router = useRouter()
+const collectionStore = useCollectionStore()
+const notificationStore = useNotificationStore()
+const igdb = useIgdb()
+
+const saving = ref(false)
+const igdbSelected = ref(false)
+
+const releaseDateMenu = ref(false)
+const purchaseDateMenu = ref(false)
+const completionDateMenu = ref(false)
+const releaseDatePicker = ref<Date | null>(null)
+const purchaseDatePicker = ref<Date>(new Date())
+const completionDatePicker = ref<Date | null>(null)
+
+function blankGame(): Omit<Game, 'id'> {
+  return {
+    number: collectionStore.nextNumber,
+    title: '',
+    description: '',
+    platform: '',
+    genres: [],
+    developer: '',
+    publisher: '',
+    notes: '',
+    tags: [],
+    releaseDate: undefined,
+    releasedateAsISOString: undefined,
+    buydate: Timestamp.fromDate(new Date()),
+    purchasedateAsISOString: new Date().toISOString().substring(0, 10),
+    digital: false,
+    completed: false,
+    hundredpercent: false,
+    completiondate: undefined,
+    completiondateAsISOString: undefined,
+    rating: 0,
+    favorite: false
+  }
 }
 
-let searchIntervalId = null
+const game = reactive<Omit<Game, 'id'>>(blankGame())
 
-export default {
-  components: {
-    'p-check': PrettyCheck,
-    'lib-searchresult': SearchResult
-  },
-  data() {
-    return {
-      game: {
-        ...blankGame,
-        buydate: firebase.firestore.Timestamp.fromDate(new Date())
-      },
-      searching: false,
-      selected: false,
-      searchResults: [],
-      releasedateMenu: false,
-      formattedReleasedate: null,
-      purchasedateMenu: false,
-      formattedPurchasedate: formatDate(new Date()),
-      completiondateMenu: false,
-      formattedCompletiondate: null
-    }
-  },
-  methods: {
-    add() {
-      console.log('ADD')
-      // convert dates
-      let game2Add = this.game
-      this.$store.dispatch('addGame', game2Add)
-      this.game = { ...blankGame }
-      this.formattedReleasedate = null
-      this.formattedCompletiondate = null
-      this.formattedPurchasedate = formatDate(new Date())
-      this.selected = false
-    },
-    searchForGames() {
-      clearInterval(searchIntervalId)
-      searchIntervalId = setInterval(() => {
-        clearInterval(searchIntervalId)
-        console.log('searching for ', this.game.title)
-        if (this.game.title) {
-          this.searching = true
-          // this.$http.get(`https://ckatzorke.lib.id/igdb@dev/search/?search=${this.searchTerm}`)
-          this.$http.get(`https://libratron3000.katzorke.io/.netlify/functions/igdbSearch?search=${this.game.title}`)
-          // this.$http
-          //  .get('/assets/results.json')
-            .then(res => {
-              this.searching = false
-              if (res.status !== 200) {
-                console.error('Error from res ', res)
-                this.$store.dispatch('notify', `Error searching for games (Status=${res.status}).`)
-              } else {
-                console.log('Search response ', res)
-                this.searchResults = res.data.result
-              }
-            })
-            .catch(e => {
-              console.error(e)
-              this.$store.dispatch('notify', `Error searching for games ${e}.`)
-              this.searching = false
-            })
-        }
-      }, 700)
-    },
-    selectSearchEntry(searchEntry) {
-      console.log('Searchentry', searchEntry)
-      this.selected = true
-      let involvedCompanies = searchEntry.involved_companies
-      let developer = ''
-      let publisher = ''
-      if (involvedCompanies && involvedCompanies.length > 0) {
-        let devs = involvedCompanies.filter(c => c.developer)
-        if (devs.length > 0) {
-          developer = devs[0].company.name
-        }
-        let pubs = involvedCompanies.filter(c => !c.developer)
-        if (pubs.length > 0) {
-          publisher = pubs[0].company.name
-        }
-      }
-      let newGame = {
-        ...this.game,
-        title: searchEntry.name,
-        description: searchEntry.summary,
-        platform: searchEntry.platforms ? searchEntry.platforms.map(p => p.name)[0] : '',
-        publisher: publisher,
-        developer: developer,
-        genres: searchEntry.genres ? searchEntry.genres.map(g => g.name) : [],
-        releaseDate: searchEntry.first_release_date ? new Date(searchEntry.first_release_date * 1000) : new Date('2000-0-01'),
-        igdbId: searchEntry.id,
-        cover: searchEntry.cover ? searchEntry.cover.image_id : '',
-        poweredBy: 'IGDB'
-      }
-      this.game = newGame
-      // update releaseDate
-      this.game.releasedateAsISOString = this.game.releaseDate.toISOString().substring(0, 10)
-      this.setReleaseDate()
-      // reset search results
-      this.searchResults = []
-    },
-    setCompletionDate(date) {
-      const newDate = new Date(this.game.completiondateAsISOString.split('-'))
-      this.game.completiondate = firebase.firestore.Timestamp.fromDate(newDate)
-      const [year, month, day] = this.game.completiondateAsISOString.split('-')
-      this.formattedCompletiondate = `${day}.${month}.${year}`
-      this.completiondateMenu = false
-    },
-    setPurchaseDate(date) {
-      const newDate = new Date(this.game.purchasedateAsISOString.split('-'))
-      this.game.buydate = firebase.firestore.Timestamp.fromDate(newDate)
-      const [year, month, day] = this.game.purchasedateAsISOString.split('-')
-      this.formattedPurchasedate = `${day}.${month}.${year}`
-      this.purchasedateMenu = false
-    },
-    setReleaseDate(date) {
-      const newDate = new Date(this.game.releasedateAsISOString)
-      this.game.releaseDate = firebase.firestore.Timestamp.fromDate(newDate)
-      const [year, month, day] = this.game.releasedateAsISOString.split('-')
-      this.formattedReleasedate = `${day}.${month}.${year}`
-      this.releasedateMenu = false
-    }
-  },
-  computed: {
-    formatBuyDate() {
-      return this.game.buydate ? format(this.game.buydate, 'DD.MM.YYYY') : ''
-    },
-    formatCompletionDate() {
-      return this.game.completiondate ? format(this.game.completiondate, 'DD.MM.YYYY') : ''
-    },
-    formatReleaseDate() {
-      return this.game.releaseDate ? format(this.game.releaseDate, 'DD.MM.YYYY') : ''
-    },
-    getAvailableGenres() {
-      let genres = this.$store.state.collection.flatMap(c => c.genre).filter(g => g)
-      return [...new Set(genres)].sort()
-    },
-    getAvailableDevelopers() {
-      let developers = this.$store.state.collection.flatMap(c => c.developer).filter(d => d)
-      return [...new Set(developers)].sort()
-    },
-    getAvailablePublishers() {
-      let publishers = this.$store.state.collection.flatMap(c => c.publisher).filter(p => p)
-      return [...new Set(publishers)].sort()
-    },
-    getAvailableTags() {
-      let tags = this.$store.state.collection.flatMap(c => c.tags).filter(t => t)
-      return [...new Set(tags)].sort()
-    },
-    rating() {
-      let rating = 'radio_button_unchecked'
-      switch (this.game.rating) {
-        case 0:
-          break
-        case 1:
-        case 2:
-          rating = 'sentiment_very_dissatisfied'
-          break
-        case 3:
-        case 4:
-        case 5:
-          rating = 'sentiment_dissatisfied'
-          break
-        case 6:
-        case 7:
-        case 8:
-          rating = 'sentiment_satisfied'
-          break
-        case 9:
-        case 10:
-          rating = 'sentiment_very_satisfied'
-          break
-        default:
-      }
-      return rating
-    },
-    ...mapGetters([
-      'getPlatforms'
-    ])
+function onTitleInput(val: string) {
+  igdbSelected.value = false
+  igdb.search(val)
+}
 
-  },
-  created() {
-    let largest = this.$store.state.collection
-      .map(v => v.number)
-      .reduce((prev, current) => (prev > current ? prev : current))
-    const newNumber = largest + 1
-    this.game.number = newNumber
+function formatIso(iso: string | undefined): string {
+  if (!iso) return ''
+  const [y, m, d] = iso.split('-')
+  return `${d}.${m}.${y}`
+}
+
+function onReleaseDateChange(date: Date | null) {
+  if (!date) return
+  releaseDateMenu.value = false
+  game.releasedateAsISOString = date.toISOString().substring(0, 10)
+  game.releaseDate = Timestamp.fromDate(date)
+}
+
+function onPurchaseDateChange(date: Date | null) {
+  if (!date) return
+  purchaseDateMenu.value = false
+  game.purchasedateAsISOString = date.toISOString().substring(0, 10)
+  game.buydate = Timestamp.fromDate(date)
+}
+
+function onCompletionDateChange(date: Date | null) {
+  if (!date) return
+  completionDateMenu.value = false
+  game.completiondateAsISOString = date.toISOString().substring(0, 10)
+  game.completiondate = Timestamp.fromDate(date)
+}
+
+function onIgdbSelect(entry: IgdbGame) {
+  igdbSelected.value = true
+  igdb.clear()
+
+  const involved = entry.involved_companies ?? []
+  const devs = involved.filter(c => c.developer)
+  const pubs = involved.filter(c => !c.developer)
+
+  game.title = entry.name
+  game.description = entry.summary ?? ''
+  game.platform = entry.platforms?.[0]?.name ?? game.platform
+  game.genres = entry.genres?.map(g => g.name) ?? []
+  game.developer = devs[0]?.company.name ?? ''
+  game.publisher = pubs[0]?.company.name ?? ''
+  game.igdbId = entry.id
+  game.cover = entry.cover?.image_id ?? ''
+  game.poweredBy = 'IGDB'
+
+  if (entry.first_release_date) {
+    const d = new Date(entry.first_release_date * 1000)
+    game.releasedateAsISOString = d.toISOString().substring(0, 10)
+    game.releaseDate = Timestamp.fromDate(d)
+    releaseDatePicker.value = d
   }
+}
+
+async function add() {
+  if (!game.title.trim()) {
+    notificationStore.notify('Please enter a game title.')
+    return
+  }
+  saving.value = true
+  try {
+    game.number = collectionStore.nextNumber
+    await collectionStore.addGame({ ...game })
+    notificationStore.notify(`Added "${game.title}" to your collection.`)
+    router.push('/collection')
+  } catch (e) {
+    notificationStore.notify('Could not add game. Please try again.')
+  } finally {
+    saving.value = false
+  }
+}
+
+function reset() {
+  Object.assign(game, blankGame())
+  igdb.clear()
+  igdbSelected.value = false
+  releaseDatePicker.value = null
+  purchaseDatePicker.value = new Date()
+  completionDatePicker.value = null
 }
 </script>

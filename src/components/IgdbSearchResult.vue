@@ -1,83 +1,83 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel v-for="result in searchResults" :key="result.id">
-      <v-expansion-panel-header>
-        <v-layout row wrap class="pa-3">
-          <v-flex xs6>
-            <div class="caption grey--text">Title</div>
-            <div>
-              {{ result.name }}&nbsp;
-              <a :href="result.url" target="_blank">
-                <v-icon small>link</v-icon>
+  <v-expansion-panels variant="accordion" class="mb-4">
+    <v-expansion-panel
+      v-for="result in results"
+      :key="result.id"
+    >
+      <v-expansion-panel-title>
+        <v-row no-gutters>
+          <v-col cols="12" sm="5">
+            <div class="text-caption text-medium-emphasis">Title</div>
+            <div class="font-weight-medium">
+              {{ result.name }}
+              <a v-if="result.url" :href="result.url" target="_blank" class="ml-1">
+                <v-icon size="x-small">mdi-open-in-new</v-icon>
               </a>
             </div>
-          </v-flex>
-          <v-flex xs6 sm6 md2>
-            <div class="caption grey--text">Release Date</div>
+          </v-col>
+          <v-col cols="6" sm="2" class="d-none d-sm-block">
+            <div class="text-caption text-medium-emphasis">Release</div>
             <div>{{ displayDate(result.first_release_date) }}</div>
-          </v-flex>
-          <v-flex xs6 sm6 md2>
-            <div class="caption grey--text">Genres</div>
-            <div>{{ displayGenres(result.genres) }}</div>
-          </v-flex>
-          <v-flex xs6 sm6 md2>
-            <div class="caption grey--text">Platforms</div>
-            <div>{{ displayPlatforms(result.platforms) }}</div>
-          </v-flex>
-        </v-layout>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-layout row wrap class="pa-3">
-          <v-flex hidden-sm-and-down md2 text-md-center>
-            <img :src="coverImage(result.cover)" height="125" />
-          </v-flex>
-          <v-flex xs12 sm12 md10>
-            <div v-html="result.summary"></div>
-            <div>
-              <v-btn @click="selectEntry(result)">
-                <v-icon small>check_box</v-icon>Use this entry
-              </v-btn>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-expansion-panel-content>
+          </v-col>
+          <v-col cols="6" sm="2" class="d-none d-sm-block">
+            <div class="text-caption text-medium-emphasis">Genres</div>
+            <div class="text-truncate">{{ displayList(result.genres) }}</div>
+          </v-col>
+          <v-col cols="6" sm="3" class="d-none d-sm-block">
+            <div class="text-caption text-medium-emphasis">Platforms</div>
+            <div class="text-truncate">{{ displayList(result.platforms) }}</div>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-title>
+
+      <v-expansion-panel-text>
+        <v-row>
+          <v-col cols="auto" class="d-none d-md-block">
+            <v-img
+              :src="coverImage(result.cover)"
+              width="80"
+              height="107"
+              cover
+              rounded="sm"
+            />
+          </v-col>
+          <v-col>
+            <div class="text-body-2 mb-3 text-medium-emphasis">{{ result.summary }}</div>
+            <v-btn
+              size="small"
+              color="primary"
+              variant="tonal"
+              prepend-icon="mdi-check"
+              @click="$emit('select', result)"
+            >
+              Use this entry
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
-<script>
-import { format } from 'date-fns'
-import { coverBig } from '@/service/igdb.js'
 
-export default {
-  props: ['searchResults'],
-  methods: {
-    selectEntry(entry) {
-      this.$emit('entrySelected', entry)
-    },
-    displayDate(timestamp) {
-      if (timestamp) {
-        return format(new Date(timestamp * 1000), 'DD.MM.YYYY')
-      }
-      return ''
-    },
-    coverImage(cover) {
-      if (cover && cover.image_id) {
-        return coverBig(cover.image_id)
-      }
-      return '' // todo placeholder
-    },
-    displayGenres(genres) {
-      if (genres) {
-        return genres.map(g => g.name).join(', ')
-      }
-      return 'n/a'
-    },
-    displayPlatforms(platforms) {
-      if (platforms) {
-        return platforms.map(p => p.name).join(', ')
-      }
-      return 'n/a'
-    }
-  }
+<script setup lang="ts">
+import { format } from 'date-fns'
+import type { IgdbGame } from '@/types/game'
+import { coverBig } from '@/services/igdb'
+
+defineProps<{ results: IgdbGame[] }>()
+defineEmits<{ select: [game: IgdbGame] }>()
+
+function displayDate(timestamp: number | undefined): string {
+  if (!timestamp) return 'n/a'
+  return format(new Date(timestamp * 1000), 'dd.MM.yyyy')
+}
+
+function coverImage(cover: IgdbGame['cover']): string {
+  return coverBig(cover?.image_id)
+}
+
+function displayList(items: { name: string }[] | undefined): string {
+  if (!items?.length) return 'n/a'
+  return items.map(i => i.name).join(', ')
 }
 </script>
