@@ -69,6 +69,7 @@ const searchText = ref('')
 const navItems = [
   { title: 'Dashboard', path: '/dashboard', icon: 'mdi-view-dashboard' },
   { title: 'Collection', path: '/collection', icon: 'mdi-gamepad-variant' },
+  { title: 'Statistics', path: '/statistics', icon: 'mdi-chart-pie' },
   { title: 'Add Game', path: '/add', icon: 'mdi-plus-circle' }
 ]
 

@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/add',
       component: () => import('@/views/AddGameView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/statistics',
+      component: () => import('@/views/StatisticsView.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
