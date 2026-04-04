@@ -131,7 +131,8 @@ export const useCollectionStore = defineStore('collection', () => {
 
   async function addGame(game: Omit<Game, 'id'>): Promise<void> {
     const uid = getCurrentUid()
-    await addDoc(collection(db, `users/${uid}/collection`), game)
+    const sanitized = Object.fromEntries(Object.entries(game).filter(([, v]) => v !== undefined))
+    await addDoc(collection(db, `users/${uid}/collection`), sanitized)
   }
 
   async function updateGame(id: string, values: Partial<Game>): Promise<void> {
