@@ -29,7 +29,13 @@
       <!-- Top stat chips -->
       <v-row class="mb-6">
         <v-col cols="6" sm="3" v-for="stat in summaryStats" :key="stat.label">
-          <v-card rounded="lg" variant="tonal" :color="stat.color">
+          <v-card
+            rounded="lg"
+            variant="tonal"
+            :color="stat.color"
+            class="stat-card"
+            @click="navigateWithFilter(stat.filter)"
+          >
             <v-card-text class="text-center pa-4">
               <div class="text-h4 font-weight-bold">{{ stat.value }}</div>
               <div class="text-caption text-medium-emphasis mt-1">{{ stat.label }}</div>
@@ -96,8 +102,9 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Timestamp } from 'firebase/firestore'
-import { useCollectionStore } from '@/stores/collection'
+import { useCollectionStore, type StatusFilter } from '@/stores/collection'
 import StatStatusChart from '@/components/stats/StatStatusChart.vue'
 import StatPlatformChart from '@/components/stats/StatPlatformChart.vue'
 import StatGenreChart from '@/components/stats/StatGenreChart.vue'
@@ -105,6 +112,18 @@ import StatTimelineChart from '@/components/stats/StatTimelineChart.vue'
 import StatRatingChart from '@/components/stats/StatRatingChart.vue'
 
 const collectionStore = useCollectionStore()
+const router = useRouter()
+
+function navigateWithFilter(status: StatusFilter) {
+  collectionStore.clearFilters()
+  if (status !== 'none') {
+    collectionStore.setStatusFilter(status)
+  }
+  if (selectedYear.value !== 'all') {
+    collectionStore.setYearFilter(Number(selectedYear.value))
+  }
+  router.push('/collection')
+}
 const selectedYear = ref<string | number>('all')
 
 const availableYears = computed(() => {
@@ -135,22 +154,37 @@ const summaryStats = computed(() => [
   {
     label: 'Total Games',
     value: filteredGames.value.length,
-    color: 'primary'
+    color: 'primary',
+    filter: 'none' as StatusFilter
   },
   {
     label: 'Completed',
     value: filteredGames.value.filter(g => g.completed).length,
-    color: 'success'
+    color: 'success',
+    filter: 'completed' as StatusFilter
   },
   {
     label: 'Favourites',
     value: filteredGames.value.filter(g => g.favorite).length,
-    color: 'warning'
+    color: 'warning',
+    filter: 'favorite' as StatusFilter
   },
   {
     label: '100% Complete',
     value: filteredGames.value.filter(g => g.hundredpercent).length,
-    color: 'secondary'
+    color: 'secondary',
+    filter: 'hundred-percent' as StatusFilter
   }
 ])
 </script>
+
+<style scoped>
+.stat-card {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+</style>

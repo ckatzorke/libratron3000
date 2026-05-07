@@ -18,7 +18,13 @@
       <!-- Stats row -->
       <v-row class="mb-6">
         <v-col cols="6" sm="3" v-for="stat in stats" :key="stat.label">
-          <v-card rounded="lg" variant="tonal" :color="stat.color">
+          <v-card
+            rounded="lg"
+            variant="tonal"
+            :color="stat.color"
+            class="stat-card"
+            @click="navigateWithFilter(stat.filter)"
+          >
             <v-card-text class="text-center pa-4">
               <div class="text-h4 font-weight-bold">{{ stat.value }}</div>
               <div class="text-caption text-medium-emphasis mt-1">{{ stat.label }}</div>
@@ -110,24 +116,34 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { useCollectionStore } from '@/stores/collection'
+import { useCollectionStore, type StatusFilter } from '@/stores/collection'
 import { coverBig } from '@/services/igdb'
 import { Timestamp } from 'firebase/firestore'
 
 const authStore = useAuthStore()
 const collectionStore = useCollectionStore()
+const router = useRouter()
 const currentYear = new Date().getFullYear()
 
 function coverImage(cover: string | undefined) {
   return coverBig(cover)
 }
 
+function navigateWithFilter(status: StatusFilter) {
+  collectionStore.clearFilters()
+  if (status !== 'none') {
+    collectionStore.setStatusFilter(status)
+  }
+  router.push('/collection')
+}
+
 const stats = computed(() => [
-  { label: 'Total Games', value: collectionStore.games.length, color: 'primary' },
-  { label: 'Completed', value: collectionStore.games.filter(g => g.completed).length, color: 'success' },
-  { label: 'This Month', value: addedThisMonth.value, color: 'info' },
-  { label: 'Favourites', value: collectionStore.games.filter(g => g.favorite).length, color: 'warning' }
+  { label: 'Total Games', value: collectionStore.games.length, color: 'primary', filter: 'none' as StatusFilter },
+  { label: 'Completed', value: collectionStore.games.filter(g => g.completed).length, color: 'success', filter: 'completed' as StatusFilter },
+  { label: 'This Month', value: addedThisMonth.value, color: 'info', filter: 'this-month' as StatusFilter },
+  { label: 'Favourites', value: collectionStore.games.filter(g => g.favorite).length, color: 'warning', filter: 'favorite' as StatusFilter }
 ])
 
 const addedThisMonth = computed(() => {
@@ -186,5 +202,13 @@ const topPlatforms = computed(() => {
 }
 .game-cover:hover {
   transform: scale(1.04);
+}
+.stat-card {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 </style>
