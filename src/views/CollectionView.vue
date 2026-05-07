@@ -65,6 +65,24 @@
             <span class="text-caption text-medium-emphasis">
               {{ collectionStore.filteredCollection.length }} game(s)
             </span>
+            <v-chip
+              v-if="collectionStore.filterStatus !== 'none'"
+              size="x-small"
+              closable
+              class="ml-2"
+              @click:close="collectionStore.setStatusFilter('none')"
+            >
+              {{ statusFilterLabel }}
+            </v-chip>
+            <v-chip
+              v-if="collectionStore.filterYear !== 'all'"
+              size="x-small"
+              closable
+              class="ml-2"
+              @click:close="collectionStore.setYearFilter('all')"
+            >
+              {{ collectionStore.filterYear }}
+            </v-chip>
             <v-btn
               v-if="hasActiveFilters"
               size="x-small"
@@ -174,11 +192,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useCollectionStore, type FormatFilter, type SortOrder } from '@/stores/collection'
+import { useCollectionStore, type FormatFilter, type SortOrder, type StatusFilter } from '@/stores/collection'
 import { thumbnail } from '@/services/igdb'
 import { shortPlatform } from '@/services/platforms'
 import { prettyDate } from '@/services/utils'
-import type { Timestamp } from 'firebase/firestore'
 
 const collectionStore = useCollectionStore()
 
@@ -202,9 +219,20 @@ const sortLabel = computed(
   () => sortOptions.find(s => s.value === collectionStore.sortOrder)?.label ?? ''
 )
 
+const statusFilterLabels: Record<StatusFilter, string> = {
+  'none': '',
+  'completed': 'Completed',
+  'favorite': 'Favourites',
+  'this-month': 'Added This Month',
+  'hundred-percent': '100% Complete'
+}
+
+const statusFilterLabel = computed(() => statusFilterLabels[collectionStore.filterStatus])
+
 const hasActiveFilters = computed(() =>
   !!(collectionStore.filterText || collectionStore.filterPlatform ||
-     collectionStore.filterGenre || collectionStore.filterFormat !== 'all')
+     collectionStore.filterGenre || collectionStore.filterFormat !== 'all' ||
+     collectionStore.filterStatus !== 'none' || collectionStore.filterYear !== 'all')
 )
 
 function onSearch(val: string | null) {

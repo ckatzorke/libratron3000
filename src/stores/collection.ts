@@ -17,6 +17,7 @@ import type { Game } from '@/types/game'
 
 export type SortOrder = 'PURCHASE' | 'NAME' | 'RATING' | 'PLATFORM' | 'ID'
 export type FormatFilter = 'all' | 'physical' | 'digital'
+export type StatusFilter = 'none' | 'completed' | 'favorite' | 'this-month' | 'hundred-percent'
 
 const PAGE_SIZE = 20
 
@@ -27,6 +28,8 @@ export const useCollectionStore = defineStore('collection', () => {
   const filterPlatform = ref('')
   const filterGenre = ref('')
   const filterFormat = ref<FormatFilter>('all')
+  const filterStatus = ref<StatusFilter>('none')
+  const filterYear = ref<number | 'all'>('all')
   const sortOrder = ref<SortOrder>('PURCHASE')
   const currentPage = ref(1)
 
@@ -76,6 +79,27 @@ export const useCollectionStore = defineStore('collection', () => {
       result = result.filter(g => g.digital === true)
     } else if (filterFormat.value === 'physical') {
       result = result.filter(g => !g.digital)
+    }
+    if (filterStatus.value === 'completed') {
+      result = result.filter(g => g.completed === true)
+    } else if (filterStatus.value === 'favorite') {
+      result = result.filter(g => g.favorite === true)
+    } else if (filterStatus.value === 'hundred-percent') {
+      result = result.filter(g => g.hundredpercent === true)
+    } else if (filterStatus.value === 'this-month') {
+      const now = new Date()
+      result = result.filter(g => {
+        if (!g.buydate) return false
+        const d = (g.buydate as Timestamp).toDate()
+        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
+      })
+    }
+    if (filterYear.value !== 'all') {
+      const y = filterYear.value
+      result = result.filter(g => {
+        if (!g.buydate) return false
+        return (g.buydate as Timestamp).toDate().getFullYear() === y
+      })
     }
 
     return sortGames(result, sortOrder.value)
@@ -166,6 +190,16 @@ export const useCollectionStore = defineStore('collection', () => {
     currentPage.value = 1
   }
 
+  function setStatusFilter(status: StatusFilter) {
+    filterStatus.value = status
+    currentPage.value = 1
+  }
+
+  function setYearFilter(year: number | 'all') {
+    filterYear.value = year
+    currentPage.value = 1
+  }
+
   function setSortOrder(order: SortOrder) {
     sortOrder.value = order
     currentPage.value = 1
@@ -176,6 +210,8 @@ export const useCollectionStore = defineStore('collection', () => {
     filterPlatform.value = ''
     filterGenre.value = ''
     filterFormat.value = 'all'
+    filterStatus.value = 'none'
+    filterYear.value = 'all'
     currentPage.value = 1
   }
 
@@ -186,6 +222,8 @@ export const useCollectionStore = defineStore('collection', () => {
     filterPlatform,
     filterGenre,
     filterFormat,
+    filterStatus,
+    filterYear,
     sortOrder,
     currentPage,
     totalFilteredPages,
@@ -206,6 +244,8 @@ export const useCollectionStore = defineStore('collection', () => {
     setPlatformFilter,
     setGenreFilter,
     setFormatFilter,
+    setStatusFilter,
+    setYearFilter,
     setSortOrder,
     clearFilters
   }
