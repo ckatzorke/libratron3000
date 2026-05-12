@@ -94,7 +94,7 @@
               Clear filters
             </v-btn>
           </v-col>
-          <v-col cols="auto">
+          <v-col cols="auto" class="d-flex align-center gap-2">
             <v-menu>
               <template #activator="{ props }">
                 <v-btn size="small" variant="text" v-bind="props" prepend-icon="mdi-sort">
@@ -111,6 +111,16 @@
                 />
               </v-list>
             </v-menu>
+            <v-btn-toggle
+              v-model="viewMode"
+              mandatory
+              density="compact"
+              color="primary"
+              variant="outlined"
+            >
+              <v-btn value="list" size="small" icon="mdi-view-list" />
+              <v-btn value="grid" size="small" icon="mdi-view-grid" />
+            </v-btn-toggle>
           </v-col>
         </v-row>
       </v-card-text>
@@ -121,8 +131,8 @@
       <v-progress-circular indeterminate color="primary" />
     </v-row>
 
-    <!-- List -->
-    <v-card v-else rounded="lg" elevation="1">
+    <!-- List view -->
+    <v-card v-else-if="viewMode === 'list'" rounded="lg" elevation="1">
       <v-list lines="two" class="pa-0">
         <template v-for="(game, idx) in collectionStore.displayCollection" :key="game.id">
           <v-divider v-if="idx > 0" />
@@ -178,6 +188,48 @@
       </v-list>
     </v-card>
 
+    <!-- Cover art grid view -->
+    <div v-else>
+      <v-row v-if="collectionStore.displayCollection.length > 0" dense>
+        <v-col
+          v-for="game in collectionStore.displayCollection"
+          :key="game.id"
+          cols="6"
+          sm="4"
+          md="3"
+          lg="2"
+        >
+          <v-card
+            :to="`/game/${game.id}`"
+            :class="{ 'sold-game': game.sellDate }"
+            rounded="lg"
+            elevation="2"
+            class="cover-card"
+          >
+            <v-img
+              :src="coverBig(game.cover)"
+              :aspect-ratio="3/4"
+              cover
+            >
+              <template #error>
+                <v-img src="/assets/dummy.png" :aspect-ratio="3/4" cover />
+              </template>
+              <div class="cover-overlay d-flex flex-column justify-end pa-2">
+                <div class="cover-title text-caption font-weight-bold text-white">{{ game.title }}</div>
+                <div class="d-flex align-center mt-1">
+                  <v-icon v-if="game.favorite" size="x-small" color="red">mdi-heart</v-icon>
+                  <v-icon v-if="game.completed" size="x-small" color="success" class="ml-1">mdi-flag-checkered</v-icon>
+                </div>
+              </div>
+            </v-img>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-card v-else rounded="lg" elevation="1">
+        <p class="text-medium-emphasis text-center py-6 font-italic">No games match your filters.</p>
+      </v-card>
+    </div>
+
     <!-- Pagination -->
     <div v-if="collectionStore.totalFilteredPages > 1" class="d-flex justify-center mt-4">
       <v-pagination
@@ -191,13 +243,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCollectionStore, type FormatFilter, type SortOrder, type StatusFilter } from '@/stores/collection'
-import { thumbnail } from '@/services/igdb'
+import { thumbnail, coverBig } from '@/services/igdb'
 import { shortPlatform } from '@/services/platforms'
 import { prettyDate } from '@/services/utils'
 
 const collectionStore = useCollectionStore()
+
+type ViewMode = 'list' | 'grid'
+const viewMode = ref<ViewMode>((localStorage.getItem('collectionViewMode') as ViewMode) ?? 'list')
+watch(viewMode, (val) => localStorage.setItem('collectionViewMode', val))
 
 const localFilterText = ref(collectionStore.filterText)
 const localPlatform = ref(collectionStore.filterPlatform)
@@ -268,5 +324,26 @@ onMounted(() => {
 .sold-game {
   opacity: 0.45;
   filter: grayscale(80%);
+}
+
+.cover-card {
+  cursor: pointer;
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.cover-card:hover .cover-overlay {
+  opacity: 1;
+}
+
+.cover-title {
+  line-height: 1.3;
+  word-break: break-word;
 }
 </style>
