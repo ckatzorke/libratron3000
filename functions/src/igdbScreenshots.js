@@ -1,4 +1,4 @@
-const IgdbProxy = require('./igdbproxy')
+import IgdbProxy from './igdbproxy.js'
 
 const headers = {
   'Access-Control-Allow-Origin': '*'
@@ -9,7 +9,7 @@ const headers = {
  * @param {number} the game id, as provided by IGDB
  * @returns {object}
  */
-exports.handler = (event, context, callback) => {
+export const handler = (event, context, callback) => {
   let gameid = event.queryStringParameters.id
   if (gameid && gameid.trim() !== '' && !isNaN(gameid)) {
     const client = new IgdbProxy(

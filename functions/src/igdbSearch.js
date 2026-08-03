@@ -1,4 +1,4 @@
-const IgdbProxy = require('./igdbproxy')
+import IgdbProxy from './igdbproxy.js'
 
 const headers = {
   'Access-Control-Allow-Origin': '*'
@@ -10,7 +10,7 @@ const headers = {
  * @param {number} limit the number of max results, default is 5
  * @returns {object}
  */
-exports.handler = (event, context, callback) => {
+export const handler = (event, context, callback) => {
   let search = event.queryStringParameters.search
   if (search && search.trim() !== '') {
     const client = new IgdbProxy(

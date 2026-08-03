@@ -1,5 +1,5 @@
-const IgdbProxy = require('./igdbproxy')
-const fs = require('fs')
+import IgdbProxy from '../src/igdbproxy.js'
+import fs from 'fs'
 
 let client = new IgdbProxy(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
 fs.mkdirSync('./tmp', { recursive: true })

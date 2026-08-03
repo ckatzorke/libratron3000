@@ -1,6 +1,6 @@
-const axios = require('axios')
+import axios from 'axios'
 
-module.exports = class IgdbProxy {
+export default class IgdbProxy {
   static get BASE_URL() {
     return 'https://api.igdb.com/v4'
   }
