@@ -1,4 +1,4 @@
-import IgdbProxy from './igdbproxy.js'
+import { IgdbProxy } from './lib/igdbproxy.js'
 
 const headers = {
   'Access-Control-Allow-Origin': '*'

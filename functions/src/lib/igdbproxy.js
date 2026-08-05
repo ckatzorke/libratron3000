@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default class IgdbProxy {
+export class IgdbProxy {
   static get BASE_URL() {
     return 'https://api.igdb.com/v4'
   }

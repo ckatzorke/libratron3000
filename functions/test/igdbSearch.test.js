@@ -1,4 +1,4 @@
-import IgdbProxy from '../src/igdbproxy.js'
+import { IgdbProxy } from '../src/lib/igdbproxy.js'
 import fs from 'fs'
 
 let client = new IgdbProxy(process.env.CLIENT_ID, process.env.CLIENT_SECRET)
