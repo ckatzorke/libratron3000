@@ -43,7 +43,7 @@ const chartData = computed(() => {
       datasets: [{
         label: `Games added in ${year}`,
         data: counts,
-        backgroundColor: '#7C6FCD',
+        backgroundColor: '#2E5266',
         borderRadius: 4,
         borderSkipped: false
       }]
@@ -62,7 +62,7 @@ const chartData = computed(() => {
       datasets: [{
         label: 'Games added',
         data: years.map(y => counts[y]),
-        backgroundColor: '#7C6FCD',
+        backgroundColor: '#2E5266',
         borderRadius: 4,
         borderSkipped: false
       }]
@@ -83,12 +83,12 @@ const chartOptions = {
   },
   scales: {
     x: {
-      ticks: { color: '#9090a8' },
-      grid: { color: 'rgba(255,255,255,0.05)' }
+      ticks: { color: '#64748B' },
+      grid: { color: 'rgba(15,23,42,0.06)' }
     },
     y: {
-      ticks: { color: '#9090a8', precision: 0 },
-      grid: { color: 'rgba(255,255,255,0.08)' },
+      ticks: { color: '#64748B', precision: 0 },
+      grid: { color: 'rgba(15,23,42,0.1)' },
       beginAtZero: true
     }
   }

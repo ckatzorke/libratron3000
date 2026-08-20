@@ -14,8 +14,21 @@ const vuetify = createVuetify({
     sets: { mdi }
   },
   theme: {
-    defaultTheme: 'dark',
+    defaultTheme: 'light',
     themes: {
+      light: {
+        colors: {
+          primary: '#2E5266',
+          secondary: '#0E9488',
+          accent: '#FF7A50',
+          background: '#F6F3FC',
+          surface: '#FFFFFF',
+          error: '#EF4444',
+          info: '#3B82F6',
+          success: '#22C55E',
+          warning: '#F5A524'
+        }
+      },
       dark: {
         colors: {
           primary: '#7C6FCD',

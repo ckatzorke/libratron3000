@@ -27,7 +27,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar elevation="0">
+    <v-app-bar elevation="0" color="primary">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-app-bar-title>
         <router-link to="/dashboard" class="text-decoration-none text-white">
