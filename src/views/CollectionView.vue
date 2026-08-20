@@ -326,6 +326,10 @@ onMounted(() => {
   filter: grayscale(80%);
 }
 
+:deep(.v-list) {
+  overflow-x: hidden;
+}
+
 .cover-card {
   cursor: pointer;
 }
