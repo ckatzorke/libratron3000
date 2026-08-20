@@ -16,7 +16,7 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 const props = defineProps<{ games: Game[] }>()
 
 const COLORS = [
-  '#7C6FCD', '#8b5cf6', '#06b6d4', '#22c55e', '#f59e0b',
+  '#6C4FD6', '#8b5cf6', '#06b6d4', '#22c55e', '#f59e0b',
   '#ef4444', '#ec4899', '#3b82f6', '#14b8a6', '#a855f7'
 ]
 
@@ -47,7 +47,7 @@ const chartOptions = {
   plugins: {
     legend: {
       position: 'bottom' as const,
-      labels: { color: '#c0c0d0', boxWidth: 14, padding: 10 }
+      labels: { color: '#475569', boxWidth: 14, padding: 10 }
     },
     tooltip: {
       callbacks: {

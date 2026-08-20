@@ -24,7 +24,7 @@ const chartData = computed(() => {
     labels: ['Not Completed', 'Completed', '100% Complete'],
     datasets: [{
       data: [notCompleted, completed, hundredPct],
-      backgroundColor: ['#4a4a6a', '#22c55e', '#f59e0b'],
+      backgroundColor: ['#94A3B8', '#22c55e', '#f59e0b'],
       borderWidth: 0,
       hoverOffset: 6
     }]
@@ -37,7 +37,7 @@ const chartOptions = {
   plugins: {
     legend: {
       position: 'bottom' as const,
-      labels: { color: '#c0c0d0', boxWidth: 14, padding: 16 }
+      labels: { color: '#475569', boxWidth: 14, padding: 16 }
     },
     tooltip: {
       callbacks: {

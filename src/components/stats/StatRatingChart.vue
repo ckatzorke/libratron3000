@@ -41,7 +41,7 @@ const chartData = computed(() => {
   const backgroundColors = [
     '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16',
     '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#3b82f6',
-    '#4a4a6a'
+    '#94A3B8'
   ]
 
   return {
@@ -73,18 +73,18 @@ const chartOptions = {
   },
   scales: {
     x: {
-      ticks: { color: '#9090a8' },
-      grid: { color: 'rgba(255,255,255,0.05)' },
+      ticks: { color: '#64748B' },
+      grid: { color: 'rgba(15,23,42,0.06)' },
       title: {
         display: true,
         text: 'Rating (— = unrated)',
-        color: '#9090a8',
+        color: '#64748B',
         font: { size: 11 }
       }
     },
     y: {
-      ticks: { color: '#9090a8', precision: 0 },
-      grid: { color: 'rgba(255,255,255,0.08)' },
+      ticks: { color: '#64748B', precision: 0 },
+      grid: { color: 'rgba(15,23,42,0.1)' },
       beginAtZero: true
     }
   }
