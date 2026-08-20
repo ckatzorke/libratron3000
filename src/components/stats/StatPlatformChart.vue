@@ -16,7 +16,7 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 const props = defineProps<{ games: Game[] }>()
 
 const COLORS = [
-  '#6C4FD6', '#8b5cf6', '#06b6d4', '#22c55e', '#f59e0b',
+  '#2E5266', '#8b5cf6', '#06b6d4', '#22c55e', '#f59e0b',
   '#ef4444', '#ec4899', '#3b82f6', '#14b8a6', '#a855f7'
 ]
 
