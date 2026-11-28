@@ -23,6 +23,13 @@ export const platforms = [
   'Xbox Series X'
 ]
 
+const digitalOnlyPlatforms = ['steam', 'gog', 'itch.io']
+
+/** Platforms that are storefronts, so a game on them is always a digital download. */
+export function isDigitalOnlyPlatform(platform: string | null | undefined): boolean {
+  return !!platform && digitalOnlyPlatforms.includes(platform.trim().toLowerCase())
+}
+
 export function getIcon(platform: string): string {
   const path = '/assets/platforms/'
   const map: Record<string, string> = {
