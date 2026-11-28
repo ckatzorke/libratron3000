@@ -268,13 +268,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Timestamp } from 'firebase/firestore'
 import { useCollectionStore } from '@/stores/collection'
 import { useNotificationStore } from '@/stores/notification'
 import { useIgdb } from '@/composables/useIgdb'
 import { coverBig } from '@/services/igdb'
+import { isDigitalOnlyPlatform } from '@/services/platforms'
 import type { Game, IgdbGame } from '@/types/game'
 import IgdbSearchResult from '@/components/IgdbSearchResult.vue'
 
@@ -319,6 +320,14 @@ function blankGame(): Omit<Game, 'id'> {
 }
 
 const game = reactive<Omit<Game, 'id'>>(blankGame())
+
+// Storefront platforms (Steam, Gog, Itch.io) imply a digital download
+watch(
+  () => game.platform,
+  platform => {
+    if (isDigitalOnlyPlatform(platform)) game.digital = true
+  }
+)
 
 function onTitleInput(val: string) {
   igdbSelected.value = false
